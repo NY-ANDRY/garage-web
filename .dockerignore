@@ -1,0 +1,23 @@
+# Git
+.git
+.gitignore
+
+# PHP
+backend/vendor
+backend/storage/*.key
+backend/.env
+backend/.phpunit.result.cache
+
+# Node
+**/node_modules
+**/dist
+
+# Docker
+docker-compose.override.yml
+.dockerignore
+Dockerfile
+docker/
+
+# OS
+.DS_Store
+Thumbs.db
