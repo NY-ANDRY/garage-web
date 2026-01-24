@@ -1,6 +1,6 @@
-import { ChartAreaInteractive } from "@/components/chart-area-interactive";
-import { DataTable } from "@/components/data-table";
-import { SectionCards } from "@/components/section-cards";
+import { ChartAreaInteractive } from "@/components/shadcn/chart-area-interactive";
+import { DataTable } from "@/components/shadcn/data-table";
+import { SectionCards } from "@/components/shadcn/section-cards";
 import data from "./data.json";
 
 export default function Page() {
