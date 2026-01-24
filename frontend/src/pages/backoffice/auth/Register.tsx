@@ -7,20 +7,16 @@ import { CardHeader, CardTitle, CardContent } from "@/components/ui/card";
 import { useAuth } from "@/context/useAuth";
 
 const RegisterForm = () => {
-  const { register } = useAuth();
+  const { register, registerLoading, registerError } = useAuth();
   const navigate = useNavigate();
 
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [passwordConfirmation, setPasswordConfirmation] = useState("");
-  const [error, setError] = useState<string | null>(null);
-  const [loading, setLoading] = useState(false);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    setLoading(true);
-    setError(null);
 
     try {
       await register({
@@ -30,10 +26,8 @@ const RegisterForm = () => {
         password_confirmation: passwordConfirmation,
       });
       navigate("/backoffice", { replace: true });
-    } catch (err: any) {
-      setError(err.message);
-    } finally {
-      setLoading(false);
+    } catch (err) {
+      console.error("Registration failed:", err);
     }
   };
 
@@ -77,12 +71,12 @@ const RegisterForm = () => {
               />
             </Field>
 
-            {error && (
-              <p className="text-sm text-red-500 font-medium">{error}</p>
+            {registerError && (
+              <p className="text-sm text-red-500 font-medium">{registerError.message}</p>
             )}
 
-            <Button className="w-full" type="submit" disabled={loading}>
-              {loading ? "Création..." : "S’inscrire"}
+            <Button className="w-full" type="submit" disabled={registerLoading}>
+              {registerLoading ? "Création..." : "S’inscrire"}
             </Button>
           </FieldGroup>
         </form>

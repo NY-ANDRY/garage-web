@@ -6,7 +6,7 @@ interface MutationState<TResponse, TError> {
   error: TError | null;
 }
 
-function useMutation<TResponse, TVariables>(
+function useMutate<TResponse, TVariables>(
   url: string,
   method: 'POST' | 'PUT' | 'PATCH' | 'DELETE' = 'POST'
 ) {
@@ -56,4 +56,4 @@ function useMutation<TResponse, TVariables>(
   return { ...state, mutate };
 }
 
-export default useMutation;
+export default useMutate;

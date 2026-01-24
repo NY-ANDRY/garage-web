@@ -1,5 +1,6 @@
-import { createContext, useContext, useState, type ReactNode } from "react";
+import { createContext, useState, useCallback, type ReactNode } from "react";
 import { API_BASE_URL } from "@/lib/constants";
+import useMutate from "@/hooks/useMutate";
 
 interface User {
   id: number;
@@ -18,9 +19,13 @@ interface AuthContextType {
     password_confirmation?: string;
   }) => Promise<void>;
   logout: () => void;
-  isAuthenticated: boolean; 
+  isAuthenticated: boolean;
+  loginLoading: boolean;
+  registerLoading: boolean;
+  loginError: Error | null;
+  registerError: Error | null;
 }
-  
+
 export const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
 export const AuthProvider = ({ children }: { children: ReactNode }) => {
@@ -28,7 +33,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     const stored = localStorage.getItem("auth_user");
     try {
       return stored ? JSON.parse(stored) : null;
-    } catch (error) {
+    } catch {
       console.error("Failed to parse auth_user from localStorage");
       return null;
     }
@@ -38,35 +43,19 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     localStorage.getItem("auth_token"),
   );
 
-  const saveToken = (data: any) => {
-    console.log("-" + data);
-    
+  const { mutate: loginMutate, isLoading: loginLoading, error: loginError } = useMutate<{ access_token: string; user: User }, any>(`${API_BASE_URL}/login`);
+  const { mutate: registerMutate, isLoading: registerLoading, error: registerError } = useMutate<{ access_token: string; user: User }, any>(`${API_BASE_URL}/register`);
+
+  const saveToken = useCallback((data: { access_token: string; user: User }) => {
     setToken(data.access_token);
     setUser(data.user);
 
     localStorage.setItem("auth_token", data.access_token);
     localStorage.setItem("auth_user", JSON.stringify(data.user));
-  };
+  }, []);
 
   const login = async (email: string, password: string) => {
-    const response = await fetch(`${API_BASE_URL}/login`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        Accept: "application/json",
-      },
-      body: JSON.stringify({ email, password }),
-    });
-
-    
-    
-    if (!response.ok) {
-      const error = await response.json();
-      throw new Error(error.message || "Invalid credentials");
-    }
-    
-    const data = await response.json();
-
+    const data = await loginMutate({ email, password });
     saveToken(data);
   };
 
@@ -75,22 +64,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     email: string;
     password: string;
   }) => {
-    const response = await fetch(`${API_BASE_URL}/register`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        Accept: "application/json",
-      },
-      body: JSON.stringify(payload),
-    });
-
-    if (!response.ok) {
-      const error = await response.json();
-      throw new Error(error.message || "Registration failed");
-    }
-
-    const data = await response.json();
-
+    const data = await registerMutate(payload);
     saveToken(data);
   };
 
@@ -110,6 +84,10 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
         register,
         logout,
         isAuthenticated: !!token,
+        loginLoading,
+        registerLoading,
+        loginError,
+        registerError,
       }}
     >
       {children}

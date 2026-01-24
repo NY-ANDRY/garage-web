@@ -1,4 +1,4 @@
-import { useState, type ComponentProps } from "react";
+import { useState } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Field, FieldGroup, FieldLabel } from "@/components/ui/field";
@@ -6,13 +6,10 @@ import { Input } from "@/components/ui/input";
 import { CardHeader, CardTitle, CardContent } from "@/components/ui/card";
 import { useAuth } from "@/context/useAuth";
 
-const Login = ({}: ComponentProps<"div">) => {
+const Login = () => {
   const [email, setEmail] = useState("abc@gmail.com");
   const [password, setPassword] = useState("abcabcabc");
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState<string | null>(null);
-
-  const { login } = useAuth();
+  const { login, loginLoading, loginError } = useAuth();
   const navigate = useNavigate();
   const location = useLocation();
 
@@ -20,16 +17,11 @@ const Login = ({}: ComponentProps<"div">) => {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    setLoading(true);
-    setError(null);
-
     try {
       await login(email, password);
       navigate(from, { replace: true });
-    } catch (err: any) {
-      setError(err.message);
-    } finally {
-      setLoading(false);
+    } catch (err) {
+      console.error("Login failed:", err);
     }
   };
 
@@ -61,10 +53,10 @@ const Login = ({}: ComponentProps<"div">) => {
           />
         </Field>
 
-        {error && <p className="text-sm text-red-500 font-medium">{error}</p>}
+        {loginError && <p className="text-sm text-red-500 font-medium">{loginError.message}</p>}
 
-        <Button type="submit" className="w-full" disabled={loading}>
-          {loading ? "Logging in..." : "Login"}
+        <Button type="submit" className="w-full" disabled={loginLoading}>
+          {loginLoading ? "Logging in..." : "Login"}
         </Button>
       </FieldGroup>
         </form>
