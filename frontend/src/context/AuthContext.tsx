@@ -70,7 +70,6 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     saveToken(data);
   };
 
-  // ✅ REGISTER (déjà clean)
   const register = async (payload: {
     name: string;
     email: string;
@@ -95,7 +94,6 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     saveToken(data);
   };
 
-  // ✅ LOGOUT CENTRALISÉ
   const logout = () => {
     setToken(null);
     setUser(null);
