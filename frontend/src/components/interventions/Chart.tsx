@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useTranslation } from "react-i18next";
 import {
   ChartContainer,
   ChartLegend,
@@ -22,19 +23,20 @@ const initialChartData: InterventionChartData[] = [
   { nom: "Frein", nombre: 230, prix: 150 },
 ];
 
-const chartConfig = {
-  nombre: {
-    label: "Number",
-    color: "#666666",
-  },
-  prix: {
-    label: "Cost",
-    color: "#aaaaaa",
-  },
-} satisfies ChartConfig;
-
 const Chart = () => {
+  const { t } = useTranslation();
   const [chartData, setChartData] = useState<InterventionChartData[]>(initialChartData);
+
+  const chartConfig = {
+    nombre: {
+      label: t("interventions.number"),
+      color: "#666666",
+    },
+    prix: {
+      label: t("interventions.cost"),
+      color: "#aaaaaa",
+    },
+  } satisfies ChartConfig;
 
   return (
     <div className="flex flex-col gap-4">

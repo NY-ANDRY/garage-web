@@ -1,0 +1,127 @@
+{
+  "common": {
+    "welcome": "Tongasoa eto amin'ny Garage APP",
+    "back": "miverina",
+    "settings": "fanovana",
+    "sync": "Ampifanaraho",
+    "loading": "Mampiditra...",
+    "email": "Mailaka",
+    "password": "Tenimiafina",
+    "language": "Fiteny",
+    "theme": "Endrika",
+    "light": "Mazava",
+    "dark": "Maizina"
+  },
+  "sidebar": {
+    "brand": "Garage",
+    "dashboard": "Tabilao fanaraha-maso",
+    "interventions": "Fidirana an-tsehatra",
+    "clients": "Mpanjifa",
+    "synchronize": "Ampifanaraho",
+    "settings": "Fanovana"
+  },
+  "header": {
+    "documents": "Antontan-taratasy",
+    "toggle_theme": "Ovay ny endrika"
+  },
+  "nav_user": {
+    "account": "Kaonty",
+    "billing": "Fandoavam-bola",
+    "notifications": "Fampandrenesana",
+    "logout": "Hivoaka"
+  },
+  "landing": {
+    "backoffice_title": "BackOffice",
+    "backoffice_desc": "Tantano ny rindranasanao",
+    "backoffice_btn": "backOffice",
+    "frontoffice_title": "FrontOffice",
+    "frontoffice_desc": "ho an'ny mpanjifa",
+    "frontoffice_btn": "frontOffice"
+  },
+  "auth": {
+    "admin": "Mpitantana",
+    "login": "Hiditra",
+    "logging_in": "Miditra...",
+    "create_account": "Mamorona kaonty",
+    "already_have_account": "Efa manana kaonty ve? Midira",
+    "register": "Hisoratra anarana",
+    "registering": "Misoratana anarana...",
+    "inscription": "Hisoratra",
+    "name": "Anarana",
+    "confirm_password": "Hamarino ny tenimiafina"
+  },
+  "table": {
+    "drag_handle": "Tariho handaminana indray",
+    "select_all": "Fidio daholo",
+    "select_row": "Fidio ny andalana",
+    "header": "Lohateny",
+    "section_type": "Karazana fizarana",
+    "status": "Sata",
+    "target": "Tanjona",
+    "limit": "Fetra",
+    "reviewer": "Mpandinika",
+    "saving": "Mitahiry...",
+    "assign_reviewer": "Atokana mpandinika",
+    "open_menu": "Sokafy ny menio",
+    "edit": "Ovay",
+    "make_copy": "Manaova kopia",
+    "favorite": "Tiana",
+    "delete": "Fafao",
+    "select_view": "Fidio ny fijery",
+    "outline": "Topi-maso",
+    "past_performance": "Fahombiazana teo aloha",
+    "key_personnel": "Olona manan-danja",
+    "focus_documents": "Antontan-taratasy ifantohana",
+    "customize_columns": "Amboary ny tsanganana",
+    "columns": "Tsanganana",
+    "add_section": "Ampio fizarana",
+    "no_results": "Tsy misy valiny.",
+    "rows_selected": "{{count}} amin'ny {{total}} andalana no voafidy.",
+    "rows_per_page": "Andalana isaky ny pejy",
+    "page_info": "Pejy {{current}} amin'ny {{total}}",
+    "first_page": "Mandehana amin'ny pejy voalohany",
+    "previous_page": "Mandehana amin'ny pejy teo aloha",
+    "next_page": "Mandehana amin'ny pejy manaraka",
+    "last_page": "Mandehana amin'ny pejy farany",
+    "submit": "Alefa"
+  },
+  "drawer": {
+    "description": "Mampiseho ny isan'ny mpitsidika nandritra ny 6 volana farany",
+    "desktop": "Solosaina",
+    "mobile": "Finday",
+    "trending": "Miakatra 5.2% amin'ity volana ity",
+    "random_text": "Mampiseho ny isan'ny mpitsidika nandritra ny 6 volana farany. Lahatsoratra andrana fotsiny ity hijerena ny firafitra. Mivelatra amin'ny andalana maromaro izy ary tokony hifono tsara."
+  },
+  "form": {
+    "header": "Lohateny",
+    "type": "Karazana",
+    "select_type": "Fidio ny karazana",
+    "toc": "Tabilao votoaty",
+    "exec_summary": "Famintinana ho an'ny mpitantana",
+    "tech_approach": "Fomba ara-teknika",
+    "design": "Famolavolana",
+    "capabilities": "Fahaiza-manao",
+    "focus_docs": "Antontan-taratasy ifantohana",
+    "narrative": "Fitantarana",
+    "cover_page": "Pejy fonony",
+    "status": "Sata",
+    "select_status": "Fidio ny sata",
+    "done": "Vita",
+    "in_progress": "Eo am-panaovana",
+    "not_started": "Tsy mbola natomboka",
+    "target": "Tanjona",
+    "limit": "Fetra",
+    "reviewer": "Mpandinika",
+    "select_reviewer": "Fidio ny mpandinika"
+  },
+  "clients": {
+    "total_clients": "Isan'ny mpanjifa rehetra",
+    "cards_total_client": "Mpanjifa rehetra"
+  },
+  "interventions": {
+    "total_revenue": "Vola miditra manontolo",
+    "total_number": "Isan'ny rehetra",
+    "number": "Isa",
+    "cost": "Vidiny"
+  }
+}

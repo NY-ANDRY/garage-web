@@ -1,0 +1,127 @@
+{
+  "common": {
+    "welcome": "Bienvenue sur l'application Garage",
+    "back": "retour",
+    "settings": "paramètres",
+    "sync": "Synchronisation",
+    "loading": "Chargement...",
+    "email": "Email",
+    "password": "Mot de passe",
+    "language": "Langue",
+    "theme": "Thème",
+    "light": "Clair",
+    "dark": "Sombre"
+  },
+  "sidebar": {
+    "brand": "Garage",
+    "dashboard": "Tableau de bord",
+    "interventions": "Interventions",
+    "clients": "Clients",
+    "synchronize": "Synchroniser",
+    "settings": "Paramètres"
+  },
+  "header": {
+    "documents": "Documents",
+    "toggle_theme": "Changer le thème"
+  },
+  "nav_user": {
+    "account": "Compte",
+    "billing": "Facturation",
+    "notifications": "Notifications",
+    "logout": "Se déconnecter"
+  },
+  "landing": {
+    "backoffice_title": "BackOffice",
+    "backoffice_desc": "Gérez votre application",
+    "backoffice_btn": "backOffice",
+    "frontoffice_title": "FrontOffice",
+    "frontoffice_desc": "pour le client",
+    "frontoffice_btn": "frontOffice"
+  },
+  "auth": {
+    "admin": "Admin",
+    "login": "Se connecter",
+    "logging_in": "Connexion...",
+    "create_account": "Créer un compte",
+    "already_have_account": "Déjà un compte ? Se connecter",
+    "register": "S'inscrire",
+    "registering": "Inscription...",
+    "inscription": "Inscription",
+    "name": "Nom",
+    "confirm_password": "Confirmer le mot de passe"
+  },
+  "table": {
+    "drag_handle": "Faire glisser pour réorganiser",
+    "select_all": "Tout sélectionner",
+    "select_row": "Sélectionner la ligne",
+    "header": "En-tête",
+    "section_type": "Type de section",
+    "status": "Statut",
+    "target": "Cible",
+    "limit": "Limite",
+    "reviewer": "Réviseur",
+    "saving": "Enregistrement de {{name}}...",
+    "assign_reviewer": "Assigner un réviseur",
+    "open_menu": "Ouvrir le menu",
+    "edit": "Modifier",
+    "make_copy": "Faire une copie",
+    "favorite": "Favori",
+    "delete": "Supprimer",
+    "select_view": "Sélectionner une vue",
+    "outline": "Aperçu",
+    "past_performance": "Performance passée",
+    "key_personnel": "Personnel clé",
+    "focus_documents": "Documents cibles",
+    "customize_columns": "Personnaliser les colonnes",
+    "columns": "Colonnes",
+    "add_section": "Ajouter une section",
+    "no_results": "Aucun résultat.",
+    "rows_selected": "{{count}} sur {{total}} ligne(s) sélectionnée(s).",
+    "rows_per_page": "Lignes par page",
+    "page_info": "Page {{current}} sur {{total}}",
+    "first_page": "Aller à la première page",
+    "previous_page": "Aller à la page précédente",
+    "next_page": "Aller à la page suivante",
+    "last_page": "Aller à la dernière page",
+    "submit": "Envoyer"
+  },
+  "drawer": {
+    "description": "Affichage du nombre total de visiteurs pour les 6 derniers mois",
+    "desktop": "Ordinateur",
+    "mobile": "Mobile",
+    "trending": "En hausse de 5,2 % ce mois-ci",
+    "random_text": "Affichage du nombre total de visiteurs pour les 6 derniers mois. Il s'agit simplement d'un texte aléatoire pour tester la mise en page. Il s'étend sur plusieurs lignes et doit s'enrouler."
+  },
+  "form": {
+    "header": "En-tête",
+    "type": "Type",
+    "select_type": "Sélectionner un type",
+    "toc": "Table des matières",
+    "exec_summary": "Résumé analytique",
+    "tech_approach": "Approche technique",
+    "design": "Design",
+    "capabilities": "Capacités",
+    "focus_docs": "Documents cibles",
+    "narrative": "Récit",
+    "cover_page": "Page de couverture",
+    "status": "Statut",
+    "select_status": "Sélectionner un statut",
+    "done": "Terminé",
+    "in_progress": "En cours",
+    "not_started": "Pas commencé",
+    "target": "Cible",
+    "limit": "Limite",
+    "reviewer": "Réviseur",
+    "select_reviewer": "Sélectionner un réviseur"
+  },
+  "clients": {
+    "total_clients": "Total des clients",
+    "cards_total_client": "Client Total"
+  },
+  "interventions": {
+    "total_revenue": "Revenu Total",
+    "total_number": "Nombre Total",
+    "number": "Nombre",
+    "cost": "Coût"
+  }
+}

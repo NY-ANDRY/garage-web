@@ -4,7 +4,9 @@ import { Button } from "@/components/ui/button";
 import { Field, FieldGroup, FieldLabel } from "@/components/ui/field";
 import { Input } from "@/components/ui/input";
 import { CardHeader, CardTitle, CardContent } from "@/components/ui/card";
-import { useAuth } from "@/context/useAuth";
+import { useAuth } from "@/hooks/useAuth";
+
+import { useTranslation } from "react-i18next";
 
 const Login = () => {
   const [email, setEmail] = useState("abc@gmail.com");
@@ -12,6 +14,7 @@ const Login = () => {
   const { login, loginLoading, loginError } = useAuth();
   const navigate = useNavigate();
   const location = useLocation();
+  const { t } = useTranslation();
 
   const from = location.state?.from?.pathname || "/backoffice/dashboard";
 
@@ -28,13 +31,13 @@ const Login = () => {
   return (
     <>
       <CardHeader className="w-full pb-4">
-        <CardTitle className="text-xl flex">Admin</CardTitle>
+        <CardTitle className="text-xl flex">{t("auth.admin")}</CardTitle>
       </CardHeader>
       <CardContent className="space-y-4">
         <form onSubmit={handleSubmit}>
           <FieldGroup>
         <Field>
-          <FieldLabel>Email</FieldLabel>
+          <FieldLabel>{t("common.email")}</FieldLabel>
           <Input
             type="email"
             value={email}
@@ -44,7 +47,7 @@ const Login = () => {
         </Field>
 
         <Field>
-          <FieldLabel>Password</FieldLabel>
+          <FieldLabel>{t("common.password")}</FieldLabel>
           <Input
             type="password"
             value={password}
@@ -56,7 +59,7 @@ const Login = () => {
         {loginError && <p className="text-sm text-red-500 font-medium">{loginError.message}</p>}
 
         <Button type="submit" className="w-full" disabled={loginLoading}>
-          {loginLoading ? "Logging in..." : "Login"}
+          {loginLoading ? t("auth.logging_in") : t("auth.login")}
         </Button>
       </FieldGroup>
         </form>

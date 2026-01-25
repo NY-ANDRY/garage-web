@@ -1,11 +1,14 @@
 import { useState } from "react";
-import { AnimatePresence, motion, easeOut } from "framer-motion";
+import { AnimatePresence, motion, easeOut } from "motion/react";
 import { Button } from "@/components/ui/button";
 import Login from "./Login";
 import RegisterForm from "./Register";
 
+import { useTranslation } from "react-i18next";
+
 const AuthForm = () => {
   const [mode, setMode] = useState<"login" | "register">("login");
+  const { t } = useTranslation();
 
   const containerMotion = {
     layout: true,
@@ -37,7 +40,7 @@ const AuthForm = () => {
                   className="w-full"
                   onClick={handleToggle}
                 >
-                  Créer un compte
+                  {t("auth.create_account")}
                 </Button>
               </div>
             </motion.div>
@@ -54,7 +57,7 @@ const AuthForm = () => {
                   className="w-full"
                   onClick={handleToggle}
                 >
-                  Déjà un compte ? Se connecter
+                  {t("auth.already_have_account")}
                 </Button>
               </div>
             </motion.div>

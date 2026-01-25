@@ -1,11 +1,25 @@
+import React from "react"
 import { Button } from "@/components/ui/button"
 import { Separator } from "@/components/ui/separator"
 import { SidebarTrigger } from "@/components/ui/sidebar"
 import { IconSun, IconMoon } from "@tabler/icons-react"
-import { useTheme } from "@/hooks/useTheme"
+import { useThemeContext } from "@/context/ThemeContext"
+import { useTranslation } from "react-i18next"
+import { useHeader } from "@/context/HeaderContext"
+import {
+  Breadcrumb,
+  BreadcrumbItem,
+  BreadcrumbLink,
+  BreadcrumbList,
+  BreadcrumbPage,
+  BreadcrumbSeparator,
+} from "@/components/ui/breadcrumb"
+import { Link } from "react-router-dom"
 
 export function SiteHeader() {
-  const { theme, toggleTheme } = useTheme()
+  const { theme, toggleTheme } = useThemeContext()
+  const { t } = useTranslation()
+  const { breadcrumbs } = useHeader()
 
   return (
     <header className="flex h-(--header-height) items-center border-b">
@@ -14,14 +28,34 @@ export function SiteHeader() {
 
         <Separator orientation="vertical" className="mx-2 h-4" />
 
-        <h1 className="text-base font-medium">Documents</h1>
+        <Breadcrumb>
+          <BreadcrumbList>
+            {breadcrumbs.map((item, index) => {
+              const isLast = index === breadcrumbs.length - 1;
+              return (
+                <React.Fragment key={index}>
+                  <BreadcrumbItem>
+                    {item.href && !isLast ? (
+                      <BreadcrumbLink asChild>
+                        <Link to={item.href}>{item.label}</Link>
+                      </BreadcrumbLink>
+                    ) : (
+                      <BreadcrumbPage>{item.label}</BreadcrumbPage>
+                    )}
+                  </BreadcrumbItem>
+                  {!isLast && <BreadcrumbSeparator />}
+                </React.Fragment>
+              );
+            })}
+          </BreadcrumbList>
+        </Breadcrumb>
 
         <div className="ml-auto">
           <Button
             variant="ghost"
             size="icon"
             onClick={toggleTheme}
-            aria-label="Toggle theme"
+            aria-label={t("header.toggle_theme")}
           >
             {theme === "dark" ? (
               <IconMoon className="h-5 w-5" />

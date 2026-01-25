@@ -9,28 +9,32 @@ import ProtectedRoute from "@/components/auth/ProtectedRoute";
 import AuthView from "@/pages/backoffice/auth/AuthView";
 import IndexClient from "@/pages/backoffice/client/Index";
 import IndexSync from "@/pages/backoffice/sync/Index";
+import Settings from "@/pages/backoffice/settings/Index"; 
+import { PageTransition } from "@/components/transitions/PageTransition";
 
 export const routes: RouteObject[] = [
   {
     path: "/",
-    element: <Landing />,
+    element: <PageTransition><Landing /></PageTransition>,
   },
   {
     path: "/frontoffice",
-    element: <Home />,
+    element: <PageTransition><Home /></PageTransition>,
   },
   {
     path: "/backoffice",
     children: [
       {
         path: "auth",
-        element: <AuthView />,
+        element: <PageTransition><AuthView /></PageTransition>,
       },
       {
         path: "",
         element: (
           <ProtectedRoute>
-            <DashboardLayout />
+            <PageTransition>
+              <DashboardLayout />
+            </PageTransition>
           </ProtectedRoute>
         ),
         children: [
@@ -54,6 +58,10 @@ export const routes: RouteObject[] = [
             path: "sync",
             element: <IndexSync />,
           },
+          {
+            path: "settings",
+            element: <Settings />,
+          },  
         ],
       },
     ],

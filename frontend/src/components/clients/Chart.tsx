@@ -4,6 +4,7 @@ import type { ClientChartData } from "@/types/Types";
 import { Area, AreaChart, CartesianGrid, XAxis } from "recharts";
 
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { useTranslation } from "react-i18next";
 import {
   ChartContainer,
   ChartTooltip,
@@ -28,16 +29,17 @@ const generateApril2024Data = (): ClientChartData[] => {
 
 const initialChartData = generateApril2024Data();
 
-const chartConfig = {
-  number: {
-    label: "Total Clients",
-    color: "var(--primary)",
-  },
-} satisfies ChartConfig;
-
 const Chart = () => {
+  const { t, i18n } = useTranslation();
   const [chartData, setChartData] =
     useState<ClientChartData[]>(initialChartData);
+
+  const chartConfig = {
+    number: {
+      label: t("clients.total_clients"),
+      color: "var(--primary)",
+    },
+  } satisfies ChartConfig;
 
   return (
     <div className="flex flex-1 flex-col gap-4">
@@ -48,7 +50,7 @@ const Chart = () => {
       <div className="w-full flex-1">
         <Card className="@container/card min-h-full flex flex-col">
           <CardHeader>
-            <CardTitle>Total Clients</CardTitle>
+            <CardTitle>{t("clients.total_clients")}</CardTitle>
           </CardHeader>
           <CardContent className="px-2 pt-4 sm:px-6 sm:pt-6 flex-1">
             <ChartContainer
@@ -79,7 +81,7 @@ const Chart = () => {
                   minTickGap={32}
                   tickFormatter={(value) => {
                     const date = new Date(value);
-                    return date.toLocaleDateString("en-US", {
+                    return date.toLocaleDateString(i18n.language, {
                       month: "short",
                       day: "numeric",
                     });
@@ -90,7 +92,7 @@ const Chart = () => {
                   content={
                     <ChartTooltipContent
                       labelFormatter={(value) => {
-                        return new Date(value).toLocaleDateString("en-US", {
+                        return new Date(value).toLocaleDateString(i18n.language, {
                           month: "short",
                           day: "numeric",
                         });

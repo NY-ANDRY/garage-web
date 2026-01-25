@@ -1,0 +1,127 @@
+{
+  "common": {
+    "welcome": "Welcome to Garage APP",
+    "back": "back",
+    "settings": "settings",
+    "sync": "Sync",
+    "loading": "Loading...",
+    "email": "Email",
+    "password": "Password",
+    "language": "Language",
+    "theme": "Theme",
+    "light": "Light",
+    "dark": "Dark"
+  },
+  "sidebar": {
+    "brand": "Garage",
+    "dashboard": "Dashboard",
+    "interventions": "Interventions",
+    "clients": "Clients",
+    "synchronize": "Synchronize",
+    "settings": "Settings"
+  },
+  "header": {
+    "documents": "Documents",
+    "toggle_theme": "Toggle theme"
+  },
+  "nav_user": {
+    "account": "Account",
+    "billing": "Billing",
+    "notifications": "Notifications",
+    "logout": "Log out"
+  },
+  "landing": {
+    "backoffice_title": "BackOffice",
+    "backoffice_desc": "Manage your app",
+    "backoffice_btn": "backOffice",
+    "frontoffice_title": "FrontOffice",
+    "frontoffice_desc": "for client",
+    "frontoffice_btn": "frontOffice"
+  },
+  "auth": {
+    "admin": "Admin",
+    "login": "Login",
+    "logging_in": "Logging in...",
+    "create_account": "Create an account",
+    "already_have_account": "Already have an account? Login",
+    "register": "Register",
+    "registering": "Registering...",
+    "inscription": "Sign Up",
+    "name": "Name",
+    "confirm_password": "Confirm password"
+  },
+  "table": {
+    "drag_handle": "Drag to reorder",
+    "select_all": "Select all",
+    "select_row": "Select row",
+    "header": "Header",
+    "section_type": "Section Type",
+    "status": "Status",
+    "target": "Target",
+    "limit": "Limit",
+    "reviewer": "Reviewer",
+    "saving": "Saving...",
+    "assign_reviewer": "Assign reviewer",
+    "open_menu": "Open menu",
+    "edit": "Edit",
+    "make_copy": "Make a copy",
+    "favorite": "Favorite",
+    "delete": "Delete",
+    "select_view": "Select a view",
+    "outline": "Outline",
+    "past_performance": "Past Performance",
+    "key_personnel": "Key Personnel",
+    "focus_documents": "Focus Documents",
+    "customize_columns": "Customize Columns",
+    "columns": "Columns",
+    "add_section": "Add Section",
+    "no_results": "No results.",
+    "rows_selected": "{{count}} of {{total}} row(s) selected.",
+    "rows_per_page": "Rows per page",
+    "page_info": "Page {{current}} of {{total}}",
+    "first_page": "Go to first page",
+    "previous_page": "Go to previous page",
+    "next_page": "Go to next page",
+    "last_page": "Go to last page",
+    "submit": "Submit"
+  },
+  "drawer": {
+    "description": "Showing total visitors for the last 6 months",
+    "desktop": "Desktop",
+    "mobile": "Mobile",
+    "trending": "Trending up by 5.2% this month",
+    "random_text": "Showing total visitors for the last 6 months. This is just some random text to test the layout. It spans multiple lines and should wrap around."
+  },
+  "form": {
+    "header": "Header",
+    "type": "Type",
+    "select_type": "Select a type",
+    "toc": "Table of Contents",
+    "exec_summary": "Executive Summary",
+    "tech_approach": "Technical Approach",
+    "design": "Design",
+    "capabilities": "Capabilities",
+    "focus_docs": "Focus Documents",
+    "narrative": "Narrative",
+    "cover_page": "Cover Page",
+    "status": "Status",
+    "select_status": "Select a status",
+    "done": "Done",
+    "in_progress": "In Progress",
+    "not_started": "Not Started",
+    "target": "Target",
+    "limit": "Limit",
+    "reviewer": "Reviewer",
+    "select_reviewer": "Select a reviewer"
+  },
+  "clients": {
+    "total_clients": "Total Clients",
+    "cards_total_client": "Total Client"
+  },
+  "interventions": {
+    "total_revenue": "Total Revenue",
+    "total_number": "Total Number",
+    "number": "Number",
+    "cost": "Cost"
+  }
+}

@@ -1,26 +1,15 @@
 import * as React from "react"
 import {
-  IconCamera,
-  IconChartBar,
   IconDashboard,
-  IconDatabase,
-  IconFileAi,
-  IconFileDescription,
-  IconFileWord,
-  IconFolder,
-  IconHelp,
   IconInnerShadowTop,
   IconListDetails,
-  IconReport,
-  IconSearch,
   IconSettings,
   IconUsers,IconCloudNetwork
 } from "@tabler/icons-react"
 
-import { NavDocuments } from "@/components/shadcn/nav-documents"
 import NavMain from "@/components/shadcn/nav-main"
-import { NavSecondary } from "@/components/shadcn/nav-secondary"
-import { NavUser } from "@/components/shadcn/nav-user"
+import { NavSecondary } from "@/components/sidebar/nav-secondary"
+import { NavUser } from "@/components/sidebar/nav-user"
 import {
   Sidebar,
   SidebarContent,
@@ -32,76 +21,45 @@ import {
 } from "@/components/ui/sidebar"
 import { Link } from "react-router-dom"
 
-const data = {
-  user: {
-    name: "shadcn",
-    email: "m@example.com",
-    avatar: "/avatars/shadcn.jpg",
-  },
-  navMain: [
-    {
-      title: "Dashboard",
-      url: "/backoffice/dashboard",
-      icon: IconDashboard,
-    },
-    {
-      title: "Interventions",
-      url: "/backoffice/interventions",
-      icon: IconListDetails,
-    },
-    {
-      title: "Clients",
-      url: "/backoffice/clients",
-      icon: IconUsers,
-    },
-    {
-      title: "Synchronize",
-      url: "/backoffice/sync",
-      icon: IconCloudNetwork,
-    },
-    // {
-    //   title: "Projects",
-    //   url: "#",
-    //   icon: IconFolder,
-    // },
-  ],  
-  navSecondary: [
-    {
-      title: "Settings",
-      url: "#",
-      icon: IconSettings,
-    },
-    // {
-    //   title: "Get Help",
-    //   url: "#",
-    //   icon: IconHelp,
-    // },
-    // {
-    //   title: "Search",
-    //   url: "#",
-    //   icon: IconSearch,
-    // },
-  ],
-  // documents: [
-  //   {
-  //     name: "Data Library",
-  //     url: "#",
-  //     icon: IconDatabase,
-  //   },
-  //   {
-  //     name: "Reports",
-  //     url: "#",
-  //     icon: IconReport,
-  //   },
-  //   {
-  //     name: "Word Assistant",
-  //     url: "#",
-  //     icon: IconFileWord,
-  //   },
-  // ],
-}
+import { useAuth } from "@/hooks/useAuth"
+import { useTranslation } from "react-i18next"
 
 export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
+  const { t } = useTranslation()
+  const { user } = useAuth()
+
+  const data = {
+    navMain: [
+      {
+        title: t("sidebar.dashboard"),
+        url: "/backoffice/dashboard",
+        icon: IconDashboard,
+      },
+      {
+        title: t("sidebar.interventions"),
+        url: "/backoffice/interventions",
+        icon: IconListDetails,
+      },
+      {
+        title: t("sidebar.clients"),
+        url: "/backoffice/clients",
+        icon: IconUsers,
+      },
+      {
+        title: t("sidebar.synchronize"),
+        url: "/backoffice/sync",
+        icon: IconCloudNetwork,
+      },
+    ],
+    navSecondary: [
+      {
+        title: t("sidebar.settings"),
+        url: "/backoffice/settings",
+        icon: IconSettings,
+      },
+    ],
+  }
+
   return (
     <Sidebar collapsible="icon" {...props}>
 
@@ -114,7 +72,7 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
             >
               <Link to="/backoffice">
                 <IconInnerShadowTop className="size-5!" />
-                <span className="text-base font-semibold">Acme Inc.</span>
+                <span className="text-base font-semibold">{t("sidebar.brand")}</span>
               </Link>
             </SidebarMenuButton>
           </SidebarMenuItem>
@@ -128,7 +86,7 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
       </SidebarContent>
 
       <SidebarFooter>
-        <NavUser user={data.user} />
+        {user && <NavUser user={user} />}
       </SidebarFooter>
       
     </Sidebar>

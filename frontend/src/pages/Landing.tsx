@@ -1,21 +1,20 @@
-import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Separator } from "@/components/ui/separator";
 import { Button } from "@/components/ui/button";
 import { IconArrowRight } from "@tabler/icons-react";
-import AuthForm from "./backoffice/auth/AuthForm";
-import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
+
+import { useTranslation } from "react-i18next";
 
 const Landing = () => {
   const navigate = useNavigate();
-  const [showBackOffice, setShowBackOffice] = useState(false);
+  const { t } = useTranslation();
 
   const onFrontOffice = () => {
     navigate("/frontoffice");
   };
 
   const onBackOffice = () => {
-    setShowBackOffice(!showBackOffice);
+    navigate("/backoffice/auth");
   };
 
   return (
@@ -24,38 +23,31 @@ const Landing = () => {
         <div className="flex flex-col md:flex-row items-center">
           <div className="flex flex-col gap-4 ml-4">
             <div className="flex flex-col">
-              <div className="font-medium">BackOffice</div>
+              <div className="font-medium">{t("landing.backoffice_title")}</div>
               <div className="text-muted-foreground text-lg">
-                Manage your app
+                {t("landing.backoffice_desc")}
               </div>
             </div>
-            <Dialog>
-              <DialogTrigger asChild>
-                <Button variant="outline" onClick={onBackOffice} size="sm">
-                  <span className="relative bottom-px">backOffice</span>
-                  <IconArrowRight />
-                </Button>
-              </DialogTrigger>
-              <DialogContent className="h-132 sm:max-w-106.25 flex flex-col items-center justify-center">
-                <AuthForm />
-              </DialogContent>
-            </Dialog>
+            <Button variant="outline" onClick={onBackOffice} size="sm" className="cursor-pointer">
+              <span className="relative bottom-px">{t("landing.backoffice_btn")}</span>
+              <IconArrowRight />
+            </Button>
           </div>
         </div>
 
         <Separator
           orientation="vertical"
-          className="hidden md:block mx-48" // vertical pour desktop
+          className="hidden md:block mx-48"
         />
         <Separator
           orientation="horizontal"
-          className="block md:hidden my-16 w-full" // horizontal pour mobile
+          className="block md:hidden my-16 w-full"
         />
 
         <div className="flex flex-col gap-4">
           <div className="flex flex-col">
-            <div className="font-medium">FrontOffice</div>
-            <div className="text-muted-foreground text-lg">for client</div>
+            <div className="font-medium">{t("landing.frontoffice_title")}</div>
+            <div className="text-muted-foreground text-lg">{t("landing.frontoffice_desc")}</div>
           </div>
           <Button
             variant="outline"
@@ -63,7 +55,7 @@ const Landing = () => {
             onClick={onFrontOffice}
             className="flex items-center relative cursor-pointer"
           >
-            <span className="relative bottom-px">frontOffice</span>
+            <span className="relative bottom-px">{t("landing.frontoffice_btn")}</span>
             <IconArrowRight />
           </Button>
         </div>
