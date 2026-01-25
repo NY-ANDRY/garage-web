@@ -9,9 +9,9 @@ import {
 } from "@/components/ui/chart";
 import { Bar, BarChart, CartesianGrid, XAxis } from "recharts";
 import ChartFilter from "./ChartFilter";
-import type { ChartDataItem } from "@/types/Types";
+import type { InterventionChartData } from "@/types/Types";
 
-const initialChartData: ChartDataItem[] = [
+const initialChartData: InterventionChartData[] = [
   { nom: "Vidange", nombre: 186, prix: 80 },
   { nom: "Refroidissement", nombre: 305, prix: 200 },
   { nom: "Pneu", nombre: 237, prix: 120 },
@@ -24,7 +24,7 @@ const initialChartData: ChartDataItem[] = [
 
 const chartConfig = {
   nombre: {
-    label: "Nombre",
+    label: "Number",
     color: "#666666",
   },
   prix: {
@@ -34,12 +34,11 @@ const chartConfig = {
 } satisfies ChartConfig;
 
 const Chart = () => {
-  const [chartData, setChartData] = useState<ChartDataItem[]>(initialChartData);
+  const [chartData, setChartData] = useState<InterventionChartData[]>(initialChartData);
 
   return (
     <div className="flex flex-col gap-4">
       <div className="flex flex-col gap-4">
-        {/* Filtre au-dessus */}
         <div className="w-full">
           <ChartFilter setChartData={setChartData} />
         </div>

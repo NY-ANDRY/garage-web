@@ -14,7 +14,7 @@ import {
   IconReport,
   IconSearch,
   IconSettings,
-  IconUsers,
+  IconUsers,IconCloudNetwork
 } from "@tabler/icons-react"
 
 import { NavDocuments } from "@/components/shadcn/nav-documents"
@@ -50,20 +50,20 @@ const data = {
       icon: IconListDetails,
     },
     {
-      title: "Analytics",
-      url: "#",
-      icon: IconChartBar,
-    },
-    {
-      title: "Projects",
-      url: "#",
-      icon: IconFolder,
-    },
-    {
-      title: "Team",
-      url: "#",
+      title: "Clients",
+      url: "/backoffice/clients",
       icon: IconUsers,
     },
+    {
+      title: "Synchronize",
+      url: "/backoffice/sync",
+      icon: IconCloudNetwork,
+    },
+    // {
+    //   title: "Projects",
+    //   url: "#",
+    //   icon: IconFolder,
+    // },
   ],  
   navSecondary: [
     {
@@ -71,16 +71,16 @@ const data = {
       url: "#",
       icon: IconSettings,
     },
-    {
-      title: "Get Help",
-      url: "#",
-      icon: IconHelp,
-    },
-    {
-      title: "Search",
-      url: "#",
-      icon: IconSearch,
-    },
+    // {
+    //   title: "Get Help",
+    //   url: "#",
+    //   icon: IconHelp,
+    // },
+    // {
+    //   title: "Search",
+    //   url: "#",
+    //   icon: IconSearch,
+    // },
   ],
   // documents: [
   //   {

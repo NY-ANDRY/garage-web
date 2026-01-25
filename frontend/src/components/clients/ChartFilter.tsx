@@ -10,38 +10,16 @@ import {
 } from "@/components/ui/popover";
 import { format } from "date-fns";
 import { ChevronDownIcon } from "lucide-react";
-import type { InterventionChartData } from "@/types/Types";
+import type { ClientChartData } from "@/types/Types";
 import { IconFilter } from "@tabler/icons-react";
-import {
-  Select,
-  SelectContent,
-  SelectGroup,
-  SelectItem,
-  SelectLabel,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
-import { Separator } from "@/components/ui/separator";
 import { type DateRange } from "react-day-picker";
 
 type ChartFilterProps = {
-  setChartData: Dispatch<SetStateAction<InterventionChartData[]>>;
+  setChartData: Dispatch<SetStateAction<ClientChartData[]>>;
 };
 
-// Fonction pour générer nombres aléatoires
 const randomBetween = (min: number, max: number): number =>
   Math.floor(Math.random() * (max - min + 1)) + min;
-
-const NAMES = [
-  "Vidange",
-  "Refroidissement",
-  "Pneu",
-  "Filtre",
-  "Embrayage",
-  "Amortisseur",
-  "Batterie",
-  "Frein",
-];
 
 const ChartFilter = ({ setChartData }: ChartFilterProps) => {
   const [dateRange, setDateRange] = useState<DateRange | undefined>({
@@ -49,19 +27,26 @@ const ChartFilter = ({ setChartData }: ChartFilterProps) => {
     to: undefined,
   });
 
-  // const [selectedItem, setSelectedItem] = useState<string | undefined>();
-
   const generateData = () => {
-    const newData: InterventionChartData[] = NAMES.map((nom) => ({
-      nom,
-      nombre: randomBetween(50, 350),
-      prix: randomBetween(50, 250),
-    }));
+    if (!dateRange?.from || !dateRange?.to) return;
+
+    const newData: ClientChartData[] = [];
+    const currentDate = new Date(dateRange.from);
+
+    while (currentDate <= dateRange.to) {
+      newData.push({
+        date: format(currentDate, "yyyy-MM-dd"),
+        number: randomBetween(50, 500),
+      });
+      currentDate.setDate(currentDate.getDate() + 1);
+    }
     setChartData(newData);
   };
 
   useEffect(() => {
+    
     if (dateRange?.from && dateRange?.to) {
+      console.log('from: ' + dateRange.from + ' to: ' + dateRange.to);
       generateData();
     }
   }, [dateRange]);
@@ -113,27 +98,6 @@ const ChartFilter = ({ setChartData }: ChartFilterProps) => {
               />
             </PopoverContent>
           </Popover>
-        </div>
-
-        <Separator orientation="vertical" className="mx-4" />
-
-        <div className="flex flex-col gap-0.5">
-          <span className="text-muted-foreground">User</span>
-          <Select onValueChange={handleSelectChange}>
-            <SelectTrigger className="w-full max-w-48">
-              <SelectValue placeholder="Select a user" />
-            </SelectTrigger>
-            <SelectContent>
-              <SelectGroup>
-                <SelectLabel>Users</SelectLabel>
-                <SelectItem value="apple">Apple</SelectItem>
-                <SelectItem value="banana">Banana</SelectItem>
-                <SelectItem value="blueberry">Blueberry</SelectItem>
-                <SelectItem value="grapes">Grapes</SelectItem>
-                <SelectItem value="pineapple">Pineapple</SelectItem>
-              </SelectGroup>
-            </SelectContent>
-          </Select>
         </div>
       </div>
     </div>

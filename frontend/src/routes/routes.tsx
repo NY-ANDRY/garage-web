@@ -7,6 +7,8 @@ import type { RouteObject } from "react-router-dom";
 import { Navigate } from "react-router-dom";
 import ProtectedRoute from "@/components/auth/ProtectedRoute";
 import AuthView from "@/pages/backoffice/auth/AuthView";
+import IndexClient from "@/pages/backoffice/client/Index";
+import IndexSync from "@/pages/backoffice/sync/Index";
 
 export const routes: RouteObject[] = [
   {
@@ -43,6 +45,14 @@ export const routes: RouteObject[] = [
           {
             path: "interventions",
             element: <Interventions />,
+          },
+          {
+            path: "clients",
+            element: <IndexClient />,
+          },
+          {
+            path: "sync",
+            element: <IndexSync />,
           },
         ],
       },
