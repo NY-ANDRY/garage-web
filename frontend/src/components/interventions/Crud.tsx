@@ -1,5 +1,42 @@
-const CrudInterventions = () => {
-  return <div>CrudInterventions Component</div>;
-};
+import {
+  ResizableHandle,
+  ResizablePanel,
+  ResizablePanelGroup,
+} from "@/components/ui/resizable"
 
-export default CrudInterventions;
+const CrudInterventions = () => {
+  return (
+    <ResizablePanelGroup
+      orientation="horizontal"
+      className="max-w-sm rounded-lg border"
+    >
+      <ResizablePanel defaultSize={50}>
+        <div className="flex h-50 items-center justify-center p-6">
+          <span className="font-semibold">One</span>
+        </div>
+      </ResizablePanel>
+
+      <ResizableHandle />
+
+      <ResizablePanel defaultSize={50}>
+        <ResizablePanelGroup orientation="vertical">
+          <ResizablePanel defaultSize={25}>
+            <div className="flex h-full items-center justify-center p-6">
+              <span className="font-semibold">Two</span>
+            </div>
+          </ResizablePanel>
+
+          <ResizableHandle  className="h-px w-full"/>
+
+          <ResizablePanel defaultSize={75}>
+            <div className="flex h-full items-center justify-center p-6">
+              <span className="font-semibold">Three</span>
+            </div>
+          </ResizablePanel>
+        </ResizablePanelGroup>
+      </ResizablePanel>
+    </ResizablePanelGroup>
+  )
+}
+
+export default CrudInterventions
