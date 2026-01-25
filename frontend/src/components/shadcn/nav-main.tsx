@@ -1,60 +1,55 @@
-import type { LucideProps } from "lucide-react"
-import { IconCirclePlusFilled, IconMail } from "@tabler/icons-react"
-
-import { Button } from "@/components/ui/button"
+import type { LucideProps } from "lucide-react";
 import {
   SidebarGroup,
   SidebarGroupContent,
   SidebarMenu,
   SidebarMenuButton,
   SidebarMenuItem,
-} from "@/components/ui/sidebar"
-import { Link } from "react-router-dom"
+} from "@/components/ui/sidebar";
+import { Link, useLocation } from "react-router-dom";
+import { cn } from "@/lib/utils";
 
-export function NavMain({
+const NavMain = ({
   items,
 }: {
   items: {
-    title: string
-    url: string
-    icon?: React.FC<LucideProps>
-  }[]
-}) {
+    title: string;
+    url: string;
+    icon?: React.FC<LucideProps>;
+  }[];
+}) => {
+  const location = useLocation();
+
   return (
     <SidebarGroup>
       <SidebarGroupContent className="flex flex-col gap-2">
         <SidebarMenu>
-          <SidebarMenuItem className="flex items-center gap-2">
-            <SidebarMenuButton
-              tooltip="Quick Create"
-              className="bg-primary text-primary-foreground hover:bg-primary/90 hover:text-primary-foreground active:bg-primary/90 active:text-primary-foreground min-w-8 duration-200 ease-linear"
-            >
-              <IconCirclePlusFilled />
-              <span>Quick Create</span>
-            </SidebarMenuButton>
-            <Button
-              size="icon"
-              className="size-8 group-data-[collapsible=icon]:opacity-0"
-              variant="outline"
-            >
-              <IconMail />
-              <span className="sr-only">Inbox</span>
-            </Button>
-          </SidebarMenuItem>
         </SidebarMenu>
         <SidebarMenu>
-          {items.map((item) => (
-            <Link to={item.url}>
-              <SidebarMenuItem key={item.title}>
-                <SidebarMenuButton tooltip={item.title} className="cursor-pointer">
-                  {item.icon && <item.icon />}
-                  <span>{item.title}</span>
-                </SidebarMenuButton>
-              </SidebarMenuItem>
-            </Link>
-          ))}
+          {items.map((item) => {
+            const isActive = location.pathname === item.url;
+            return (
+              <Link to={item.url} key={item.title}>
+                <SidebarMenuItem>
+                  <SidebarMenuButton
+                    tooltip={item.title}
+                    className={cn(
+                      "cursor-pointer",
+                      isActive &&
+                        "bg-primary text-primary-foreground hover:bg-primary/90 hover:text-primary-foreground active:bg-primary/90 active:text-primary-foreground"
+                    )}
+                  >
+                    {item.icon && <item.icon />}
+                    <span>{item.title}</span>
+                  </SidebarMenuButton>
+                </SidebarMenuItem>
+              </Link>
+            );
+          })}
         </SidebarMenu>
       </SidebarGroupContent>
     </SidebarGroup>
-  )
-}
+  );
+};
+
+export default NavMain;

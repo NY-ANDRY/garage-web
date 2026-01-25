@@ -37,7 +37,7 @@ const Chart = () => {
   const [chartData, setChartData] = useState<ChartDataItem[]>(initialChartData);
 
   return (
-    <div className="grid grid-cols-2 gap-4">
+    <div className="flex flex-col gap-4">
       <div className="flex flex-col gap-4">
         {/* Filtre au-dessus */}
         <div className="w-full">
@@ -45,7 +45,7 @@ const Chart = () => {
         </div>
 
         <div className="w-full">
-          <ChartContainer config={chartConfig} className="w-full">
+          <ChartContainer config={chartConfig} className="w-full h-160">
             <BarChart
               accessibilityLayer
               data={chartData}

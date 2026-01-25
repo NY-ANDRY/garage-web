@@ -1,5 +1,5 @@
 import DashboardLayout from "@/layouts/DashboardLayout";
-import StatIntervention from "@/pages/backoffice/interventions/Statistique";
+import IndexIntervention from "@/pages/backoffice/interventions/Index";
 import Interventions from "@/pages/backoffice/interventions/Crud";
 import Home from "@/pages/frontoffice/Home";
 import Landing from "@/pages/Landing";
@@ -38,7 +38,7 @@ export const routes: RouteObject[] = [
           },
           {
             path: "dashboard",
-            element: <StatIntervention />,
+            element: <IndexIntervention />,
           },
           {
             path: "interventions",
