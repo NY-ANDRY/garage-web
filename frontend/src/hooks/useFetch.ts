@@ -1,4 +1,5 @@
 import { useState, useEffect, useCallback } from "react";
+import { useNavigate } from "react-router-dom";
 
 interface FetchState<T> {
   data: T | null;
@@ -12,6 +13,8 @@ function useFetch<T>(url: string): FetchState<T> {
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const [error, setError] = useState<Error | null>(null);
   const [reload, setReload] = useState(0);
+
+  const navigate = useNavigate();
 
   const refetch = useCallback(() => {
     setReload((prev) => prev + 1);
@@ -36,6 +39,13 @@ function useFetch<T>(url: string): FetchState<T> {
           signal: abortController.signal,
           headers,
         });
+
+        if (response.status === 401) {
+          localStorage.removeItem("auth_token");
+          localStorage.removeItem("auth_user");
+          navigate("/backoffice/auth", { replace: true });
+          throw new Error(`unauthorize`);
+        }
 
         if (!response.ok) {
           throw new Error(`Erreur: ${response.statusText}`);

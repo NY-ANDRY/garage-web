@@ -10,13 +10,19 @@ import ListInterventionSkeleton from "@/components/interventions/ListInterventio
 import { AnimatePresence, motion } from "motion/react";
 import { fade } from "@/components/transitions/tansitions";
 import EmptyIntervention from "@/components/interventions/EmptyIntervention";
+import { useParams } from "react-router-dom";
+import { useUrlSegment } from "@/hooks/useUrlSegment";
 
 const Interventions = () => {
+  // 🔹 Récupérer le paramètre id depuis l'URL
+  const { id } = useParams<{ id: string }>();
+
   const { t } = useTranslation();
   const { setBreadcrumbs } = useHeader();
   const [selectedIntervention, setSelectedIntervention] =
     useState<Intervention | null>(null);
-  const [selectedId, setSelectedId] = useState<string>("");
+  const [selectedId, setSelectedId] = useState<string>(id ?? "");
+  const { replaceSegment } = useUrlSegment();
 
   const { data, isLoading, refetch } = useFetch<ApiResponse<Intervention[]>>(
     API_BASE_URL + `/interventions`,
@@ -29,7 +35,7 @@ const Interventions = () => {
         if (d.id == selectedId) {
           setSelectedIntervention(d);
         }
-      })
+      });
     }
   }, [data]);
 
@@ -42,12 +48,14 @@ const Interventions = () => {
 
   const handleSelect = (intervention: Intervention) => {
     setSelectedId(intervention.id);
+    setSelectedIntervention(intervention);
     setBreadcrumbs([
       { label: t("sidebar.dashboard"), href: "/backoffice/dashboard" },
       { label: t("sidebar.interventions") },
       { label: intervention.id },
     ]);
-    setSelectedIntervention(intervention);
+
+    replaceSegment(intervention.id, 2);
   };
 
   const reload = async () => {

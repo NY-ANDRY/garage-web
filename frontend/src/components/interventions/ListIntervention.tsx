@@ -53,14 +53,14 @@ const ListIntervention = ({
             <Badge variant="outline" className="flex items-center gap-1">
               <Clock1Icon size={12}></Clock1Icon>
               <div className="flex items-center justify-center">
-                {intervention.duree}
+                {Math.floor(intervention.duree)}
               </div>
             </Badge>
 
             <Badge variant="outline" className="flex items-center gap-1">
-              {t("interventions.currency")}
+              {t("currency")}
               <div className="flex items-center justify-center">
-                {intervention.prix}
+                {Math.floor(intervention.prix)}
               </div>
             </Badge>
           </div>

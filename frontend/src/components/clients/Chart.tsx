@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import ChartFilter from "./ChartFilter";
-import type { ClientChartData } from "@/types/Types";
+import type { ClientChartData, ApiResponse } from "@/types/Types";
 import { Area, AreaChart, CartesianGrid, XAxis } from "recharts";
 
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -17,7 +17,7 @@ import { API_BASE_URL } from "@/lib/constants";
 const Chart = () => {
   const { t, i18n } = useTranslation();
   const [chartData, setChartData] = useState<ClientChartData[]>([]);
-  const { data } = useFetch<ClientChartData[]>(API_BASE_URL + `/stats/users`);
+  const { data } = useFetch<ApiResponse<ClientChartData[]>>(API_BASE_URL + `/stats/clients/chart`);
 
   const chartConfig = {
     number: {
@@ -27,8 +27,8 @@ const Chart = () => {
   } satisfies ChartConfig;
 
   useEffect(() => {
-    if (data) {
-      setChartData(data);
+    if (data?.data) {
+      setChartData(data.data);
     }
   }, [data]);
 

@@ -10,9 +10,44 @@ use App\Http\Requests\Api\UpdateInterventionRequest;
 
 class InterventionController extends Controller
 {
-    public function stats()
-    {
 
+    public function table()
+    {
+        // Données correspondant au chart avec id
+        $interventions = [
+            ['id' => 1, 'nom' => 'Vidange', 'nombre' => 186, 'montant_total' => 80],
+            ['id' => 2, 'nom' => 'Refroidissement', 'nombre' => 305, 'montant_total' => 200],
+            ['id' => 3, 'nom' => 'Pneu', 'nombre' => 237, 'montant_total' => 120],
+            ['id' => 4, 'nom' => 'Filtre', 'nombre' => 73, 'montant_total' => 190],
+            ['id' => 5, 'nom' => 'Embrayage', 'nombre' => 209, 'montant_total' => 130],
+            ['id' => 6, 'nom' => 'Amortisseur', 'nombre' => 214, 'montant_total' => 140],
+            ['id' => 7, 'nom' => 'Batterie', 'nombre' => 250, 'montant_total' => 160],
+            ['id' => 8, 'nom' => 'Frein', 'nombre' => 230, 'montant_total' => 150],
+        ];
+
+        return response()->json([
+            'success' => true,
+            'data' => $interventions
+        ]);
+    }
+
+
+
+    public function max()
+    {
+        $stats = [
+            'total_cost' => 1250,
+            'total_number' => 225
+        ];
+
+        return response()->json([
+            'success' => true,
+            'data' => $stats
+        ]);
+    }
+
+    public function chart()
+    {
         $stats = [
             ['nom' => 'Vidange', 'nombre' => 186, 'prix' => 80],
             ['nom' => 'Refroidissement', 'nombre' => 305, 'prix' => 200],
@@ -24,7 +59,10 @@ class InterventionController extends Controller
             ['nom' => 'Frein', 'nombre' => 230, 'prix' => 150],
         ];
 
-        return response()->json($stats);
+        return response()->json([
+            'success' => true,
+            'data' => $stats
+        ]);
     }
 
     /**

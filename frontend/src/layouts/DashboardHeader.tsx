@@ -37,11 +37,7 @@ export function SiteHeader() {
 
               return (
                 <AnimatePresence key={item.label} mode="wait">
-                  <motion.div
-                     // clé stable
-                    {...fade}
-                    className="flex items-center gap-2.5"
-                  >
+                  <motion.div {...fade} className="flex items-center gap-2.5">
                     <BreadcrumbItem>
                       {item.href && !isLast ? (
                         <BreadcrumbLink asChild>

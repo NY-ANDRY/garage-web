@@ -2,7 +2,7 @@
 
 use App\Http\Controllers\Api\AuthController;
 use App\Http\Controllers\Api\InterventionController;
-use App\Http\Controllers\Api\UserController;
+use App\Http\Controllers\Api\ClientController;
 use Illuminate\Support\Facades\Route;
 
 // Public routes
@@ -21,6 +21,9 @@ Route::middleware('auth:sanctum')->group(function () {
     // DELETE	/interventions/{id}	destroy
     // Routes API pour les interventions
     Route::apiResource('interventions', InterventionController::class);
-    Route::get('/stats/interventions', [InterventionController::class, 'stats']);
-    Route::get('/stats/users', [UserController::class, 'stats']);
+    Route::get('/stats/interventions/chart', [InterventionController::class, 'chart']);
+    Route::get('/stats/interventions/max', [InterventionController::class, 'max']);
+    Route::get('/stats/interventions/table', [InterventionController::class, 'table']);
+    Route::get('/stats/clients/chart', [ClientController::class, 'stats']);
+    Route::get('/stats/clients/max', [ClientController::class, 'max']);
 });

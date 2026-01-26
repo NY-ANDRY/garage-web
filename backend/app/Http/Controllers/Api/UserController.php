@@ -7,21 +7,6 @@ use Illuminate\Http\Request;
 
 class UserController extends Controller
 {
-    public function stats()
-    {
-        $data = [];
-
-        for ($day = 1; $day <= 30; $day++) {
-            $date = sprintf("2024-04-%02d", $day); // formate le jour avec 2 chiffres
-
-            $data[] = [
-                'date' => $date,
-                'number' => rand(50, 499), // équivalent à Math.floor(Math.random() * 450) + 50
-            ];
-        }
-
-        return response()->json($data);
-    }
 
     /**
      * Display a listing of the resource.

@@ -10,7 +10,7 @@ import {
 } from "@/components/ui/chart";
 import { Bar, BarChart, CartesianGrid, XAxis } from "recharts";
 import ChartFilter from "./ChartFilter";
-import type { InterventionChartData } from "@/types/Types";
+import type { InterventionChartData, ApiResponse } from "@/types/Types";
 import useFetch from "@/hooks/useFetch";
 import { API_BASE_URL } from "@/lib/constants";
 
@@ -18,8 +18,8 @@ import { API_BASE_URL } from "@/lib/constants";
 const Chart = () => {
   const { t } = useTranslation();
   const [chartData, setChartData] = useState<InterventionChartData[]>([]);
-  const { data } = useFetch<InterventionChartData[]>(
-    API_BASE_URL + `/stats/interventions`,
+  const { data } = useFetch<ApiResponse<InterventionChartData[]>>(
+    API_BASE_URL + `/stats/interventions/chart`,
   );
 
   const chartConfig = {
@@ -34,8 +34,8 @@ const Chart = () => {
   } satisfies ChartConfig;
 
   useEffect(() => {
-    if (data) {
-      setChartData(data);
+    if (data?.data) {
+      setChartData(data?.data);
     }
   }, [data]);
 
