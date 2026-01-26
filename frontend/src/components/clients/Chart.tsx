@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import ChartFilter from "./ChartFilter";
 import type { ClientChartData } from "@/types/Types";
 import { Area, AreaChart, CartesianGrid, XAxis } from "recharts";
@@ -11,28 +11,13 @@ import {
   ChartTooltipContent,
   type ChartConfig,
 } from "@/components/ui/chart";
-
-const generateApril2024Data = (): ClientChartData[] => {
-  const data: ClientChartData[] = [];
-
-  for (let day = 1; day <= 30; day++) {
-    const date = `2024-04-${String(day).padStart(2, "0")}`;
-
-    data.push({
-      date,
-      number: Math.floor(Math.random() * 450) + 50,
-    });
-  }
-
-  return data;
-};
-
-const initialChartData = generateApril2024Data();
+import useFetch from "@/hooks/useFetch";
+import { API_BASE_URL } from "@/lib/constants";
 
 const Chart = () => {
   const { t, i18n } = useTranslation();
-  const [chartData, setChartData] =
-    useState<ClientChartData[]>(initialChartData);
+  const [chartData, setChartData] = useState<ClientChartData[]>([]);
+  const { data } = useFetch<ClientChartData[]>(API_BASE_URL + `/stats/users`);
 
   const chartConfig = {
     number: {
@@ -40,6 +25,12 @@ const Chart = () => {
       color: "var(--primary)",
     },
   } satisfies ChartConfig;
+
+  useEffect(() => {
+    if (data) {
+      setChartData(data);
+    }
+  }, [data]);
 
   return (
     <div className="flex flex-1 flex-col gap-4">
@@ -92,10 +83,13 @@ const Chart = () => {
                   content={
                     <ChartTooltipContent
                       labelFormatter={(value) => {
-                        return new Date(value).toLocaleDateString(i18n.language, {
-                          month: "short",
-                          day: "numeric",
-                        });
+                        return new Date(value).toLocaleDateString(
+                          i18n.language,
+                          {
+                            month: "short",
+                            day: "numeric",
+                          },
+                        );
                       }}
                       indicator="dot"
                     />

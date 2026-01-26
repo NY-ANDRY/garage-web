@@ -39,7 +39,7 @@ const Interventions = () => {
   };
 
   return (
-    <div className="min-h-full flex flex-col md:flex-row py-4 px-2 md:gap-6 md:py-6 md:px-4 max-w-full overflow-hidden">
+    <div className="min-h-full flex flex-col md:flex-row py-4 px-2 gap-6 md:py-6 md:px-4 max-w-full overflow-hidden">
       <AnimatePresence mode="wait">
         {isLoading ? (
           <motion.div

@@ -10,6 +10,23 @@ use App\Http\Requests\Api\UpdateInterventionRequest;
 
 class InterventionController extends Controller
 {
+    public function stats()
+    {
+
+        $stats = [
+            ['nom' => 'Vidange', 'nombre' => 186, 'prix' => 80],
+            ['nom' => 'Refroidissement', 'nombre' => 305, 'prix' => 200],
+            ['nom' => 'Pneu', 'nombre' => 237, 'prix' => 120],
+            ['nom' => 'Filtre', 'nombre' => 73, 'prix' => 190],
+            ['nom' => 'Embrayage', 'nombre' => 209, 'prix' => 130],
+            ['nom' => 'Amortisseur', 'nombre' => 214, 'prix' => 140],
+            ['nom' => 'Batterie', 'nombre' => 250, 'prix' => 160],
+            ['nom' => 'Frein', 'nombre' => 230, 'prix' => 150],
+        ];
+
+        return response()->json($stats);
+    }
+
     /**
      * Display a listing of the resource.
      */

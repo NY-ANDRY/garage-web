@@ -7,7 +7,7 @@ import {
 } from "firebase/firestore";
 import { firestore } from "../config/firebaseConfig";
 
-export function useFirestoreData<T extends DocumentData>(
+export function useFirestoreCollection<T extends DocumentData>(
   collectionName: string
 ) {
   const [data, setData] = useState<(T & { id: string })[]>([]);
