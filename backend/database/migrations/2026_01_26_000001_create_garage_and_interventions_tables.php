@@ -37,7 +37,17 @@ return new class extends Migration
             $table->foreign('uid_client')->references('uid')->on('clients')->onDelete('cascade');
         });
 
-        // 3. Table Réparations
+        // 3. Table Interventions (Must be before reparation_interventions)
+        Schema::create('interventions', function (Blueprint $table) {
+            $table->id();
+            $table->string('nom');
+            $table->decimal('prix', 10, 2);
+            $table->decimal('duree'); // durée en minutes
+            $table->string('image')->nullable();
+            $table->timestamps();
+        });
+
+        // 4. Table Réparations
         Schema::create('reparations', function (Blueprint $table) {
             $table->string('id')->primary();
             $table->string('uid_client');
@@ -49,7 +59,7 @@ return new class extends Migration
             $table->foreign('id_voiture')->references('id')->on('voiture')->onDelete('cascade');
         });
 
-        // 4. Table Statut (Note: Structure identique à réparations selon demande)
+        // 5. Table Statut
         Schema::create('statut', function (Blueprint $table) {
             $table->string('id')->primary();
             $table->string('uid_client');
@@ -61,9 +71,9 @@ return new class extends Migration
             $table->foreign('id_voiture')->references('id')->on('voiture')->onDelete('cascade');
         });
 
-        // 5. Table Réparations_Statut (Lien entre réparations et statuts)
+        // 6. Table Réparations_Statut
         Schema::create('reparations_statut', function (Blueprint $table) {
-            $table->id(); // integer PK as requested "iny PK"
+            $table->id();
             $table->string('id_reparation');
             $table->string('id_statut');
             $table->timestamp('date')->useCurrent();
@@ -73,20 +83,20 @@ return new class extends Migration
             $table->foreign('id_statut')->references('id')->on('statut')->onDelete('cascade');
         });
 
-        // 6. Table Réparation_Interventions
+        // 7. Table Réparation_Interventions
         Schema::create('reparation_interventions', function (Blueprint $table) {
             $table->id();
-            $table->string('id_intervention');
+            $table->unsignedBigInteger('id_intervention');
             $table->string('id_reparation');
             $table->decimal('duree', 8, 2);
             $table->timestamp('date')->useCurrent();
             $table->timestamps();
 
             $table->foreign('id_reparation')->references('id')->on('reparations')->onDelete('cascade');
-            // Note: id_intervention is a string reference, potentially to another table or external ID
+            $table->foreign('id_intervention')->references('id')->on('interventions')->onDelete('cascade');
         });
 
-        // 7. Table Paiement
+        // 8. Table Paiement
         Schema::create('paiement', function (Blueprint $table) {
             $table->string('id')->primary();
             $table->string('id_reparation');
@@ -108,6 +118,7 @@ return new class extends Migration
         Schema::dropIfExists('reparations_statut');
         Schema::dropIfExists('statut');
         Schema::dropIfExists('reparations');
+        Schema::dropIfExists('interventions');
         Schema::dropIfExists('voiture');
         Schema::dropIfExists('clients');
     }
