@@ -15,4 +15,11 @@ class Intervention extends Model
         'duree',
         'image',
     ];
+
+    public function reparations()
+    {
+        return $this->belongsToMany(Reparation::class, 'reparation_interventions', 'id_intervention', 'id_reparation')
+                    ->withPivot('duree', 'date')
+                    ->withTimestamps();
+    }
 }
