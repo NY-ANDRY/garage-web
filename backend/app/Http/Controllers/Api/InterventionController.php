@@ -44,22 +44,11 @@ class InterventionController extends Controller
 
     public function max()
     {
-        $totalCost = 0;
-        $totalNumber = 0;
-
-        $interventions = Intervention::all();
-        foreach ($interventions as $intervention) {
-            $stats = $intervention->getTableStat();
-            $totalCost += $stats['total_cost'];
-            $totalNumber += $stats['total_number'];
-        }
+        $stats = Intervention::getGlobalStats();
 
         return response()->json([
             'success' => true,
-            'data' => [
-                'total_cost' => $totalCost,
-                'total_number' => $totalNumber
-            ]
+            'data' => $stats
         ]);
     }
 

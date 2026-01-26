@@ -66,4 +66,22 @@ class Intervention extends Model
         }
         return $data;
     }
+
+    public static function getGlobalStats()
+    {
+        $totalCost = 0;
+        $totalNumber = 0;
+
+        $interventions = self::all();
+        foreach ($interventions as $intervention) {
+            $stats = $intervention->getTableStat();
+            $totalCost += $stats['total_cost'];
+            $totalNumber += $stats['total_number'];
+        }
+
+        return [
+            'total_cost' => $totalCost,
+            'total_number' => $totalNumber,
+        ];
+    }
 }

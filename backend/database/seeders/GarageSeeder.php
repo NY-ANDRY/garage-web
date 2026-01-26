@@ -11,6 +11,8 @@ use App\Models\Paiement;
 use App\Models\Statut;
 use Illuminate\Support\Str;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Schema;
 
 class GarageSeeder extends Seeder
 {
@@ -19,119 +21,96 @@ class GarageSeeder extends Seeder
      */
     public function run(): void
     {
-        // 1. Create Clients
-        $client1 = Client::updateOrCreate(
-            ['uid' => 'user_123'],
-            [
-                'email' => 'client1@example.com',
-                'displayName' => 'John Doe',
-                'photoURL' => 'https://i.pravatar.cc/150?u=user_123'
-            ]
-        );
+        // Désactiver les contraintes de clés étrangères pour le nettoyage
+        Schema::disableForeignKeyConstraints();
 
-        $client2 = Client::updateOrCreate(
-            ['uid' => 'user_456'],
-            [
-                'email' => 'client2@example.com',
-                'displayName' => 'Jane Smith',
-                'photoURL' => 'https://i.pravatar.cc/150?u=user_456'
-            ]
-        );
+        // Nettoyer les tables dans le bon ordre (ou toutes si FK désactivées)
+        DB::table('paiement')->truncate();
+        DB::table('reparation_interventions')->truncate();
+        DB::table('reparations_statut')->truncate();
+        DB::table('statut')->truncate();
+        DB::table('reparations')->truncate();
+        DB::table('voiture')->truncate();
+        DB::table('clients')->truncate();
 
-        // 2. Create Voitures
-        $car1 = Voiture::updateOrCreate(
-            ['id' => 'car_001'],
-            [
-                'uid_client' => $client1->uid,
-                'numero' => '1234 TAB',
-                'nom' => 'Toyota Hilux',
-                'description' => 'Black 4x4 pickup',
-                'marque' => 'Toyota',
-                'année' => Carbon::create(2020, 1, 1)
-            ]
-        );
+        Schema::enableForeignKeyConstraints();
 
-        $car2 = Voiture::updateOrCreate(
-            ['id' => 'car_002'],
-            [
-                'uid_client' => $client2->uid,
-                'numero' => '5678 TBC',
-                'nom' => 'Peugeot 308',
-                'description' => 'White hatchback',
-                'marque' => 'Peugeot',
-                'année' => Carbon::create(2018, 5, 20)
-            ]
-        );
-
-        // 3. Create Interventions (Assumes InterventionSeeder has run)
-        $vidange = Intervention::where('nom', 'Vidange')->first();
-        $frein = Intervention::where('nom', 'Frein')->first();
-        $batterie = Intervention::where('nom', 'Batterie')->first();
-
-        // 4. Create Reparations
-        $rep1 = Reparation::updateOrCreate(
-            ['id' => 'rep_001'],
-            [
-                'uid_client' => $client1->uid,
-                'id_voiture' => $car1->id,
-                'date' => Carbon::now()->subDays(5)
-            ]
-        );
-
-        $rep2 = Reparation::updateOrCreate(
-            ['id' => 'rep_002'],
-            [
-                'uid_client' => $client2->uid,
-                'id_voiture' => $car2->id,
-                'date' => Carbon::now()->subDays(2)
-            ]
-        );
-
-        // 5. Link Reparations to Interventions (Pivot)
-        if ($vidange && $frein) {
-            $rep1->interventions()->syncWithoutDetaching([
-                $vidange->id => ['prix' => $vidange->prix, 'duree' => $vidange->duree, 'date' => $rep1->date],
-                $frein->id => ['prix' => $frein->prix, 'duree' => $frein->duree, 'date' => $rep1->date]
+        // 1. Créer quelques clients de base
+        $clients = [];
+        for ($i = 1; $i <= 5; $i++) {
+            $clients[] = Client::create([
+                'uid' => "user_seed_$i",
+                'email' => "client$i@demo.com",
+                'displayName' => "Client Démo $i",
+                'photoURL' => "https://i.pravatar.cc/150?u=user_seed_$i"
             ]);
         }
 
-        if ($batterie) {
-            $rep2->interventions()->syncWithoutDetaching([
-                $batterie->id => ['prix' => $batterie->prix, 'duree' => $batterie->duree, 'date' => $rep2->date]
+        // 2. Créer des voitures pour ces clients
+        $cars = [];
+        foreach ($clients as $index => $client) {
+            $cars[] = Voiture::create([
+                'id' => "car_seed_" . ($index + 1),
+                'uid_client' => $client->uid,
+                'numero' => rand(1000, 9999) . " " . chr(rand(65, 90)) . chr(rand(65, 90)),
+                'nom' => "Voiture Modèle " . ($index + 1),
+                'marque' => "Marque " . ($index + 1),
+                'année' => Carbon::now()->subYears(rand(1, 15))
             ]);
         }
 
-        // 6. Create Statuts
-        $statutEnCours = Statut::updateOrCreate(
-            ['id' => 'statut_001'],
-            [
-                'uid_client' => $client1->uid,
-                'id_voiture' => $car1->id,
-                'date' => Carbon::now()->subDays(5)
-            ]
-        );
+        // 3. Récupérer toutes les interventions disponibles
+        $interventionsList = Intervention::all();
 
-        $statutTermine = Statut::updateOrCreate(
-            ['id' => 'statut_002'],
-            [
-                'uid_client' => $client2->uid,
-                'id_voiture' => $car2->id,
-                'date' => Carbon::now()->subDays(1)
-            ]
-        );
+        if ($interventionsList->isEmpty()) {
+            $this->command->warn("Aucune intervention trouvée ! Assurez-vous d'avoir lancé InterventionSeeder d'abord.");
+            return;
+        }
 
-        // Link statuses to reparations
-        $rep1->statuts()->syncWithoutDetaching([$statutEnCours->id => ['date' => $rep1->date]]);
-        $rep2->statuts()->syncWithoutDetaching([$statutTermine->id => ['date' => $rep2->date]]);
+        // 4. Pour CHAQUE intervention, créer entre 1 et 3 données
+        // avec un montant total entre 25 et 50 pour cette catégorie d'intervention
+        foreach ($interventionsList as $intervention) {
+            $numReparations = rand(1, 3);
+            $totalTarget = rand(25, 50);
+            
+            // On divise le montant total par le nombre de réparations
+            $unitPrice = round($totalTarget / $numReparations, 2);
 
-        // 7. Create Paiements
-        Paiement::updateOrCreate(
-            ['id' => 'pay_001'],
-            [
-                'id_reparation' => $rep1->id,
-                'montant' => ($vidange ? $vidange->prix : 0) + ($frein ? $frein->prix : 0),
-                'date' => Carbon::now()->subDays(4)
-            ]
-        );
+            for ($j = 0; $j < $numReparations; $j++) {
+                $randomCar = $cars[array_rand($cars)];
+                
+                $reparation = Reparation::create([
+                    'id' => "rep_" . Str::random(10),
+                    'uid_client' => $randomCar->uid_client,
+                    'id_voiture' => $randomCar->id,
+                    'date' => Carbon::now()->subDays(rand(0, 60))
+                ]);
+
+                // Ajouter l'intervention via la table pivot avec le prix distribué
+                $reparation->interventions()->attach($intervention->id, [
+                    'prix' => $unitPrice,
+                    'duree' => $intervention->duree,
+                    'date' => $reparation->date
+                ]);
+
+                // Créer un paiement correspondant
+                Paiement::create([
+                    'id' => "pay_" . Str::random(10),
+                    'id_reparation' => $reparation->id,
+                    'montant' => $unitPrice,
+                    'date' => $reparation->date
+                ]);
+                
+                // Optionnellement créer un statut
+                $statut = Statut::create([
+                    'id' => "statut_" . Str::random(10),
+                    'uid_client' => $randomCar->uid_client,
+                    'id_voiture' => $randomCar->id,
+                    'date' => $reparation->date
+                ]);
+                
+                $reparation->statuts()->attach($statut->id, ['date' => $reparation->date]);
+            }
+        }
     }
 }
