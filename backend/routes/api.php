@@ -23,7 +23,7 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::apiResource('interventions', InterventionController::class);
     Route::get('/stats/interventions/chart', [InterventionController::class, 'chart']);
     Route::get('/stats/interventions/max', [InterventionController::class, 'max']);
-    Route::get('/stats/interventions/table', [InterventionController::class, 'table']);
+    Route::get('/stats/interventions/table', [InterventionController::class, 'getTableData']);
     Route::get('/stats/clients/chart', [ClientController::class, 'stats']);
     Route::get('/stats/clients/max', [ClientController::class, 'max']);
 });

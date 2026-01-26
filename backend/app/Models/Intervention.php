@@ -49,4 +49,21 @@ class Intervention extends Model
         }
         return $chartData;
     }
+
+    public static function getTableData()
+    {
+        $interventions = self::all();
+        $data = [];
+        foreach ($interventions as $intervention) {
+            $stats = $intervention->getTableStat();
+
+            $data[] = [
+                'id' => $intervention->id,
+                'nom' => $intervention->nom,
+                'nombre' => $stats['total_number'],
+                'montant_total' => $stats['total_cost'],
+            ];
+        }
+        return $data;
+    }
 }
