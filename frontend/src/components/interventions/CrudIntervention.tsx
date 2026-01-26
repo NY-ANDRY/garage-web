@@ -1,20 +1,18 @@
 import type { Intervention } from "@/types/Types";
-import {
-  Field,
-  FieldDescription,
-  FieldGroup,
-  FieldLabel,
-  FieldLegend,
-  FieldSet,
-} from "@/components/ui/field";
-import { Input } from "@/components/ui/input";
 import { useEffect, useState } from "react";
+import CrudLocalIntervention from "./CrudLocalIntervention";
+import CrudFirebaseIntervention from "./CrudFirebaseIntervention";
+import { Separator } from "@/components/ui/separator";
 
 type CrudInterventionsProps = {
   intervention: Intervention;
+  reload?: () => void;
 };
 
-const CrudInterventions = ({ intervention }: CrudInterventionsProps) => {
+const CrudInterventions = ({
+  intervention,
+  reload,
+}: CrudInterventionsProps) => {
   const [interventionForm, setInteventionForm] =
     useState<Intervention | null>();
   useEffect(() => {
@@ -24,44 +22,20 @@ const CrudInterventions = ({ intervention }: CrudInterventionsProps) => {
   }, [intervention]);
 
   return (
-    <div className="flex w-full h-full border rounded-lg border-dashed border-(--border) px-8 py-6">
-      <FieldSet className="w-full max-w-sm">
-        <FieldLegend>Intervention Local</FieldLegend>
-        <FieldDescription>
-          Intervention information from local database
-        </FieldDescription>
-        <FieldGroup className="gap-4">
-          <Field className="gap-1">
-            <FieldLabel htmlFor="street">Name</FieldLabel>
-            <Input
-              value={interventionForm?.nom}
-              id="street"
-              type="text"
-              placeholder="123 Main St"
-            />
-          </Field>
-          <div className="grid grid-cols-2 gap-4">
-            <Field className="gap-1">
-              <FieldLabel htmlFor="city">Prix</FieldLabel>
-              <Input
-                value={interventionForm?.prix}
-                id="city"
-                type="text"
-                placeholder="New York"
-              />
-            </Field>
-            <Field className="gap-1">
-              <FieldLabel htmlFor="zip">Duree</FieldLabel>
-              <Input
-                value={interventionForm?.duree}
-                id="zip"
-                type="text"
-                placeholder="90502"
-              />
-            </Field>
-          </div>
-        </FieldGroup>
-      </FieldSet>
+    <div className="flex flex-col w-full h-full border rounded-lg border-dashed border-(--border) px-8 py-6">
+      <div className="flex flex-col md:flex-row justify-between gap-8 md:gap-4">
+        <div className="flex-1 flex justify-center">
+          <CrudLocalIntervention reload={reload} intervention={intervention} />
+        </div>
+        <Separator orientation="vertical" className="hidden md:flex" />
+        <Separator orientation="horizontal" className="md:hidden flex h-px" />
+        <div className="flex-1 flex justify-center">
+          <CrudFirebaseIntervention
+            reload={reload}
+            intervention={intervention}
+          />
+        </div>
+      </div>
     </div>
   );
 };

@@ -23,7 +23,7 @@ export function useFirestoreMutation<T extends DocumentData>(
         payload?: T,
         options?: {
             type?: MutationType;
-            id?: string;
+            id?: string | number; // autoriser number ici
         }
     ): Promise<void> => {
         setLoading(true);
@@ -32,10 +32,13 @@ export function useFirestoreMutation<T extends DocumentData>(
         try {
             const type = options?.type ?? "update";
 
+            // Convertir l'ID en string pour Firestore
+            const docId = options?.id !== undefined ? String(options.id) : undefined;
+
             // SET (create or replace)
             if (type === "set" && payload) {
-                if (options?.id) {
-                    const docRef = doc(firestore, collectionName, options.id);
+                if (docId) {
+                    const docRef = doc(firestore, collectionName, docId);
                     await setDoc(docRef, payload);
                 } else {
                     const colRef = collection(firestore, collectionName);
@@ -45,11 +48,11 @@ export function useFirestoreMutation<T extends DocumentData>(
             }
 
             // UPDATE / DELETE nécessitent un ID
-            if (!options?.id) {
+            if (!docId) {
                 throw new Error("ID requis pour update ou delete");
             }
 
-            const docRef = doc(firestore, collectionName, options.id);
+            const docRef = doc(firestore, collectionName, docId);
 
             if (type === "update" && payload) {
                 await updateDoc(docRef, payload);

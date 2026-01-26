@@ -26,7 +26,7 @@ class UpdateInterventionRequest extends FormRequest
             'nom' => 'sometimes|required|string|max:255',
             'prix' => 'sometimes|required|numeric',
             'duree' => 'sometimes|required|integer',
-            'image' => 'nullable|image|max:2048', // image optionnelle, max 2MB
+            'image' => 'sometimes|string|max:255',
         ];
     }
 }

@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useTranslation } from "react-i18next";
 import {
   ChartContainer,
@@ -11,21 +11,16 @@ import {
 import { Bar, BarChart, CartesianGrid, XAxis } from "recharts";
 import ChartFilter from "./ChartFilter";
 import type { InterventionChartData } from "@/types/Types";
+import useFetch from "@/hooks/useFetch";
+import { API_BASE_URL } from "@/lib/constants";
 
-const initialChartData: InterventionChartData[] = [
-  { nom: "Vidange", nombre: 186, prix: 80 },
-  { nom: "Refroidissement", nombre: 305, prix: 200 },
-  { nom: "Pneu", nombre: 237, prix: 120 },
-  { nom: "Filtre", nombre: 73, prix: 190 },
-  { nom: "Embrayage", nombre: 209, prix: 130 },
-  { nom: "Amortisseur", nombre: 214, prix: 140 },
-  { nom: "Batterie", nombre: 250, prix: 160 },
-  { nom: "Frein", nombre: 230, prix: 150 },
-];
-
+// /stats/interventions
 const Chart = () => {
   const { t } = useTranslation();
-  const [chartData, setChartData] = useState<InterventionChartData[]>(initialChartData);
+  const [chartData, setChartData] = useState<InterventionChartData[]>([]);
+  const { data } = useFetch<InterventionChartData[]>(
+    API_BASE_URL + `/stats/interventions`,
+  );
 
   const chartConfig = {
     nombre: {
@@ -37,6 +32,12 @@ const Chart = () => {
       color: "#aaaaaa",
     },
   } satisfies ChartConfig;
+
+  useEffect(() => {
+    if (data) {
+      setChartData(data);
+    }
+  }, [data]);
 
   return (
     <div className="flex flex-col gap-4">

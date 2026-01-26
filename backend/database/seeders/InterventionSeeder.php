@@ -35,32 +35,32 @@ class InterventionSeeder extends Seeder
             ],
             [
                 'nom' => 'Filtre',
-                'prix' => 80.00,
-                'duree' => 1.5,
+                'prix' => 40.00,
+                'duree' => 3,
                 'image' => 'https://i.postimg.cc/Hnqb24rt/filtre.png'
             ],
             [
                 'nom' => 'Embrayage',
-                'prix' => 80.00,
-                'duree' => 1.5,
+                'prix' => 30.00,
+                'duree' => 6,
                 'image' => 'https://i.postimg.cc/250vJfqn/embrayage.png'
             ],
             [
                 'nom' => 'Amortisseur',
-                'prix' => 80.00,
-                'duree' => 1.5,
+                'prix' => 45.00,
+                'duree' => 4.8,
                 'image' => 'https://i.postimg.cc/Z0zy3bQX/amortisseur.png'
             ],
             [
                 'nom' => 'Batterie',
-                'prix' => 80.00,
-                'duree' => 1.5,
+                'prix' => 70.00,
+                'duree' => 8,
                 'image' => 'https://i.postimg.cc/tRww1sqX/batterie.png'
             ],
             [
                 'nom' => 'Frein',
-                'prix' => 80.00,
-                'duree' => 1.5,
+                'prix' => 90.00,
+                'duree' => 9,
                 'image' => 'https://i.postimg.cc/8Cp08WHR/frein.png'
             ],
         ];
