@@ -11,11 +11,13 @@ class ReparationIntervention extends Pivot
     protected $fillable = [
         'id_intervention',
         'id_reparation',
+        'prix',
         'duree',
         'date',
     ];
 
     protected $casts = [
         'date' => 'datetime',
+        'prix' => 'decimal:2',
     ];
 }

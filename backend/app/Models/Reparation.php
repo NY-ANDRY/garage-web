@@ -38,7 +38,7 @@ class Reparation extends Model
     public function interventions()
     {
         return $this->belongsToMany(Intervention::class, 'reparation_interventions', 'id_reparation', 'id_intervention')
-                    ->withPivot('duree', 'date')
+                    ->withPivot('prix', 'duree', 'date')
                     ->withTimestamps();
     }
 

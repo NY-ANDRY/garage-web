@@ -88,6 +88,7 @@ return new class extends Migration
             $table->id();
             $table->unsignedBigInteger('id_intervention');
             $table->string('id_reparation');
+            $table->decimal('prix', 10, 2);
             $table->decimal('duree', 8, 2);
             $table->timestamp('date')->useCurrent();
             $table->timestamps();
