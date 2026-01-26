@@ -26,11 +26,11 @@ function useFetch<T>(url: string): FetchState<T> {
           headers['Authorization'] = `Bearer ${token}`;
         }
 
-        const response = await fetch(url, { 
+        const response = await fetch(url, {
           signal: abortController.signal,
           headers
         });
-        
+
         if (!response.ok) {
           throw new Error(`Erreur: ${response.statusText}`);
         }
@@ -38,12 +38,12 @@ function useFetch<T>(url: string): FetchState<T> {
         const result = await response.json();
         setData(result);
         setError(null);
+        setIsLoading(false);
       } catch (err) {
         if ((err as Error).name !== 'AbortError') {
           setError(err as Error);
         }
-      } finally {
-        setIsLoading(false);
+        // setIsLoading(false);
       }
     };
 

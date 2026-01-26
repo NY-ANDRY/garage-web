@@ -122,6 +122,7 @@
     "total_revenue": "Revenu Total",
     "total_number": "Nombre Total",
     "number": "Nombre",
-    "cost": "Coût"
+    "cost": "Coût",
+    "currency": "$"
   }
 }

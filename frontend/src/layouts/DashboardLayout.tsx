@@ -6,7 +6,7 @@ import {
 } from "@/components/ui/sidebar"
 import { useLocation, useOutlet } from "react-router-dom"
 import { AnimatePresence, motion } from "motion/react"
-import { mainPageTransitionProps } from "@/components/transitions/tansition-pages"
+import { fade } from "@/components/transitions/tansitions"
 
 export default function DashboardLayout() {
   const location = useLocation()
@@ -30,7 +30,7 @@ export default function DashboardLayout() {
               {outlet && (
                 <motion.div
                   key={location.pathname}
-                  {...mainPageTransitionProps}
+                  {...fade}
                   className="flex-1 flex flex-col"
                 >
                   {outlet}

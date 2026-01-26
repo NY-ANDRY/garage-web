@@ -13,6 +13,13 @@ export type ClientChartData = {
   number: number;
 };
 
+// api
+
+export type ApiResponse<T> = {
+  success: boolean;
+  data: T;
+};
+
 // firestore types
 
 export type User = {
@@ -50,7 +57,7 @@ export type Intervention = {
     prix: number;
     duree: number;
     image: string;
-    statut: number;
+    statut?: number;
 };
 
 export type Statut_histo = {
