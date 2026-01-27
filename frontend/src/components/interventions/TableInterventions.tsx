@@ -71,7 +71,12 @@ const TableIntervention = () => {
           <TableRow>
             <TableCell>Total</TableCell>
             <TableCell>{totalNombre}</TableCell>
-            <TableCell className="text-right">{totalPrix}</TableCell>
+            <TableCell>
+              <div className="flex items-center gap-0.5">
+                <span>{t("currency")}</span>
+                <span>{totalPrix}</span>
+              </div>
+            </TableCell>
             <TableCell className="text-right"></TableCell>
           </TableRow>
         </TableFooter>
