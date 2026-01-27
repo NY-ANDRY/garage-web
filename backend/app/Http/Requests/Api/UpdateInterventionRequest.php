@@ -25,7 +25,7 @@ class UpdateInterventionRequest extends FormRequest
         return [
             'nom' => 'sometimes|required|string|max:255',
             'prix' => 'sometimes|required|numeric',
-            'duree' => 'sometimes|required|integer',
+            'duree' => 'sometimes|required|numeric',
             'image' => 'sometimes|string|max:255',
         ];
     }

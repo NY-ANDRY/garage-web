@@ -3,21 +3,39 @@ import { Timestamp } from "firebase/firestore";
 // chart types
 
 export type InterventionChartData = {
-  nom: string;
-  nombre: number;
-  prix: number;
+    nom: string;
+    nombre: number;
+    prix: number;
 };
 
 export type ClientChartData = {
-  date: string;
-  number: number;
+    date: string;
+    number: number;
+};
+
+// stats
+
+export type InterventionMaxStats = {
+    total_cost: number;
+    total_number: number;
+};
+
+export type UserMaxStats = {
+    total_number: number;
+};
+
+export type TableStatItem = {
+    id: string;
+    nom: string;
+    nombre: number;
+    montant_total: number;
 };
 
 // api
 
 export type ApiResponse<T> = {
-  success: boolean;
-  data: T;
+    success: boolean;
+    data: T;
 };
 
 // firestore types

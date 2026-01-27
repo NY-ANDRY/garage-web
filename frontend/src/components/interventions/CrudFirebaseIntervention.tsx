@@ -46,28 +46,19 @@ const CrudLocalIntervention = ({
     "PATCH",
   );
 
-  const [interventionForm, setInteventionForm] =
-    useState<Intervention | null>();
-
-  useEffect(() => {
-    if (intervention) {
-      setInteventionForm(intervention);
-    }
-  }, [intervention]);
-
   const handleDelete = () => {
-    if (!interventionForm?.id) {
+    if (!intervention?.id) {
       console.error("ID manquant pour etre effacer");
       return;
     }
 
     toast.promise(
       async () => {
-        await mutateFirebase(interventionForm, {
+        await mutateFirebase(intervention, {
           type: "delete",
-          id: interventionForm.id,
+          id: intervention.id,
         });
-        return interventionForm;
+        return intervention;
       },
       {
         loading: "Delete en cours...",
@@ -83,7 +74,6 @@ const CrudLocalIntervention = ({
       console.error("ID manquant pour la mise à jour");
       return;
     }
-    console.log(dataFire);
 
     dataFire.prix = Number(dataFire.prix);
     dataFire.duree = Number(dataFire.duree);
@@ -151,7 +141,6 @@ const CrudLocalIntervention = ({
         <Field className="gap-1">
           <FieldLabel htmlFor="street">Nom</FieldLabel>
           <Input
-            disabled
             readOnly
             value={dataFire?.nom ?? ""}
             id="street"
@@ -163,7 +152,6 @@ const CrudLocalIntervention = ({
           <Field className="gap-1">
             <FieldLabel htmlFor="city">Prix</FieldLabel>
             <Input
-              disabled
               readOnly
               value={dataFire?.prix ?? ""}
               id="city"
@@ -174,7 +162,6 @@ const CrudLocalIntervention = ({
           <Field className="gap-1">
             <FieldLabel htmlFor="zip">Duree</FieldLabel>
             <Input
-              disabled
               readOnly
               value={dataFire?.duree ?? ""}
               id="zip"

@@ -51,6 +51,10 @@ export const routes: RouteObject[] = [
             element: <Interventions />,
           },
           {
+            path: "interventions/:id",
+            element: <Interventions />,
+          },
+          {
             path: "clients",
             element: <IndexClient />,
           },
