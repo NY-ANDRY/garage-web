@@ -10,16 +10,16 @@ import {
 } from "@/components/ui/popover";
 import { format } from "date-fns";
 import { ChevronDownIcon } from "lucide-react";
-import type { ClientChartData } from "@/types/Types";
+import type { ClientChartData, StatsClients } from "@/types/Types";
 import { IconFilter } from "@tabler/icons-react";
 import { type DateRange } from "react-day-picker";
+import useLazyFetch from "@/hooks/useLazyFetch";
+import { API_BASE_URL } from "@/lib/constants";
+import type { ApiResponse } from "@/types/Types";
 
 type ChartFilterProps = {
-  setChartData: Dispatch<SetStateAction<ClientChartData[]>>;
+  setChartData: Dispatch<SetStateAction<StatsClients | undefined>>;
 };
-
-const randomBetween = (min: number, max: number): number =>
-  Math.floor(Math.random() * (max - min + 1)) + min;
 
 const ChartFilter = ({ setChartData }: ChartFilterProps) => {
   const [dateRange, setDateRange] = useState<DateRange | undefined>({
@@ -27,49 +27,47 @@ const ChartFilter = ({ setChartData }: ChartFilterProps) => {
     to: undefined,
   });
 
-  const generateData = () => {
-    if (!dateRange?.from || !dateRange?.to) return;
-
-    const newData: ClientChartData[] = [];
-    const currentDate = new Date(dateRange.from);
-
-    while (currentDate <= dateRange.to) {
-      newData.push({
-        date: format(currentDate, "yyyy-MM-dd"),
-        number: randomBetween(50, 500),
-      });
-      currentDate.setDate(currentDate.getDate() + 1);
-    }
-    setChartData(newData);
-  };
+  const { fetch: fetchStats } = useLazyFetch<ApiResponse<StatsClients>>(
+    API_BASE_URL + `/stats/clients/chart`
+  );
 
   useEffect(() => {
-    
-    if (dateRange?.from && dateRange?.to) {
-      console.log('from: ' + dateRange.from + ' to: ' + dateRange.to);
-      generateData();
-    }
-  }, [dateRange]);
+    const loadFilteredStats = async () => {
+      try {
+        const params: Record<string, string> = {};
+        
+        if (dateRange?.from) {
+          params.dateDebut = format(dateRange.from, 'yyyy-MM-dd');
+        }
+        
+        if (dateRange?.to) {
+          params.dateFin = format(dateRange.to, 'yyyy-MM-dd');
+        }
 
-  const handleSelectChange = () => {
-    // setSelectedItem(value);
-    generateData();
-  };
+        const result = await fetchStats(params);
+        
+        if (result?.success && setChartData) {
+          setChartData(result.data);
+        }
+      } catch (error) {
+        console.error('Error fetching filtered stats:', error);
+      }
+    };
+
+    if (dateRange?.from || dateRange?.to) {
+       loadFilteredStats();
+    }
+   
+  }, [dateRange, setChartData, fetchStats]);
+
 
   return (
-    <div className="flex flex-col gap-2 px-0 pt-4">
-      <div className="font-medium flex items-center gap-2 relative">
+    <div className="flex flex-row-reverse items-center gap-2 px-0">
         <IconFilter className="inline-block h-4" />
-        <span className="text-muted-foreground relative top-0.5">Filtre</span>
-      </div>
-
-      <div className="flex items-center px-1">
-        <div className="flex flex-col gap-0.5">
-          <span className="text-muted-foreground">Date range</span>
 
           <Popover>
             <PopoverTrigger asChild>
-              <Button variant="outline" className="justify-between w-full">
+              <Button variant="outline" className="justify-between">
                 {dateRange?.from ? (
                   dateRange.to ? (
                     <>
@@ -92,14 +90,9 @@ const ChartFilter = ({ setChartData }: ChartFilterProps) => {
                 selected={dateRange}
                 onSelect={setDateRange}
                 numberOfMonths={2}
-                // disabled={(date) =>
-                //   date > new Date() || date < new Date("1900-01-01")
-                // }
               />
             </PopoverContent>
           </Popover>
-        </div>
-      </div>
     </div>
   );
 };

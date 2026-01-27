@@ -1,0 +1,72 @@
+import { useState, useCallback } from 'react';
+
+interface FetchState<TResponse, TError> {
+  data: TResponse | null;
+  isLoading: boolean;
+  error: TError | null;
+}
+
+interface FetchParams {
+  [key: string]: string | number | boolean | undefined;
+}
+
+function useLazyFetch<TResponse>(baseUrl: string) {
+  const [state, setState] = useState<FetchState<TResponse, Error>>({
+    data: null,
+    isLoading: false,
+    error: null,
+  });
+
+  const fetch = useCallback(
+    async (params?: FetchParams) => {
+      setState({ data: null, isLoading: true, error: null });
+
+      try {
+        const token = localStorage.getItem('auth_token');
+        const headers: HeadersInit = {
+          'Content-Type': 'application/json',
+          'Accept': 'application/json',
+        };
+
+        if (token) {
+          headers['Authorization'] = `Bearer ${token}`;
+        }
+
+        // Build query string from params
+        const queryParams = new URLSearchParams();
+        if (params) {
+          Object.entries(params).forEach(([key, value]) => {
+            if (value !== undefined && value !== null && value !== '') {
+              queryParams.append(key, String(value));
+            }
+          });
+        }
+
+        const queryString = queryParams.toString();
+        const url = `${baseUrl}${queryString ? `?${queryString}` : ''}`;
+
+        const response = await window.fetch(url, {
+          method: 'GET',
+          headers,
+        });
+
+        if (!response.ok) {
+          throw new Error(`Erreur: ${response.statusText}`);
+        }
+
+        const result = await response.json();
+        setState({ data: result, isLoading: false, error: null });
+        return result;
+      } catch (err) {
+        const error = err as Error;
+        setState({ data: null, isLoading: false, error });
+        throw error;
+      }
+    },
+    [baseUrl]
+  );
+
+  return { ...state, fetch };
+}
+
+export default useLazyFetch;

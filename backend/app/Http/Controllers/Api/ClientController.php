@@ -3,24 +3,16 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
+use App\Models\Client;
 
 class ClientController extends Controller
 {
-    /**
-     * Statistiques journalières pour le mois d'avril 2024
-     */
     public function stats()
     {
-        $data = [];
+        $dateDebut = request()->query('dateDebut');
+        $dateFin = request()->query('dateFin');
 
-        for ($day = 1; $day <= 30; $day++) {
-            $date = sprintf("2024-04-%02d", $day);
-
-            $data[] = [
-                'date' => $date,
-                'number' => rand(50, 499), // équivalent à Math.floor(Math.random() * 450) + 50
-            ];
-        }
+        $data = Client::stats($dateDebut, $dateFin);
 
         return response()->json([
             'success' => true,
@@ -28,27 +20,13 @@ class ClientController extends Controller
         ]);
     }
 
-    public function max()
-    {
-        $stats = [
-            'total_number' => 225
-        ];
-
-        return response()->json([
-            'success' => true,
-            'data' => $stats
-        ]);
-    }
-
-    /**
-     * Affiche la liste des clients (exemple vide ici)
-     */
     public function index()
     {
-        // Exemple de réponse vide
+        $clients = \App\Models\Client::orderBy('displayName', 'asc')->get();
+
         return response()->json([
             'success' => true,
-            'data' => []
+            'data' => $clients
         ]);
     }
 

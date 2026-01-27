@@ -37,12 +37,15 @@ class GarageSeeder extends Seeder
 
         // 1. Créer quelques clients de base
         $clients = [];
-        for ($i = 1; $i <= 5; $i++) {
+        for ($i = 1; $i <= 15; $i++) {
+            $createdAt = Carbon::now()->subDays(rand(0, 60));
             $clients[] = Client::create([
                 'uid' => "user_seed_$i",
                 'email' => "client$i@demo.com",
                 'displayName' => "Client Démo $i",
-                'photoURL' => "https://i.pravatar.cc/150?u=user_seed_$i"
+                'photoURL' => "https://i.pravatar.cc/150?u=user_seed_$i",
+                'created_at' => $createdAt,
+                'updated_at' => $createdAt
             ]);
         }
 
@@ -72,13 +75,13 @@ class GarageSeeder extends Seeder
         foreach ($interventionsList as $intervention) {
             $numReparations = rand(1, 3);
             $totalTarget = rand(25, 50);
-            
+
             // On divise le montant total par le nombre de réparations
             $unitPrice = round($totalTarget / $numReparations, 2);
 
             for ($j = 0; $j < $numReparations; $j++) {
                 $randomCar = $cars[array_rand($cars)];
-                
+
                 $reparation = Reparation::create([
                     'id' => "rep_" . Str::random(10),
                     'uid_client' => $randomCar->uid_client,
@@ -100,7 +103,7 @@ class GarageSeeder extends Seeder
                     'montant' => $unitPrice,
                     'date' => $reparation->date
                 ]);
-                
+
                 // Optionnellement créer un statut
                 $statut = Statut::create([
                     'id' => "statut_" . Str::random(10),
@@ -108,7 +111,7 @@ class GarageSeeder extends Seeder
                     'id_voiture' => $randomCar->id,
                     'date' => $reparation->date
                 ]);
-                
+
                 $reparation->statuts()->attach($statut->id, ['date' => $reparation->date]);
             }
         }

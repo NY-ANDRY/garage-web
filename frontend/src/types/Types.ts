@@ -14,14 +14,41 @@ export type ClientChartData = {
 };
 
 // stats
+export type StatsInterventionItem = {
+    id: number;
+    nom: string;
+    nombre_total: number;
+    montant_total: number;
+};
 
+export type StatsInterventionTotal = {
+    montant_total: number;
+    nombre_total: number;
+};
+
+export type StatsInterventions = {
+    stats: StatsInterventionItem[];
+    sum: StatsInterventionTotal;
+};
+
+//
 export type InterventionMaxStats = {
     total_cost: number;
     total_number: number;
 };
 
 export type UserMaxStats = {
-    total_number: number;
+    total_clients: number;
+};
+
+export type StatsClientTotal = {
+    total_clients: number;
+    filtered_clients: number;
+};
+
+export type StatsClients = {
+    stats: ClientChartData[];
+    sum: StatsClientTotal;
 };
 
 export type TableStatItem = {

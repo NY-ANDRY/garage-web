@@ -1,4 +1,3 @@
-import useFetch from "@/hooks/useFetch";
 import {
   Table,
   TableBody,
@@ -8,24 +7,30 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { API_BASE_URL } from "@/lib/constants";
-import type { ApiResponse, TableStatItem } from "@/types/Types";
+import type {
+  ApiResponse,
+  StatsInterventionItem,
+  TableStatItem,
+} from "@/types/Types";
 import { useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Eye } from "lucide-react";
 import { useTranslation } from "react-i18next";
+import { writeNumber } from "@/lib/utils";
 
-const TableIntervention = () => {
+type TableInterventionProps = {
+  items: StatsInterventionItem[] | undefined;
+};
+
+const TableIntervention = ({ items }: TableInterventionProps) => {
   const { t } = useTranslation();
   const navigate = useNavigate();
-  const { data } = useFetch<ApiResponse<TableStatItem[]>>(
-    `${API_BASE_URL}/stats/interventions/table`,
+
+  const totalNombre = items?.reduce((sum, item) => sum + Number(item.nombre_total), 0);
+  const totalPrix = items?.reduce(
+    (sum, item) => sum + Number(item.montant_total),
+    0,
   );
-
-  const value: TableStatItem[] = data?.data ?? [];
-
-  const totalNombre = value.reduce((sum, item) => sum + item.nombre, 0);
-  const totalPrix = value.reduce((sum, item) => sum + item.montant_total, 0);
 
   const handleNavigate = (id: string) => {
     navigate(`/backoffice/interventions/${id}`);
@@ -43,10 +48,10 @@ const TableIntervention = () => {
           </TableRow>
         </TableHeader>
         <TableBody>
-          {value.map((val, index) => (
+          {items?.map((val, index) => (
             <TableRow key={index} className="font-medium h-12">
               <TableCell className="font-medium">{val.nom}</TableCell>
-              <TableCell>{val.nombre}</TableCell>
+              <TableCell>{val.nombre_total}</TableCell>
               <TableCell>
                 <div className="flex items-center gap-0.5">
                   <span>{t("currency")}</span>
@@ -56,7 +61,7 @@ const TableIntervention = () => {
               <TableCell className="text-right">
                 <Button
                   onClick={() => {
-                    handleNavigate(val.id);
+                    handleNavigate(val.id.toString());
                   }}
                   variant="outline"
                   size="icon"
@@ -70,11 +75,11 @@ const TableIntervention = () => {
         <TableFooter>
           <TableRow>
             <TableCell>Total</TableCell>
-            <TableCell>{totalNombre}</TableCell>
+            <TableCell>{writeNumber(totalNombre)}</TableCell>
             <TableCell>
               <div className="flex items-center gap-0.5">
                 <span>{t("currency")}</span>
-                <span>{totalPrix}</span>
+                <span>{writeNumber(totalPrix)}</span>
               </div>
             </TableCell>
             <TableCell className="text-right"></TableCell>

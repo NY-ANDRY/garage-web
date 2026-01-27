@@ -1,7 +1,5 @@
-import { useState, useEffect } from "react";
-import ChartFilter from "./ChartFilter";
-import type { ClientChartData, ApiResponse } from "@/types/Types";
-import { Area, AreaChart, CartesianGrid, XAxis } from "recharts";
+import { Area, AreaChart, CartesianGrid, XAxis, YAxis } from "recharts";
+import { type ClientChartData } from "@/types/Types";
 
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { useTranslation } from "react-i18next";
@@ -11,34 +9,23 @@ import {
   ChartTooltipContent,
   type ChartConfig,
 } from "@/components/ui/chart";
-import useFetch from "@/hooks/useFetch";
-import { API_BASE_URL } from "@/lib/constants";
 
-const Chart = () => {
+type ChartClientsProps = {
+  chartData: ClientChartData[] | undefined;
+};
+
+const ChartClients = ({ chartData }: ChartClientsProps) => {
   const { t, i18n } = useTranslation();
-  const [chartData, setChartData] = useState<ClientChartData[]>([]);
-  const { data } = useFetch<ApiResponse<ClientChartData[]>>(API_BASE_URL + `/stats/clients/chart`);
 
   const chartConfig = {
     number: {
       label: t("clients.total_clients"),
       color: "var(--primary)",
-    },
+    },  
   } satisfies ChartConfig;
-
-  useEffect(() => {
-    if (data?.data) {
-      setChartData(data.data);
-    }
-  }, [data]);
 
   return (
     <div className="flex flex-1 flex-col gap-4">
-      <div className="w-full">
-        <ChartFilter setChartData={setChartData} />
-      </div>
-
-      <div className="w-full flex-1">
         <Card className="@container/card min-h-full flex flex-col">
           <CardHeader>
             <CardTitle>{t("clients.total_clients")}</CardTitle>
@@ -78,6 +65,10 @@ const Chart = () => {
                     });
                   }}
                 />
+                <YAxis
+                  domain={[0, "dataMax"]}
+                  allowDataOverflow={false}
+                />
                 <ChartTooltip
                   cursor={false}
                   content={
@@ -97,7 +88,7 @@ const Chart = () => {
                 />
                 <Area
                   dataKey="number"
-                  type="natural"
+                  type="monotone"
                   fill="url(#fillNumber)"
                   stroke="var(--primary)"
                   stackId="a"
@@ -105,10 +96,9 @@ const Chart = () => {
               </AreaChart>
             </ChartContainer>
           </CardContent>
-        </Card>{" "}
-      </div>
+        </Card>
     </div>
   );
 };
 
-export default Chart;
+export default ChartClients;

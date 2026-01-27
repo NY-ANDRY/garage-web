@@ -19,69 +19,65 @@ class Intervention extends Model
     public function reparations()
     {
         return $this->belongsToMany(Reparation::class, 'reparation_interventions', 'id_intervention', 'id_reparation')
-                    ->withPivot('prix', 'duree', 'date')
-                    ->withTimestamps();
+            ->withPivot('prix', 'duree', 'date')
+            ->withTimestamps();
     }
 
-    public function getTableStat()
+    public function tableStats($dateDebut = null, $dateFin = null, $idUser = null)
     {
-        $totalNumber = $this->reparations()->count();
-        $totalCost = $this->reparations()->sum('reparation_interventions.prix');
+        $query = $this->reparations();
+
+        if ($dateDebut) {
+            $query->where('reparation_interventions.date', '>=', $dateDebut);
+        }
+
+        if ($dateFin) {
+            $query->where('reparation_interventions.date', '<=', $dateFin);
+        }
+
+        if ($idUser) {
+            $query->where('reparations.uid_client', $idUser);
+        }
+
+        $totalNumber = $query->count();
+        $totalCost = $query->sum('reparation_interventions.prix');
 
         return [
-            'total_cost' => $totalCost,
-            'total_number' => $totalNumber,
+            'montant_total' => $totalCost,
+            'nombre_total' => $totalNumber,
         ];
     }
 
-    public static function getChartData()
+    public static function stats($dateDebut = null, $dateFin = null, $idUser = null)
     {
+        $result = [
+            'stats' => [],
+            'sum' => [
+                'montant_total' => 0,
+                'nombre_total' => 0
+            ]
+        ];
         $interventions = self::all();
-        $chartData = [];
+        $statsData = [];
+        $montant_total = 0;
+        $nombre_total = 0;
         foreach ($interventions as $intervention) {
-            $stats = $intervention->getTableStat();
+            $stats = $intervention->tableStats($dateDebut, $dateFin, $idUser);
 
-            $chartData[] = [
-                'nom' => $intervention->nom,
-                'nombre' => $stats['total_number'],
-                'prix' => $stats['total_cost'],
-            ];
-        }
-        return $chartData;
-    }
+            $montant_total += $stats['montant_total'];
+            $nombre_total += $stats['nombre_total'];
 
-    public static function getTableData()
-    {
-        $interventions = self::all();
-        $data = [];
-        foreach ($interventions as $intervention) {
-            $stats = $intervention->getTableStat();
-
-            $data[] = [
+            $statsData[] = [
                 'id' => $intervention->id,
                 'nom' => $intervention->nom,
-                'nombre' => $stats['total_number'],
-                'montant_total' => $stats['total_cost'],
+                'nombre_total' => $stats['nombre_total'],
+                'montant_total' => $stats['montant_total']
             ];
         }
-        return $data;
-    }
+        $result['stats'] = $statsData;
+        $result['sum']['montant_total'] = $montant_total;
+        $result['sum']['nombre_total'] = $nombre_total;
 
-    public static function getGlobalStats()
-    {
-        $totalCost = 0;
-        $totalNumber = 0;
-
-        $interventions = self::all();
-        foreach ($interventions as $intervention) {
-            $stats = $intervention->getTableStat();
-            $totalCost += $stats['total_cost'];
-            $totalNumber += $stats['total_number'];
-        }
-
-        return [
-            'total_cost' => $totalCost,
-            'total_number' => $totalNumber,
-        ];
+        return $result;
     }
 }
