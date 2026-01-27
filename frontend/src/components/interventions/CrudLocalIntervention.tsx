@@ -23,6 +23,8 @@ import {
 } from "@/components/ui/dialog";
 import { useFirestoreMutation } from "@/hooks/useFirestoreMutation";
 import { toast } from "sonner";
+import useMutate from "@/hooks/useMutate";
+import { API_BASE_URL } from "@/lib/constants";
 
 type CrudLocalInterventionProps = {
   intervention: Intervention;
@@ -31,9 +33,15 @@ type CrudLocalInterventionProps = {
 const CrudLocalIntervention = ({
   intervention,
 }: CrudLocalInterventionProps) => {
-  const { mutate } = useFirestoreMutation<Intervention>("interventions");
+  const { mutate: mutateFirebase } =
+    useFirestoreMutation<Intervention>("interventions");
   const [interventionForm, setInterventionForm] = useState<Intervention | null>(
     null,
+  );
+
+  const { mutate: mutateLocal } = useMutate(
+    `${API_BASE_URL}/interventions/${intervention.id}`,
+    "PATCH",
   );
 
   useEffect(() => {
@@ -43,12 +51,35 @@ const CrudLocalIntervention = ({
   }, [intervention]);
 
   const handleChange = (field: keyof Intervention, value: string) => {
-    setInterventionForm((prev) => (prev ? { ...prev, [field]: value } : null));
+    setInterventionForm((prev) => {
+      if (!prev) return null;
+
+      if (field === "prix" || field === "duree") {
+        return { ...prev, [field]: Number(value) };
+      }
+
+      return { ...prev, [field]: value };
+    });
   };
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    console.log("Form data:", interventionForm);
+    if (!interventionForm?.id) {
+      console.error("ID manquant pour la mise à jour");
+      return;
+    }
+
+    toast.promise(
+      async () => {
+        await mutateLocal(interventionForm);
+        return interventionForm;
+      },
+      {
+        loading: "Mise à jour en cours...",
+        success: (data) => `${data.nom} a été mise à jour avec succès !`,
+        error: "Erreur lors de la mise à jour",
+      },
+    );
   };
 
   const handleUpload = async () => {
@@ -59,7 +90,7 @@ const CrudLocalIntervention = ({
 
     toast.promise(
       async () => {
-        await mutate(interventionForm, {
+        await mutateFirebase(interventionForm, {
           type: "set",
           id: interventionForm.id,
         });

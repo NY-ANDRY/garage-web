@@ -23,6 +23,8 @@ import {
 } from "@/components/ui/dialog";
 import { useFirestoreDoc } from "@/hooks/useFirestoreDoc";
 import { useFirestoreMutation } from "@/hooks/useFirestoreMutation";
+import useMutate from "@/hooks/useMutate";
+import { API_BASE_URL } from "@/lib/constants";
 import { toast } from "sonner";
 
 type CrudLocalInterventionProps = {
@@ -32,9 +34,14 @@ type CrudLocalInterventionProps = {
 const CrudLocalIntervention = ({
   intervention,
 }: CrudLocalInterventionProps) => {
-  const { mutate } = useFirestoreMutation<Intervention>("interventions");
+  const { mutate: mutateFirebase } =
+    useFirestoreMutation<Intervention>("interventions");
   const { data: dataFire } = useFirestoreDoc<Intervention>(
     `interventions/${intervention.id}`,
+  );
+  const { mutate: mutateLocal } = useMutate(
+    `${API_BASE_URL}/interventions/${intervention.id}`,
+    "PATCH",
   );
 
   const [interventionForm, setInteventionForm] =
@@ -54,7 +61,7 @@ const CrudLocalIntervention = ({
 
     toast.promise(
       async () => {
-        await mutate(interventionForm, {
+        await mutateFirebase(interventionForm, {
           type: "delete",
           id: interventionForm.id,
         });
@@ -64,6 +71,27 @@ const CrudLocalIntervention = ({
         loading: "Delete en cours...",
         success: (data) => `${data.nom} a été effacer avec succès !`,
         error: "Erreur lors du delete",
+      },
+    );
+  };
+
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!dataFire?.id) {
+      console.error("ID manquant pour la mise à jour");
+      return;
+    }
+    console.log(dataFire);
+
+    toast.promise(
+      async () => {
+        await mutateLocal(dataFire);
+        return dataFire;
+      },
+      {
+        loading: "Mise à jour en cours...",
+        success: (data) => `${data.nom} a été mise à jour avec succès !`,
+        error: "Erreur lors de la mise à jour",
       },
     );
   };
@@ -102,7 +130,7 @@ const CrudLocalIntervention = ({
                   <DialogClose asChild>
                     <Button variant="outline">Cancel</Button>
                   </DialogClose>
-                  <Button type="submit">Download</Button>
+                  <Button onClick={handleSubmit} type="submit">Download</Button>
                 </DialogFooter>
               </DialogContent>
             </form>
@@ -180,9 +208,6 @@ const CrudLocalIntervention = ({
             </DialogContent>
           </form>
         </Dialog>
-        <Button type="submit" size={"sm"}>
-          Recuperer
-        </Button>
       </Field>
     </FieldSet>
   );
