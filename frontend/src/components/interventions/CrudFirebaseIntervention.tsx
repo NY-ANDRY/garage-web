@@ -194,10 +194,9 @@ const CrudLocalIntervention = ({
             </DialogTrigger>
             <DialogContent className="sm:max-w-106.25">
               <DialogHeader>
-                <DialogTitle>Download Firestore</DialogTitle>
+                <DialogTitle>Delete Firestore</DialogTitle>
                 <DialogDescription>
-                  cette action va reecrire les valeur des intervention courant
-                  avec les valeur des intervention de firestore
+                  cette action va effacer ce type d'intervention dans firestore
                 </DialogDescription>
               </DialogHeader>
               <DialogFooter>

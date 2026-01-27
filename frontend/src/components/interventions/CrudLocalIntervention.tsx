@@ -57,11 +57,6 @@ const CrudLocalIntervention = ({
   const handleChange = (field: keyof Intervention, value: string) => {
     setInterventionForm((prev) => {
       if (!prev) return null;
-
-      if (field === "prix" || field === "duree") {
-        return { ...prev, [field]: Number(value) };
-      }
-
       return { ...prev, [field]: value };
     });
   };
@@ -72,6 +67,9 @@ const CrudLocalIntervention = ({
       console.error("ID manquant pour la mise à jour");
       return;
     }
+
+    interventionForm.prix = Number(interventionForm.prix);
+    interventionForm.duree = Number(interventionForm.duree);
 
     toast.promise(
       async () => {
