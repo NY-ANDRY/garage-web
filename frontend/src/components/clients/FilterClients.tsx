@@ -28,7 +28,7 @@ const ChartFilter = ({ setChartData }: ChartFilterProps) => {
   });
 
   const { fetch: fetchStats } = useLazyFetch<ApiResponse<StatsClients>>(
-    API_BASE_URL + `/stats/clients/chart`
+    API_BASE_URL + `/stats/clients`
   );
 
   useEffect(() => {

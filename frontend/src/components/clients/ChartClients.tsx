@@ -30,7 +30,7 @@ const ChartClients = ({ chartData }: ChartClientsProps) => {
           <CardHeader>
             <CardTitle>{t("clients.total_clients")}</CardTitle>
           </CardHeader>
-          <CardContent className="px-2 pt-4 sm:px-6 sm:pt-6 flex-1">
+          <CardContent className="px-0 sm:pt-6 flex-1 pr-4 md:pr-8">
             <ChartContainer
               config={chartConfig}
               className="aspect-auto h-106 w-full"

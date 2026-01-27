@@ -4,7 +4,7 @@ import { useTranslation } from "react-i18next";
 import { CardsInterventions } from "@/components/interventions/CardsInterventions";
 import ChartBar from "@/components/interventions/ChartInterventions";
 import TableIntervention from "@/components/interventions/TableInterventions";
-import ChartFilter from "@/components/interventions/ChartFilter";
+import ChartFilter from "@/components/interventions/FilterInterventions";
 import type { ApiResponse, StatsInterventions } from "@/types/Types";
 import useFetch from "@/hooks/useFetch";
 import { API_BASE_URL } from "@/lib/constants";

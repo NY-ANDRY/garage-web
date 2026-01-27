@@ -38,7 +38,7 @@ const ChartInterventions = ({ items }: ChartInterventionsProps) => {
 
   return (
     <div className="w-full flex flex-col lg:flex-row gap-8 items-center justify-between">
-      <ChartContainer config={chartConfig2} className="w-full min-w-80 h-96">
+      <ChartContainer config={chartConfig2} className="w-full min-w-80 h-96 pr-4">
         <BarChart
           accessibilityLayer
           data={chartData}
@@ -59,7 +59,7 @@ const ChartInterventions = ({ items }: ChartInterventionsProps) => {
           <Bar dataKey="montant_total" fill="#aaa" radius={4} />
         </BarChart>
       </ChartContainer>
-      <ChartContainer config={chartConfig1} className="w-full min-w-80 h-96">
+      <ChartContainer config={chartConfig1} className="w-full min-w-80 h-96 pr-4">
         <BarChart
           accessibilityLayer
           data={chartData}

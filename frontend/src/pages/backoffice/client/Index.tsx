@@ -3,7 +3,7 @@ import { useHeader } from "@/context/HeaderContext";
 import { useTranslation } from "react-i18next";
 import Cards from "@/components/clients/CardsClients";
 import ChartBar from "@/components/clients/ChartClients";
-import ChartFilter from "@/components/clients/ChartFilter";
+import ChartFilter from "@/components/clients/FilterClients";
 import type { ApiResponse, StatsClients } from "@/types/Types";
 import useFetch from "@/hooks/useFetch";
 import { API_BASE_URL } from "@/lib/constants";
