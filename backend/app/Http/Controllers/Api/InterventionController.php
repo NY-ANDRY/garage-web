@@ -32,13 +32,14 @@ class InterventionController extends Controller
      */
     public function index()
     {
-        $interventions = Intervention::all();
+        $interventions = Intervention::orderBy('id', 'asc')->get();
 
         return response()->json([
             'success' => true,
             'data' => $interventions
         ]);
     }
+
 
     /**
      * Store a newly created resource in storage.

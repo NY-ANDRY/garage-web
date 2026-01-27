@@ -29,10 +29,12 @@ import { toast } from "sonner";
 
 type CrudLocalInterventionProps = {
   intervention: Intervention;
+  reload?: () => void;
 };
 
 const CrudLocalIntervention = ({
   intervention,
+  reload,
 }: CrudLocalInterventionProps) => {
   const { mutate: mutateFirebase } =
     useFirestoreMutation<Intervention>("interventions");
@@ -83,9 +85,15 @@ const CrudLocalIntervention = ({
     }
     console.log(dataFire);
 
+    dataFire.prix = Number(dataFire.prix);
+    dataFire.duree = Number(dataFire.duree);
+
     toast.promise(
       async () => {
         await mutateLocal(dataFire);
+        if (reload) {
+          reload();
+        }
         return dataFire;
       },
       {
@@ -130,7 +138,9 @@ const CrudLocalIntervention = ({
                   <DialogClose asChild>
                     <Button variant="outline">Cancel</Button>
                   </DialogClose>
-                  <Button onClick={handleSubmit} type="submit">Download</Button>
+                  <Button onClick={handleSubmit} type="submit">
+                    Download
+                  </Button>
                 </DialogFooter>
               </DialogContent>
             </form>

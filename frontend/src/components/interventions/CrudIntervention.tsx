@@ -6,9 +6,13 @@ import { Separator } from "@/components/ui/separator";
 
 type CrudInterventionsProps = {
   intervention: Intervention;
+  reload?: () => void;
 };
 
-const CrudInterventions = ({ intervention }: CrudInterventionsProps) => {
+const CrudInterventions = ({
+  intervention,
+  reload,
+}: CrudInterventionsProps) => {
   const [interventionForm, setInteventionForm] =
     useState<Intervention | null>();
   useEffect(() => {
@@ -21,12 +25,15 @@ const CrudInterventions = ({ intervention }: CrudInterventionsProps) => {
     <div className="flex flex-col w-full h-full border rounded-lg border-dashed border-(--border) px-8 py-6">
       <div className="flex flex-col md:flex-row justify-between gap-8 md:gap-4">
         <div className="flex-1 flex justify-center">
-        <CrudLocalIntervention intervention={intervention} />
+          <CrudLocalIntervention reload={reload} intervention={intervention} />
         </div>
         <Separator orientation="vertical" className="hidden md:flex" />
         <Separator orientation="horizontal" className="md:hidden flex h-px" />
         <div className="flex-1 flex justify-center">
-        <CrudFirebaseIntervention intervention={intervention} />
+          <CrudFirebaseIntervention
+            reload={reload}
+            intervention={intervention}
+          />
         </div>
       </div>
     </div>

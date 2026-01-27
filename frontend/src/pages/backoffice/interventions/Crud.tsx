@@ -16,11 +16,22 @@ const Interventions = () => {
   const { setBreadcrumbs } = useHeader();
   const [selectedIntervention, setSelectedIntervention] =
     useState<Intervention | null>(null);
+  const [selectedId, setSelectedId] = useState<string>("");
 
-  const { data, isLoading } = useFetch<ApiResponse<Intervention[]>>(
+  const { data, isLoading, refetch } = useFetch<ApiResponse<Intervention[]>>(
     API_BASE_URL + `/interventions`,
   );
   const interventions = data?.data ?? [];
+
+  useEffect(() => {
+    if (data && selectedId) {
+      data.data.forEach((d) => {
+        if (d.id == selectedId) {
+          setSelectedIntervention(d);
+        }
+      })
+    }
+  }, [data]);
 
   useEffect(() => {
     setBreadcrumbs([
@@ -30,12 +41,17 @@ const Interventions = () => {
   }, [t, setBreadcrumbs]);
 
   const handleSelect = (intervention: Intervention) => {
+    setSelectedId(intervention.id);
     setBreadcrumbs([
       { label: t("sidebar.dashboard"), href: "/backoffice/dashboard" },
       { label: t("sidebar.interventions") },
       { label: intervention.id },
     ]);
     setSelectedIntervention(intervention);
+  };
+
+  const reload = async () => {
+    refetch();
   };
 
   return (
@@ -73,7 +89,11 @@ const Interventions = () => {
       <div className="flex flex-col w-full md:w-2/3">
         <AnimatePresence mode="wait">
           {selectedIntervention ? (
-            <CrudInterventions key={0} intervention={selectedIntervention} />
+            <CrudInterventions
+              key={0}
+              reload={reload}
+              intervention={selectedIntervention}
+            />
           ) : (
             <motion.div
               key={1}

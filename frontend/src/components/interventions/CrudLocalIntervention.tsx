@@ -28,10 +28,12 @@ import { API_BASE_URL } from "@/lib/constants";
 
 type CrudLocalInterventionProps = {
   intervention: Intervention;
+  reload?: () => void;
 };
 
 const CrudLocalIntervention = ({
   intervention,
+  reload,
 }: CrudLocalInterventionProps) => {
   const { mutate: mutateFirebase } =
     useFirestoreMutation<Intervention>("interventions");
@@ -46,6 +48,8 @@ const CrudLocalIntervention = ({
 
   useEffect(() => {
     if (intervention) {
+      intervention.prix = Number(intervention.prix);
+      intervention.duree = Number(intervention.duree);
       setInterventionForm(intervention);
     }
   }, [intervention]);
@@ -72,6 +76,9 @@ const CrudLocalIntervention = ({
     toast.promise(
       async () => {
         await mutateLocal(interventionForm);
+        if (reload) {
+          reload();
+        }
         return interventionForm;
       },
       {
