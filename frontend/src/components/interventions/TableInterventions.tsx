@@ -24,9 +24,9 @@ const TableIntervention = () => {
 
   const value: TableStatItem[] = data?.data ?? [];
 
-  // Calcul des totaux
   const totalNombre = value.reduce((sum, item) => sum + item.nombre, 0);
   const totalPrix = value.reduce((sum, item) => sum + item.montant_total, 0);
+
   const handleNavigate = (id: string) => {
     navigate(`/backoffice/interventions/${id}`);
   };
