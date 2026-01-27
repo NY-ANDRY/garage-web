@@ -121,84 +121,84 @@ const CrudLocalIntervention = ({
 
         <div className="flex flex-col">
           <Dialog>
-            <form onSubmit={handleSubmit}>
-              <DialogTrigger asChild>
-                <Button
-                  size="icon-sm"
-                  variant="outline"
-                  className="rounded-full"
-                  aria-label="Upload"
-                >
-                  <CloudUpload />
-                </Button>
-              </DialogTrigger>
+            <DialogTrigger asChild>
+              <Button
+                size="icon-sm"
+                variant="outline"
+                className="rounded-full"
+                aria-label="Upload"
+              >
+                <CloudUpload />
+              </Button>
+            </DialogTrigger>
 
-              <DialogContent className="sm:max-w-106.25">
-                <DialogHeader>
-                  <DialogTitle>Upload Firestore</DialogTitle>
-                  <DialogDescription>
-                    Cette action écrasera les données existantes dans Firestore.
-                  </DialogDescription>
-                </DialogHeader>
+            <DialogContent className="sm:max-w-106.25">
+              <DialogHeader>
+                <DialogTitle>Upload Firestore</DialogTitle>
+                <DialogDescription>
+                  Cette action écrasera les données existantes dans Firestore.
+                </DialogDescription>
+              </DialogHeader>
 
-                <DialogFooter>
-                  <DialogClose asChild>
-                    <Button variant="outline">Cancel</Button>
-                  </DialogClose>
-                  <DialogClose asChild>
-                    <Button type="button" onClick={handleUpload}>
-                      Upload
-                    </Button>
-                  </DialogClose>
-                </DialogFooter>
-              </DialogContent>
-            </form>
+              <DialogFooter>
+                <DialogClose asChild>
+                  <Button variant="outline">Cancel</Button>
+                </DialogClose>
+                <DialogClose asChild>
+                  <Button type="button" onClick={handleUpload}>
+                    Upload
+                  </Button>
+                </DialogClose>
+              </DialogFooter>
+            </DialogContent>
           </Dialog>
         </div>
       </div>
 
-      <FieldGroup className="gap-4">
-        <Field className="gap-1">
-          <FieldLabel htmlFor="nom">Nom</FieldLabel>
-          <Input
-            id="nom"
-            type="text"
-            placeholder="Nom de l'intervention"
-            value={interventionForm?.nom ?? ""}
-            onChange={(e) => handleChange("nom", e.target.value)}
-          />
+      <form onSubmit={handleSubmit} className="flex flex-col gap-6">
+        <FieldGroup className="gap-4">
+          <Field className="gap-1">
+            <FieldLabel htmlFor="nom">Nom</FieldLabel>
+            <Input
+              id="nom"
+              type="text"
+              placeholder="Nom de l'intervention"
+              value={interventionForm?.nom ?? ""}
+              onChange={(e) => handleChange("nom", e.target.value)}
+            />
+          </Field>
+
+          <div className="grid grid-cols-2 gap-4">
+            <Field className="gap-1">
+              <FieldLabel htmlFor="prix">Prix</FieldLabel>
+              <Input
+                id="prix"
+                type="number"
+                placeholder="Prix"
+                value={interventionForm?.prix ?? ""}
+                onChange={(e) => handleChange("prix", e.target.value)}
+              />
+            </Field>
+
+            <Field className="gap-1">
+              <FieldLabel htmlFor="duree">Durée</FieldLabel>
+              <Input
+                id="duree"
+                type="number"
+                placeholder="Durée en minutes"
+                value={interventionForm?.duree ?? ""}
+                onChange={(e) => handleChange("duree", e.target.value)}
+              />
+            </Field>
+          </div>
+        </FieldGroup>
+
+        <Field orientation="horizontal" className="flex justify-end">
+          <Button type="submit" size="sm" onClick={handleSubmit}>
+            Sauvegarder
+          </Button>
         </Field>
-
-        <div className="grid grid-cols-2 gap-4">
-          <Field className="gap-1">
-            <FieldLabel htmlFor="prix">Prix</FieldLabel>
-            <Input
-              id="prix"
-              type="number"
-              placeholder="Prix"
-              value={interventionForm?.prix ?? ""}
-              onChange={(e) => handleChange("prix", e.target.value)}
-            />
-          </Field>
-
-          <Field className="gap-1">
-            <FieldLabel htmlFor="duree">Durée</FieldLabel>
-            <Input
-              id="duree"
-              type="number"
-              placeholder="Durée en minutes"
-              value={interventionForm?.duree ?? ""}
-              onChange={(e) => handleChange("duree", e.target.value)}
-            />
-          </Field>
-        </div>
-      </FieldGroup>
-
-      <Field orientation="horizontal" className="flex justify-end">
-        <Button type="submit" size="sm" onClick={handleSubmit}>
-          Sauvegarder
-        </Button>
-      </Field>
+      </form>
     </FieldSet>
   );
 };
