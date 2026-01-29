@@ -63,6 +63,7 @@ const ChartClients = ({ chartData }: ChartClientsProps) => {
                   <ChartTooltipContent
                     labelFormatter={(value) =>
                       new Date(value).toLocaleDateString(i18n.language, {
+                        year: "numeric" ,
                         month: "long",
                         day: "numeric",
                       })

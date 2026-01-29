@@ -3,6 +3,8 @@ import ClientsLayout from "@/layouts/frontoffice/ClientsLayout";
 import IndexIntervention from "@/pages/backoffice/interventions/Index";
 import Interventions from "@/pages/backoffice/interventions/Crud";
 import HomeFrontoffice from "@/pages/frontoffice/Home";
+import ClientsFrontoffice from "@/pages/frontoffice/clients/Home";
+import ReparationDetail from "@/pages/frontoffice/clients/ReparationDetail";
 import Landing from "@/pages/Landing";
 import type { RouteObject } from "react-router-dom";
 import { Navigate } from "react-router-dom";
@@ -43,8 +45,12 @@ export const routes: RouteObject[] = [
           },
           {
             path: "clients/:uid",
-            element: <HomeFrontoffice />,
-          }
+            element: <ClientsFrontoffice />,
+          },
+          {
+            path: "reparations/:id",
+            element: <ReparationDetail />,
+          },
         ],
       },
     ],

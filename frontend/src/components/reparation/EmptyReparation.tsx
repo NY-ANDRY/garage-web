@@ -1,6 +1,3 @@
-import { useHeader } from "@/context/HeaderContext";
-import { useEffect } from "react";
-import EmptyReparation from "@/components/reparation/EmptyReparation";
 import { Button } from "@/components/ui/button";
 import {
   Empty,
@@ -10,25 +7,25 @@ import {
   EmptyMedia,
   EmptyTitle,
 } from "@/components/ui/empty";
-import { IconMoodHappy, IconCarCrash } from "@tabler/icons-react";
+import { IconFolderCode, IconCarCrash } from "@tabler/icons-react";
 import { ArrowUpRightIcon } from "lucide-react";
 
-const Home = () => {
-  const { setBreadcrumbs } = useHeader();
-
-  useEffect(() => {
-    setBreadcrumbs([{ label: "clients", href: "/backoffice/dashboard" }]);
-  }, []);
-
+const EmptyReparation = () => {
   return (
     <Empty>
       <EmptyHeader>
         <EmptyMedia variant="icon">
-          <IconMoodHappy />
+          <IconCarCrash />
         </EmptyMedia>
-        <EmptyTitle>Clients</EmptyTitle>
-        <EmptyDescription>Selectioner un utilisateur dans le navbar</EmptyDescription>
+        <EmptyTitle>Aucun reparation</EmptyTitle>
+        <EmptyDescription>
+          Selectioner un autre utilisateur
+        </EmptyDescription>
       </EmptyHeader>
+      {/* <EmptyContent className="flex-row justify-center gap-2"> */}
+        {/* <Button>Create Project</Button> */}
+        {/* <Button variant="outline">Import Project</Button> */}
+      {/* </EmptyContent> */}
       <Button
         variant="link"
         asChild
@@ -43,4 +40,4 @@ const Home = () => {
   );
 };
 
-export default Home;
+export default EmptyReparation;

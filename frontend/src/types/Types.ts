@@ -68,7 +68,7 @@ export type ApiResponse<T> = {
 // firestore types
 
 export type User = {
-    uid?: string;
+    uid: string;
     email?: string | undefined | null;
     displayName?: string | undefined | null;
     photoURL?: string | undefined | null;

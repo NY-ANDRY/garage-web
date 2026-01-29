@@ -2,39 +2,35 @@ import { useState, useEffect } from "react";
 import { useHeader } from "@/context/HeaderContext";
 import { useTranslation } from "react-i18next";
 import CrudInterventions from "@/components/interventions/CrudIntervention";
-import type { ApiResponse, Intervention } from "@/types/Types";
+import type { Intervention } from "@/types/Types";
 import ListIntervention from "@/components/interventions/ListIntervention";
 import ListInterventionSkeleton from "@/components/interventions/ListInterventionSkeleton";
-import { AnimatePresence, motion } from "motion/react";
-import { fade } from "@/components/transitions/tansitions";
 import EmptyIntervention from "@/components/interventions/EmptyIntervention";
 import { useParams } from "react-router-dom";
 import { useUrlSegment } from "@/hooks/useUrlSegment";
 import { useInterventions } from "@/domain";
+import AnimatedPlaceholder from "@/components/animations/AnimatedPlaceholder";
 
 const Interventions = () => {
-  // 🔹 Récupérer le paramètre id depuis l'URL
   const { id } = useParams<{ id: string }>();
-
   const { t } = useTranslation();
   const { setBreadcrumbs } = useHeader();
+
   const [selectedIntervention, setSelectedIntervention] =
     useState<Intervention | null>(null);
   const [selectedId, setSelectedId] = useState<string>(id ?? "");
-  const { replaceSegment } = useUrlSegment();
 
+  const { replaceSegment } = useUrlSegment();
   const { data, isLoading, refetch } = useInterventions();
+
   const interventions = data?.data ?? [];
 
   useEffect(() => {
     if (data && selectedId) {
-      data.data.forEach((d) => {
-        if (d.id == selectedId) {
-          setSelectedIntervention(d);
-        }
-      });
+      const found = data.data.find((d) => d.id === selectedId);
+      if (found) setSelectedIntervention(found);
     }
-  }, [data]);
+  }, [data, selectedId]);
 
   useEffect(() => {
     setBreadcrumbs([
@@ -61,54 +57,36 @@ const Interventions = () => {
 
   return (
     <div className="min-h-full flex flex-col md:flex-row py-4 px-2 gap-6 md:py-6 md:px-4 max-w-full overflow-hidden">
-      <AnimatePresence mode="wait">
-        {isLoading ? (
-          <motion.div
-            key={0}
-            {...fade}
-            className="flex flex-col gap-2 w-full md:w-1/3"
-          >
-            <ListInterventionSkeleton />
-          </motion.div>
-        ) : (
-          <motion.div
-            key={1}
-            {...fade}
-            className="flex flex-col gap-2 w-full md:w-1/3"
-          >
-            {interventions?.map((interv) => (
+      <div className="flex flex-col gap-2 w-full md:w-1/3">
+        <AnimatedPlaceholder
+          loading={isLoading}
+          skeletonCount={1}
+          skeletonClassName="hidden"
+        >
+          <div className="flex flex-col gap-2 w-full">
+            {interventions.map((interv) => (
               <ListIntervention
                 key={interv.id}
                 intervention={interv}
                 onSelect={handleSelect}
-                selected={
-                  selectedIntervention
-                    ? selectedIntervention.id == interv.id
-                    : false
-                }
+                selected={selectedIntervention?.id === interv.id}
               />
             ))}
-          </motion.div>
-        )}
-      </AnimatePresence>
+          </div>
+        </AnimatedPlaceholder>
+      </div>
+
       <div className="flex flex-col w-full md:w-2/3">
-        <AnimatePresence mode="wait">
+        <AnimatedPlaceholder loading={false} skeletonCount={0}>
           {selectedIntervention ? (
             <CrudInterventions
-              key={0}
               reload={reload}
               intervention={selectedIntervention}
             />
           ) : (
-            <motion.div
-              key={1}
-              {...fade}
-              className="h-full flex flex-col gap-2 w-full"
-            >
-              <EmptyIntervention />
-            </motion.div>
+            <EmptyIntervention />
           )}
-        </AnimatePresence>
+        </AnimatedPlaceholder>
       </div>
     </div>
   );

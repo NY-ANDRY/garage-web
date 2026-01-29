@@ -17,7 +17,8 @@ export default function Page() {
         } as React.CSSProperties
       }
     >
-      <ClientSidebar />
+      {/* <ClientSidebar /> */}
+      <ClientSidebar variant="floating" />
       <SidebarInset>
         <ClientsHeader />
 

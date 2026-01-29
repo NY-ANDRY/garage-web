@@ -1,5 +1,7 @@
 import { cn } from "@/lib/utils";
 import type { User } from "@/types/Types";
+import { MoreHorizontalIcon } from "lucide-react";
+import DropdownUser from "./DropDownUser";
 
 type NavClientProps = {
   client: User;
@@ -20,13 +22,15 @@ const NavClient = ({ client, onClick, selected }: NavClientProps) => {
         onClick={handleClick}
         key={client.uid}
         className={cn(
-          "hover:bg-sidebar-accent hover:text-sidebar-accent-foreground flex flex-col items-start gap-2 border-b py-2 px-4 text-sm leading-tight whitespace-nowrap last:border-b-0 cursor-pointer",
-          selected && "bg-sidebar-accent text-sidebar-accent-foreground",
+          " border-t border-border-50 border-b-0 hover:bg-sidebar-accent hover:text-sidebar-accent-foreground flex flex-col items-start gap-2 py-2 pb-4 px-4 text-sm leading-tight whitespace-nowrap last:border-b-0 cursor-pointer transition-all",
+          selected && "bg-sidebar-accent/80 text-sidebar-accent-foreground",
         )}
       >
         <div className="flex w-full items-center gap-2">
           <span className="text-sm">{client.displayName}</span>
-          <span className="ml-auto text-xs">...</span>
+          <div className="ml-auto text-xs hover:bg-background rounded-sm p-1">
+            <DropdownUser />
+          </div>
         </div>
         <span className="font-medium">{client.email}</span>
         <span className="line-clamp-2 w-65 text-xs">
