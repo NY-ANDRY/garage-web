@@ -4,11 +4,12 @@ import {
   onSnapshot,
   type Unsubscribe,
   type DocumentData,
+  type Query,
 } from "firebase/firestore";
-import { firestore } from "../config/firebaseConfig";
+import { firestore } from "@/config/firebaseConfig";
 
 export function useFirestoreCollection<T extends DocumentData>(
-  collectionName: string
+  colOrQuery: string | Query<DocumentData>,
 ) {
   const [data, setData] = useState<(T & { id: string })[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
@@ -16,23 +17,25 @@ export function useFirestoreCollection<T extends DocumentData>(
   const unsubscribeRef = useRef<Unsubscribe | null>(null);
 
   useEffect(() => {
-    if (!collectionName) return;
+    if (!colOrQuery) return;
 
     setLoading(true);
 
-    // Nettoyage de l’ancienne subscription
     if (unsubscribeRef.current) {
       unsubscribeRef.current();
     }
 
-    const colRef = collection(firestore, collectionName);
+    const q =
+      typeof colOrQuery === "string"
+        ? collection(firestore, colOrQuery)
+        : colOrQuery;
 
     unsubscribeRef.current = onSnapshot(
-      colRef,
+      q,
       (snapshot) => {
-        const result = snapshot.docs.map((doc) => ({
-          id: doc.id,
-          ...(doc.data() as T),
+        const result = snapshot.docs.map((docSnap) => ({
+          id: docSnap.id,
+          ...(docSnap.data() as T),
         }));
 
         setData(result);
@@ -41,17 +44,14 @@ export function useFirestoreCollection<T extends DocumentData>(
       (error) => {
         console.error("Firestore error:", error);
         setLoading(false);
-      }
+      },
     );
 
-    // Cleanup au unmount ou changement de collection
     return () => {
-      if (unsubscribeRef.current) {
-        unsubscribeRef.current();
-        unsubscribeRef.current = null;
-      }
+      unsubscribeRef.current?.();
+      unsubscribeRef.current = null;
     };
-  }, [collectionName]);
+  }, [colOrQuery]);
 
   return { data, loading };
 }

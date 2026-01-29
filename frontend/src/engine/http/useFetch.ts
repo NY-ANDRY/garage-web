@@ -1,14 +1,14 @@
 import { useState, useEffect, useCallback } from "react";
 import { useNavigate } from "react-router-dom";
 
-interface FetchState<T> {
+export interface FetchState<T> {
   data: T | null;
   isLoading: boolean;
   error: Error | null;
   refetch: () => void;
 }
 
-function useFetch<T>(url: string): FetchState<T> {
+export default function useFetch<T>(url: string): FetchState<T> {
   const [data, setData] = useState<T | null>(null);
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const [error, setError] = useState<Error | null>(null);
@@ -44,7 +44,7 @@ function useFetch<T>(url: string): FetchState<T> {
           localStorage.removeItem("auth_token");
           localStorage.removeItem("auth_user");
           navigate("/backoffice/auth", { replace: true });
-          throw new Error(`unauthorize`);
+          throw new Error("unauthorize");
         }
 
         if (!response.ok) {
@@ -66,9 +66,8 @@ function useFetch<T>(url: string): FetchState<T> {
     fetchData();
 
     return () => abortController.abort();
-  }, [url, reload]);
+  }, [url, reload, navigate]);
 
   return { data, isLoading, error, refetch };
 }
 
-export default useFetch;

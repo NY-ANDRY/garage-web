@@ -1,15 +1,16 @@
-import * as React from "react"
+import * as React from "react";
 import {
   IconDashboard,
   IconInnerShadowTop,
   IconListDetails,
   IconSettings,
-  IconUsers,IconCloudNetwork
-} from "@tabler/icons-react"
+  IconUsers,
+  IconCloudNetwork,
+} from "@tabler/icons-react";
 
-import NavMain from "@/components/shadcn/nav-main"
-import { NavSecondary } from "@/components/sidebar/nav-secondary"
-import { NavUser } from "@/components/sidebar/nav-user"
+import NavMain from "@/components/shadcn/nav-main";
+import { NavSecondary } from "@/components/sidebar/nav-secondary";
+import { NavUser } from "@/components/sidebar/nav-user";
 import {
   Sidebar,
   SidebarContent,
@@ -18,15 +19,15 @@ import {
   SidebarMenu,
   SidebarMenuButton,
   SidebarMenuItem,
-} from "@/components/ui/sidebar"
-import { Link } from "react-router-dom"
+} from "@/components/ui/sidebar";
+import { Link } from "react-router-dom";
 
-import { useAuth } from "@/hooks/useAuth"
-import { useTranslation } from "react-i18next"
+import { useAuth } from "@/hooks/useAuth";
+import { useTranslation } from "react-i18next";
 
-export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
-  const { t } = useTranslation()
-  const { user } = useAuth()
+const AppSidebar = ({ ...props }: React.ComponentProps<typeof Sidebar>) => {
+  const { t } = useTranslation();
+  const { user } = useAuth();
 
   const data = {
     navMain: [
@@ -58,11 +59,10 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
         icon: IconSettings,
       },
     ],
-  }
+  };
 
   return (
     <Sidebar collapsible="icon" {...props}>
-
       <SidebarHeader>
         <SidebarMenu>
           <SidebarMenuItem>
@@ -72,7 +72,9 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
             >
               <Link to="/backoffice">
                 <IconInnerShadowTop className="size-5!" />
-                <span className="text-base font-semibold">{t("sidebar.brand")}</span>
+                <span className="text-base font-semibold">
+                  {t("sidebar.brand")}
+                </span>
               </Link>
             </SidebarMenuButton>
           </SidebarMenuItem>
@@ -85,10 +87,9 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
         <NavSecondary items={data.navSecondary} className="mt-auto" />
       </SidebarContent>
 
-      <SidebarFooter>
-        {user && <NavUser user={user} />}
-      </SidebarFooter>
-      
+      <SidebarFooter>{user && <NavUser user={user} />}</SidebarFooter>
     </Sidebar>
-  )
-}
+  );
+};
+
+export default AppSidebar;

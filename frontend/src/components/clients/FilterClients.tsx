@@ -13,9 +13,7 @@ import { ChevronDownIcon } from "lucide-react";
 import type { ClientChartData, StatsClients } from "@/types/Types";
 import { IconFilter } from "@tabler/icons-react";
 import { type DateRange } from "react-day-picker";
-import useLazyFetch from "@/hooks/useLazyFetch";
-import { API_BASE_URL } from "@/lib/constants";
-import type { ApiResponse } from "@/types/Types";
+import { useLazyClientsStats } from "@/domain";
 
 type ChartFilterProps = {
   setChartData: Dispatch<SetStateAction<StatsClients | undefined>>;
@@ -27,9 +25,7 @@ const ChartFilter = ({ setChartData }: ChartFilterProps) => {
     to: undefined,
   });
 
-  const { fetch: fetchStats } = useLazyFetch<ApiResponse<StatsClients>>(
-    API_BASE_URL + `/stats/clients`
-  );
+  const { fetchStats } = useLazyClientsStats();
 
   useEffect(() => {
     const loadFilteredStats = async () => {

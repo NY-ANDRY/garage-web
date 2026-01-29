@@ -21,10 +21,11 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
-import { useFirestoreDoc } from "@/hooks/useFirestoreDoc";
-import { useFirestoreMutation } from "@/hooks/useFirestoreMutation";
-import useMutate from "@/hooks/useMutate";
-import { API_BASE_URL } from "@/lib/constants";
+import {
+  useInterventionFirestoreDoc,
+  useInterventionsFirestoreMutation,
+  useUpdateInterventionLocal,
+} from "@/domain";
 import { toast } from "sonner";
 
 type CrudLocalInterventionProps = {
@@ -36,15 +37,9 @@ const CrudLocalIntervention = ({
   intervention,
   reload,
 }: CrudLocalInterventionProps) => {
-  const { mutate: mutateFirebase } =
-    useFirestoreMutation<Intervention>("interventions");
-  const { data: dataFire } = useFirestoreDoc<Intervention>(
-    `interventions/${intervention.id}`,
-  );
-  const { mutate: mutateLocal } = useMutate(
-    `${API_BASE_URL}/interventions/${intervention.id}`,
-    "PATCH",
-  );
+  const { mutate: mutateFirebase } = useInterventionsFirestoreMutation();
+  const { data: dataFirebase } = useInterventionFirestoreDoc(intervention.id);
+  const { mutate: mutateLocal } = useUpdateInterventionLocal(intervention.id);
 
   const handleDelete = () => {
     if (!intervention?.id) {
@@ -70,21 +65,21 @@ const CrudLocalIntervention = ({
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    if (!dataFire?.id) {
+    if (!dataFirebase?.id) {
       console.error("ID manquant pour la mise à jour");
       return;
     }
 
-    dataFire.prix = Number(dataFire.prix);
-    dataFire.duree = Number(dataFire.duree);
+    dataFirebase.prix = Number(dataFirebase.prix);
+    dataFirebase.duree = Number(dataFirebase.duree);
 
     toast.promise(
       async () => {
-        await mutateLocal(dataFire);
+        await mutateLocal(dataFirebase);
         if (reload) {
           reload();
         }
-        return dataFire;
+        return dataFirebase;
       },
       {
         loading: "Mise à jour en cours...",
@@ -142,7 +137,7 @@ const CrudLocalIntervention = ({
           <FieldLabel htmlFor="street">Nom</FieldLabel>
           <Input
             readOnly
-            value={dataFire?.nom ?? ""}
+            value={dataFirebase?.nom ?? ""}
             id="street"
             type="text"
             placeholder="..."
@@ -153,7 +148,7 @@ const CrudLocalIntervention = ({
             <FieldLabel htmlFor="city">Prix</FieldLabel>
             <Input
               readOnly
-              value={dataFire?.prix ?? ""}
+              value={dataFirebase?.prix ?? ""}
               id="city"
               type="text"
               placeholder="..."
@@ -163,7 +158,7 @@ const CrudLocalIntervention = ({
             <FieldLabel htmlFor="zip">Duree</FieldLabel>
             <Input
               readOnly
-              value={dataFire?.duree ?? ""}
+              value={dataFirebase?.duree ?? ""}
               id="zip"
               type="text"
               placeholder="..."

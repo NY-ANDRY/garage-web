@@ -21,10 +21,8 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
-import { useFirestoreMutation } from "@/hooks/useFirestoreMutation";
 import { toast } from "sonner";
-import useMutate from "@/hooks/useMutate";
-import { API_BASE_URL } from "@/lib/constants";
+import { useInterventionsFirestoreMutation, useUpdateInterventionLocal } from "@/domain";
 
 type CrudLocalInterventionProps = {
   intervention: Intervention;
@@ -35,16 +33,12 @@ const CrudLocalIntervention = ({
   intervention,
   reload,
 }: CrudLocalInterventionProps) => {
-  const { mutate: mutateFirebase } =
-    useFirestoreMutation<Intervention>("interventions");
+  const { mutate: mutateFirebase } = useInterventionsFirestoreMutation();
   const [interventionForm, setInterventionForm] = useState<Intervention | null>(
     null,
   );
 
-  const { mutate: mutateLocal } = useMutate(
-    `${API_BASE_URL}/interventions/${intervention.id}`,
-    "PATCH",
-  );
+  const { mutate: mutateLocal } = useUpdateInterventionLocal(intervention.id);
 
   useEffect(() => {
     if (intervention) {

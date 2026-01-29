@@ -4,9 +4,8 @@ import { useTranslation } from "react-i18next";
 import Cards from "@/components/clients/CardsClients";
 import ChartBar from "@/components/clients/ChartClients";
 import ChartFilter from "@/components/clients/FilterClients";
-import type { ApiResponse, StatsClients } from "@/types/Types";
-import useFetch from "@/hooks/useFetch";
-import { API_BASE_URL } from "@/lib/constants";
+import type { StatsClients } from "@/types/Types";
+import { useClientsStats } from "@/domain";
 
 const Index = () => {
   const { t } = useTranslation();
@@ -15,9 +14,7 @@ const Index = () => {
       undefined,
     );
 
-  const { data } = useFetch<ApiResponse<StatsClients>>(
-    `${API_BASE_URL}/stats/clients`,
-  );
+  const { data } = useClientsStats();
 
   useEffect(() => {
       if (data?.data) {

@@ -22,9 +22,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { type DateRange } from "react-day-picker";
-import useFetch from "@/hooks/useFetch";
-import useLazyFetch from "@/hooks/useLazyFetch";
-import { API_BASE_URL } from "@/lib/constants";
+import { useClients, useLazyInterventionsStats } from "@/domain";
 
 type ChartFilterProps = {
   setChartData?: Dispatch<SetStateAction<StatsInterventions | undefined>>;
@@ -36,13 +34,8 @@ const ChartFilter = ({ setChartData }: ChartFilterProps) => {
     to: undefined,
   });
   const [selectedUserId, setSelectedUserId] = useState<string | undefined>(undefined);
-  const { data: clientsData } = useFetch<ApiResponse<User[]>>(
-    API_BASE_URL + `/clients`
-  );
-
-  const { fetch: fetchStats } = useLazyFetch<ApiResponse<StatsInterventions>>(
-    API_BASE_URL + `/stats/interventions`
-  );
+  const { data: clientsData } = useClients();
+  const { fetchStats } = useLazyInterventionsStats();
 
   useEffect(() => {
     const loadFilteredStats = async () => {

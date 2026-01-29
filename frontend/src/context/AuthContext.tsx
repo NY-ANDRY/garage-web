@@ -1,15 +1,8 @@
 import { createContext, useState, useCallback, type ReactNode } from "react";
-import { API_BASE_URL } from "@/lib/constants";
-import useMutate from "@/hooks/useMutate";
-
-interface User {
-  id: number;
-  name: string;
-  email: string;
-}
+import { useLogin, useRegister, type AuthUser } from "@/domain";
 
 interface AuthContextType {
-  user: User | null;
+  user: AuthUser | null;
   token: string | null;
   login: (email: string, password: string) => Promise<void>;
   register: (payload: {
@@ -29,7 +22,7 @@ interface AuthContextType {
 export const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
 export const AuthProvider = ({ children }: { children: ReactNode }) => {
-  const [user, setUser] = useState<User | null>(() => {
+  const [user, setUser] = useState<AuthUser | null>(() => {
     const stored = localStorage.getItem("auth_user");
     try {
       return stored ? JSON.parse(stored) : null;
@@ -43,10 +36,15 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     localStorage.getItem("auth_token"),
   );
 
-  const { mutate: loginMutate, isLoading: loginLoading, error: loginError } = useMutate<{ access_token: string; user: User }, any>(`${API_BASE_URL}/login`);
-  const { mutate: registerMutate, isLoading: registerLoading, error: registerError } = useMutate<{ access_token: string; user: User }, any>(`${API_BASE_URL}/register`);
+  const { mutate: loginMutate, isLoading: loginLoading, error: loginError } =
+    useLogin();
+  const {
+    mutate: registerMutate,
+    isLoading: registerLoading,
+    error: registerError,
+  } = useRegister();
 
-  const saveToken = useCallback((data: { access_token: string; user: User }) => {
+  const saveToken = useCallback((data: { access_token: string; user: AuthUser }) => {
     setToken(data.access_token);
     setUser(data.user);
 

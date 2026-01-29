@@ -1,16 +1,16 @@
-import { useState, useCallback } from 'react';
+import { useState, useCallback } from "react";
 
-interface FetchState<TResponse, TError> {
+export interface FetchState<TResponse, TError> {
   data: TResponse | null;
   isLoading: boolean;
   error: TError | null;
 }
 
-interface FetchParams {
+export interface FetchParams {
   [key: string]: string | number | boolean | undefined;
 }
 
-function useLazyFetch<TResponse>(baseUrl: string) {
+export default function useLazyFetch<TResponse>(baseUrl: string) {
   const [state, setState] = useState<FetchState<TResponse, Error>>({
     data: null,
     isLoading: false,
@@ -22,31 +22,30 @@ function useLazyFetch<TResponse>(baseUrl: string) {
       setState({ data: null, isLoading: true, error: null });
 
       try {
-        const token = localStorage.getItem('auth_token');
+        const token = localStorage.getItem("auth_token");
         const headers: HeadersInit = {
-          'Content-Type': 'application/json',
-          'Accept': 'application/json',
+          "Content-Type": "application/json",
+          Accept: "application/json",
         };
 
         if (token) {
-          headers['Authorization'] = `Bearer ${token}`;
+          headers["Authorization"] = `Bearer ${token}`;
         }
 
-        // Build query string from params
         const queryParams = new URLSearchParams();
         if (params) {
           Object.entries(params).forEach(([key, value]) => {
-            if (value !== undefined && value !== null && value !== '') {
+            if (value !== undefined && value !== null && value !== "") {
               queryParams.append(key, String(value));
             }
           });
         }
 
         const queryString = queryParams.toString();
-        const url = `${baseUrl}${queryString ? `?${queryString}` : ''}`;
+        const url = `${baseUrl}${queryString ? `?${queryString}` : ""}`;
 
         const response = await window.fetch(url, {
-          method: 'GET',
+          method: "GET",
           headers,
         });
 
@@ -63,10 +62,9 @@ function useLazyFetch<TResponse>(baseUrl: string) {
         throw error;
       }
     },
-    [baseUrl]
+    [baseUrl],
   );
 
   return { ...state, fetch };
 }
 
-export default useLazyFetch;

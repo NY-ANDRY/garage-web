@@ -5,9 +5,8 @@ import { CardsInterventions } from "@/components/interventions/CardsIntervention
 import ChartBar from "@/components/interventions/ChartInterventions";
 import TableIntervention from "@/components/interventions/TableInterventions";
 import ChartFilter from "@/components/interventions/FilterInterventions";
-import type { ApiResponse, StatsInterventions } from "@/types/Types";
-import useFetch from "@/hooks/useFetch";
-import { API_BASE_URL } from "@/lib/constants";
+import type { StatsInterventions } from "@/types/Types";
+import { useInterventionsStats } from "@/domain";
 
 const Index = () => {
   const { t } = useTranslation();
@@ -16,9 +15,7 @@ const Index = () => {
   const [chartData, setChartData] = useState<StatsInterventions | undefined>(
     undefined,
   );
-  const { data } = useFetch<ApiResponse<StatsInterventions>>(
-    API_BASE_URL + `/stats/interventions`,
-  );
+  const { data } = useInterventionsStats();
 
   useEffect(() => {
     if (data?.data) {

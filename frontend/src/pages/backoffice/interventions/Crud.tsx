@@ -2,8 +2,6 @@ import { useState, useEffect } from "react";
 import { useHeader } from "@/context/HeaderContext";
 import { useTranslation } from "react-i18next";
 import CrudInterventions from "@/components/interventions/CrudIntervention";
-import useFetch from "@/hooks/useFetch";
-import { API_BASE_URL } from "@/lib/constants";
 import type { ApiResponse, Intervention } from "@/types/Types";
 import ListIntervention from "@/components/interventions/ListIntervention";
 import ListInterventionSkeleton from "@/components/interventions/ListInterventionSkeleton";
@@ -12,6 +10,7 @@ import { fade } from "@/components/transitions/tansitions";
 import EmptyIntervention from "@/components/interventions/EmptyIntervention";
 import { useParams } from "react-router-dom";
 import { useUrlSegment } from "@/hooks/useUrlSegment";
+import { useInterventions } from "@/domain";
 
 const Interventions = () => {
   // 🔹 Récupérer le paramètre id depuis l'URL
@@ -24,9 +23,7 @@ const Interventions = () => {
   const [selectedId, setSelectedId] = useState<string>(id ?? "");
   const { replaceSegment } = useUrlSegment();
 
-  const { data, isLoading, refetch } = useFetch<ApiResponse<Intervention[]>>(
-    API_BASE_URL + `/interventions`,
-  );
+  const { data, isLoading, refetch } = useInterventions();
   const interventions = data?.data ?? [];
 
   useEffect(() => {

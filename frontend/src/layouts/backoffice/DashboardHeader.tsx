@@ -1,4 +1,3 @@
-import { Fragment } from "react/jsx-runtime";
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
 import { SidebarTrigger } from "@/components/ui/sidebar";
@@ -18,7 +17,7 @@ import { Link } from "react-router-dom";
 import { AnimatePresence, motion } from "motion/react";
 import { fade } from "@/components/transitions/tansitions";
 
-export function SiteHeader() {
+const SiteHeader = () => {
   const { theme, toggleTheme } = useThemeContext();
   const { t } = useTranslation();
   const { breadcrumbs } = useHeader();
@@ -73,4 +72,6 @@ export function SiteHeader() {
       </div>
     </header>
   );
-}
+};
+
+export default SiteHeader;

@@ -1,4 +1,4 @@
-import { useState, useCallback } from 'react';
+import { useState, useCallback } from "react";
 
 interface MutationState<TResponse, TError> {
   data: TResponse | null;
@@ -6,9 +6,9 @@ interface MutationState<TResponse, TError> {
   error: TError | null;
 }
 
-function useMutate<TResponse, TVariables>(
+export default function useMutate<TResponse, TVariables>(
   url: string,
-  method: 'POST' | 'PUT' | 'PATCH' | 'DELETE' = 'POST'
+  method: "POST" | "PUT" | "PATCH" | "DELETE" = "POST",
 ) {
   const [state, setState] = useState<MutationState<TResponse, Error>>({
     data: null,
@@ -21,14 +21,14 @@ function useMutate<TResponse, TVariables>(
       setState({ data: null, isLoading: true, error: null });
 
       try {
-        const token = localStorage.getItem('auth_token');
+        const token = localStorage.getItem("auth_token");
         const headers: HeadersInit = {
-          'Content-Type': 'application/json',
-          'Accept': 'application/json',
+          "Content-Type": "application/json",
+          Accept: "application/json",
         };
 
         if (token) {
-          headers['Authorization'] = `Bearer ${token}`;
+          headers["Authorization"] = `Bearer ${token}`;
         }
 
         const response = await fetch(url, {
@@ -50,10 +50,9 @@ function useMutate<TResponse, TVariables>(
         throw error;
       }
     },
-    [url, method]
+    [url, method],
   );
 
   return { ...state, mutate };
 }
 
-export default useMutate;
