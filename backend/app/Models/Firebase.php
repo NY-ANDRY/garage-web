@@ -5,104 +5,163 @@ namespace App\Models;
 class Firebase
 {
     private $url = 'https://firestore.googleapis.com/v1/projects/garage-44cc0/databases/(default)/documents';
+    // On définit le chemin de base des documents pour les références
+    private $basePath = 'projects/garage-44cc0/databases/(default)/documents';
 
-
-
-
-    /**
-     * Convertit un tableau associatif standard en format Firestore Fields
-     */
-    public function formatToFirestore($data)
+    private function post(string $endpoint, array $body): array
     {
-        $fields = [];
-
-        foreach ($data as $key => $value) {
-            $fields[$key] = $this->wrapValue($value);
-        }
-
-        // On retourne la structure attendue par l'API : {"fields": {...}}
-        return ['fields' => $fields];
+        $ch = curl_init($this->url . '/' . $endpoint . ':runQuery');
+        curl_setopt_array($ch, [
+            CURLOPT_RETURNTRANSFER => true,
+            CURLOPT_HTTPHEADER => ['Content-Type: application/json'],
+            CURLOPT_POST => true,
+            CURLOPT_POSTFIELDS => json_encode($body),
+        ]);
+        $response = curl_exec($ch);
+        curl_close($ch);
+        return json_decode($response, true) ?? [];
     }
 
-    private function wrapValue($value)
+    // === Réparations après une date ===
+    public function getReparationsAfterDate(string $isoDate): array
     {
-        if (is_null($value)) {
-            return ['nullValue' => null];
-        }
-
-        if (is_bool($value)) {
-            return ['booleanValue' => $value];
-        }
-
-        if (is_int($value)) {
-            return ['integerValue' => (string) $value]; // Firestore attend les nombres en string dans le JSON
-        }
-
-        if (is_float($value) || is_double($value)) {
-            return ['doubleValue' => $value];
-        }
-
-        if (is_array($value)) {
-            // Vérifie si c'est un tableau associatif (Map) ou séquentiel (Array)
-            if (array_keys($value) === range(0, count($value) - 1)) {
-                return [
-                    'arrayValue' => [
-                        'values' => array_map([$this, 'wrapValue'], $value)
+        $body = [
+            'structuredQuery' => [
+                'from' => [['collectionId' => 'reparations']],
+                'where' => [
+                    'fieldFilter' => [
+                        'field' => ['fieldPath' => 'date'],
+                        'op' => 'GREATER_THAN',
+                        'value' => ['timestampValue' => $isoDate]
                     ]
-                ];
-            } else {
-                return [
-                    'mapValue' => [
-                        'fields' => $this->formatToFirestore($value)['fields']
-                    ]
-                ];
-            }
-        }
-
-        // Par défaut, on traite comme une string
-        return ['stringValue' => (string) $value];
+                ]
+            ]
+        ];
+        $response = $this->post('', $body);
+        return $this->formatFirestoreResponse($response);
     }
 
     /**
-     * Convertit le format spécifique de Firestore en JSON standard
+     * Méthode générique pour exclure des documents par leur ID (clé primaire)
      */
+    private function getDocumentsAndExclude(string $collectionId, array $ids): array
+    {
+        // Si la liste est vide, on retourne tout sans filtre
+        if (empty($ids)) {
+            $response = $this->post('', [
+                'structuredQuery' => [
+                    'from' => [['collectionId' => $collectionId]],
+                ]
+            ]);
+            return $this->formatFirestoreResponse($response);
+        }
+
+        /**
+         * IMPORTANT: Pour filtrer sur l'ID du document, Firestore utilise le champ spécial '__name__'.
+         * La valeur doit être le chemin complet du document (referenceValue).
+         */
+        $values = array_map(function ($id) use ($collectionId) {
+            return [
+                'referenceValue' => "{$this->basePath}/{$collectionId}/{$id}"
+            ];
+        }, $ids);
+
+        $body = [
+            'structuredQuery' => [
+                'from' => [['collectionId' => $collectionId]],
+                'where' => [
+                    'fieldFilter' => [
+                        'field' => ['fieldPath' => '__name__'],
+                        'op' => 'NOT_IN',
+                        'value' => ['arrayValue' => ['values' => $values]]
+                    ]
+                ]
+            ]
+        ];
+
+        $response = $this->post('', $body);
+        return $this->formatFirestoreResponse($response);
+    }
+
+    // === Utilisateurs non dans liste d'UID ===
+    // On garde celle-ci telle quelle car 'uid' semble être un CHAMP interne dans vos docs users
+    public function getUsersAndExcludeUIDS(array $uids): array
+    {
+        if (empty($uids)) {
+            $response = $this->post('', [
+                'structuredQuery' => ['from' => [['collectionId' => 'users']]]
+            ]);
+            return $this->formatFirestoreResponse($response);
+        }
+
+        $values = array_map(fn($uid) => ['stringValue' => $uid], $uids);
+        $body = [
+            'structuredQuery' => [
+                'from' => [['collectionId' => 'users']],
+                'where' => [
+                    'fieldFilter' => [
+                        'field' => ['fieldPath' => 'uid'],
+                        'op' => 'NOT_IN',
+                        'value' => ['arrayValue' => ['values' => $values]]
+                    ]
+                ]
+            ]
+        ];
+
+        $response = $this->post('', $body);
+        return $this->formatFirestoreResponse($response);
+    }
+
+    // === Voitures non dans liste d'ID (Clé du document) ===
+    public function getVoituresAndExclude(array $ids): array
+    {
+        return $this->getDocumentsAndExclude('voitures', $ids);
+    }
+
+    // === Réparations non dans liste d'ID (Clé du document) ===
+    public function getReparationsAndExclude(array $ids): array
+    {
+        return $this->getDocumentsAndExclude('reparations', $ids);
+    }
+
+    // === Formattage (Inchangé) ===
     public function formatFirestoreResponse($data)
     {
-        // Si c'est un document complet, on commence par 'fields'
         if (isset($data['fields'])) {
             return $this->parseFields($data['fields']);
         }
-
-        // Si c'est une liste de documents
         if (isset($data['documents'])) {
             return array_map(function ($doc) {
                 return [
-                    'id' => basename($doc['name']), // Récupère l'ID à la fin du chemin
+                    'id' => basename($doc['name']),
                     'data' => $this->parseFields($doc['fields'])
                 ];
             }, $data['documents']);
         }
-
-        return $data;
+        return array_map(function ($item) {
+            if (!isset($item['document']))
+                return null;
+            $doc = $item['document'];
+            return [
+                'id' => basename($doc['name']),
+                'data' => $this->parseFields($doc['fields'] ?? [])
+            ];
+        }, is_array($data) ? $data : []);
     }
 
     private function parseFields($fields)
     {
         $result = [];
-
         foreach ($fields as $key => $value) {
             $result[$key] = $this->parseValue($value);
         }
-
         return $result;
     }
 
     private function parseValue($value)
     {
-        // Détermine le type de données Firestore
         $type = array_key_first($value);
-        $val = $value[$type];
-
+        $val = $value[$type] ?? null;
         switch ($type) {
             case 'mapValue':
                 return $this->parseFields($val['fields'] ?? []);
@@ -115,11 +174,11 @@ class Firebase
             case 'booleanValue':
                 return (bool) $val;
             case 'timestampValue':
-                return $val; // Tu peux aussi convertir en DateTime ici
+                return $val;
             case 'nullValue':
                 return null;
             default:
-                return $val; // stringValue, referenceValue, etc.
+                return $val;
         }
     }
 }

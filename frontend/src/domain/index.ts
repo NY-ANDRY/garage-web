@@ -9,7 +9,7 @@ export { useClientsStats, useLazyClientsStats } from "./stats/useClientsStats";
 
 // Clients
 export { useClients } from "./clients/useClients";
-export { useClientsFirestore } from "./clients/useClientsFirestore";
+export { useClientsFirestore, useUserFirestoreDoc, useClientsFirestoreMutation } from "./clients/useClientsFirestore";
 
 // Interventions
 export { useInterventions } from "./interventions/useInterventions";

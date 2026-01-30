@@ -5,15 +5,16 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import {
-  CreditCardIcon,
-  LogOutIcon,
-  SettingsIcon,
-  UserIcon,
-} from "lucide-react";
+import { CreditCardIcon, LogOutIcon, SettingsIcon } from "lucide-react";
 import { MoreHorizontalIcon } from "lucide-react";
+import DropMenuProfile from "./DropMenuProfile";
+import type { User } from "@/types/Types";
 
-const DropdownUser = () => {
+type DropdownUserProps = {
+  client: User;
+};
+
+const DropdownUser = ({ client }: DropdownUserProps) => {
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
@@ -21,12 +22,9 @@ const DropdownUser = () => {
           <MoreHorizontalIcon size={16} />
         </div>
       </DropdownMenuTrigger>
-      <DropdownMenuContent  align="start">
-        <DropdownMenuItem>
-          <UserIcon />
-          Profile
-        </DropdownMenuItem>
-        <DropdownMenuItem>
+      <DropdownMenuContent align="start">
+        <DropMenuProfile client={client} />
+        {/* <DropdownMenuItem>
           <CreditCardIcon />
           Billing
         </DropdownMenuItem>
@@ -38,10 +36,10 @@ const DropdownUser = () => {
         <DropdownMenuItem variant="destructive">
           <LogOutIcon />
           Log out
-        </DropdownMenuItem>
+        </DropdownMenuItem> */}
       </DropdownMenuContent>
     </DropdownMenu>
   );
-}
+};
 
 export default DropdownUser;

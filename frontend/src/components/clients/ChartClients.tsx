@@ -31,10 +31,10 @@ const ChartClients = ({ chartData }: ChartClientsProps) => {
           <CardTitle>{t("clients.total_clients")}</CardTitle>
         </CardHeader>
 
-        <CardContent className="px-0 sm:pt-6 flex-1 pr-4 md:pr-8">
+        <CardContent className="px-0 sm:pt-6 flex-1 pr-4 md:pr-8 flex flex-col justify-end">
           <ChartContainer
             config={chartConfig}
-            className="aspect-auto h-106 w-full"
+            className="aspect-auto h-11/12 w-full"
           >
             <BarChart data={chartData}>
               <CartesianGrid vertical={false} />

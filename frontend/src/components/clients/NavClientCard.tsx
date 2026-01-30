@@ -1,7 +1,6 @@
 import { cn } from "@/lib/utils";
 import type { User } from "@/types/Types";
-import { MoreHorizontalIcon } from "lucide-react";
-import DropdownUser from "./DropDownUser";
+import DropdownClient from "./DropDownClient";
 
 type NavClientProps = {
   client: User;
@@ -29,7 +28,7 @@ const NavClient = ({ client, onClick, selected }: NavClientProps) => {
         <div className="flex w-full items-center gap-2">
           <span className="text-sm">{client.displayName}</span>
           <div className="ml-auto text-xs hover:bg-background rounded-sm p-1">
-            <DropdownUser />
+            <DropdownClient client={client} />
           </div>
         </div>
         <span className="font-medium">{client.email}</span>
