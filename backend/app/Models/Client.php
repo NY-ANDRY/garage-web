@@ -24,12 +24,18 @@ class Client extends Model
 
     public function voitures()
     {
-        return $this->hasMany(Voiture::class, 'uid_client', 'uid');
+        return $this->hasMany(Voitures::class, 'uid_client', 'uid');
     }
 
     public function reparations()
     {
         return $this->hasMany(Reparation::class, 'uid_client', 'uid');
+    }
+
+    public function synchronisations()
+    {
+        return $this->belongsToMany(Synchronisation::class, 'sync_clients', 'uid', 'id_sync')
+            ->withTimestamps();
     }
 
     public static function stats($dateDebut = null, $dateFin = null)
@@ -74,5 +80,27 @@ class Client extends Model
                 'filtered_clients' => $totalNumber
             ]
         ];
+    }
+
+    public static function saveFromFirebase($data)
+    {
+        return self::create([
+            'uid' => $data['data']['uid'] ?? null,
+            'email' => $data['data']['email'] ?? null,
+            'photoURL' => $data['data']['photoURL'] ?? null,
+            'fcmToken' => $data['data']['fcmToken'] ?? null,
+            'displayName' => $data['data']['displayName'] ?? null
+        ]);
+    }
+
+    public static function syncByUid($uid)
+    {
+        $client = self::find($uid);
+        if (!$client) {
+            $firebase = new Firebase();
+            $data = $firebase->getDocument('users', $uid);
+            $client = self::saveFromFirebase($data);
+        }
+        return $client;
     }
 }

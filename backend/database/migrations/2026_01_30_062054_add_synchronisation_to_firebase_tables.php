@@ -10,39 +10,80 @@ return new class extends Migration {
      */
     public function up(): void
     {
+
+        // 1. Table des synchronisations Firebase
+        Schema::create('sources', function (Blueprint $table) {
+            $table->id();
+            $table->string('name');
+            $table->timestamps();
+
+            $table->softDeletes();
+        });
+
         // 1. Table des synchronisations Firebase
         Schema::create('synchronisations', function (Blueprint $table) {
             $table->id();
-            $table->string('source')->default('firebase');
-            $table->timestamp('synchronised_at')->useCurrent();
+            $table->integer('id_source');
             $table->timestamps();
+
+            $table->softDeletes();
+
+            $table->foreign('id_source')->references('id')->on('sources')->restrictOnDelete();
         });
 
-        // 2. Ajout de la référence dans clients
-        Schema::table('clients', function (Blueprint $table) {
-            $table->foreignId('synchronisation_id')
-                ->nullable()
-                ->after('photoURL')
-                ->constrained('synchronisations')
-                ->nullOnDelete();
+        Schema::create('statut_sync', function (Blueprint $table) {
+            $table->id();
+            $table->string('statut');
+            $table->timestamps();
+            $table->softDeletes();
         });
 
-        // 3. Ajout de la référence dans voiture
-        Schema::table('voiture', function (Blueprint $table) {
-            $table->foreignId('synchronisation_id')
-                ->nullable()
-                ->after('uid_client')
-                ->constrained('synchronisations')
-                ->nullOnDelete();
+        Schema::create('sync_statuts', function (Blueprint $table) {
+            $table->id();
+            $table->integer('id_sync');
+            $table->integer('id_statut');
+            $table->timestamps();
+
+            $table->softDeletes();
+
+            $table->foreign('id_sync')->references('id')->on('synchronisations')->restrictOnDelete();
+            $table->foreign('id_statut')->references('id')->on('statut_sync')->restrictOnDelete();
         });
 
-        // 4. Ajout de la référence dans reparations
-        Schema::table('reparations', function (Blueprint $table) {
-            $table->foreignId('synchronisation_id')
-                ->nullable()
-                ->after('id_voiture')
-                ->constrained('synchronisations')
-                ->nullOnDelete();
+        Schema::create('sync_clients', function (Blueprint $table) {
+            $table->id();
+            $table->integer('id_sync');
+            $table->string('uid');
+            $table->timestamps();
+
+            $table->softDeletes();
+
+            $table->foreign('id_sync')->references('id')->on('synchronisations')->restrictOnDelete();
+            $table->foreign('uid')->references('uid')->on('clients')->restrictOnDelete();
+        });
+
+        Schema::create('sync_voitures', function (Blueprint $table) {
+            $table->id();
+            $table->integer('id_sync');
+            $table->string('id_voiture');
+            $table->timestamps();
+
+            $table->softDeletes();
+
+            $table->foreign('id_sync')->references('id')->on('synchronisations')->restrictOnDelete();
+            $table->foreign('id_voiture')->references('id')->on('voitures')->restrictOnDelete();
+        });
+
+        Schema::create('sync_reparations', function (Blueprint $table) {
+            $table->id();
+            $table->integer('id_sync');
+            $table->string('id_reparation');
+            $table->timestamps();
+
+            $table->softDeletes();
+
+            $table->foreign('id_sync')->references('id')->on('synchronisations')->restrictOnDelete();
+            $table->foreign('id_reparation')->references('id')->on('reparations')->restrictOnDelete();
         });
     }
 
@@ -51,21 +92,12 @@ return new class extends Migration {
      */
     public function down(): void
     {
-        Schema::table('clients', function (Blueprint $table) {
-            $table->dropForeign(['synchronisation_id']);
-            $table->dropColumn('synchronisation_id');
-        });
-
-        Schema::table('voiture', function (Blueprint $table) {
-            $table->dropForeign(['synchronisation_id']);
-            $table->dropColumn('synchronisation_id');
-        });
-
-        Schema::table('reparations', function (Blueprint $table) {
-            $table->dropForeign(['synchronisation_id']);
-            $table->dropColumn('synchronisation_id');
-        });
-
+        Schema::dropIfExists('sync_reparations');
+        Schema::dropIfExists('sync_voitures');
+        Schema::dropIfExists('sync_clients');
+        Schema::dropIfExists('sync_statuts');
+        Schema::dropIfExists('statut_sync');
         Schema::dropIfExists('synchronisations');
+        Schema::dropIfExists('sources');
     }
 };

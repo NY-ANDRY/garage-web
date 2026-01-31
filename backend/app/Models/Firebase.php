@@ -5,8 +5,7 @@ namespace App\Models;
 class Firebase
 {
     private $url = 'https://firestore.googleapis.com/v1/projects/garage-44cc0/databases/(default)/documents';
-    // On définit le chemin de base des documents pour les références
-    private $basePath = 'projects/garage-44cc0/databases/(default)/documents';
+    // private $basePath = 'projects/garage-44cc0/databases/(default)/documents';
 
     private function post(string $endpoint, array $body): array
     {
@@ -22,7 +21,22 @@ class Firebase
         return json_decode($response, true) ?? [];
     }
 
-    // === Réparations après une date ===
+    public function getDocument(string $collectionId, string $documentId): array
+    {
+        $ch = curl_init($this->url . '/' . $collectionId . '/' . $documentId);
+        curl_setopt_array($ch, [
+            CURLOPT_RETURNTRANSFER => true,
+            CURLOPT_HTTPHEADER => ['Content-Type: application/json'],
+        ]);
+        $response = curl_exec($ch);
+        curl_close($ch);
+        $data = json_decode($response, true) ?? [];
+        return [
+            'id' => $documentId,
+            'data' => $this->parseFields($data['fields'] ?? [])
+        ];
+    }
+
     public function getReparationsAfterDate(string $isoDate): array
     {
         $body = [
@@ -41,90 +55,47 @@ class Firebase
         return $this->formatFirestoreResponse($response);
     }
 
-    /**
-     * Méthode générique pour exclure des documents par leur ID (clé primaire)
-     */
-    private function getDocumentsAndExclude(string $collectionId, array $ids): array
+    private function getAllDocuments(string $collectionId): array
     {
-        // Si la liste est vide, on retourne tout sans filtre
-        if (empty($ids)) {
-            $response = $this->post('', [
-                'structuredQuery' => [
-                    'from' => [['collectionId' => $collectionId]],
-                ]
-            ]);
-            return $this->formatFirestoreResponse($response);
-        }
-
-        /**
-         * IMPORTANT: Pour filtrer sur l'ID du document, Firestore utilise le champ spécial '__name__'.
-         * La valeur doit être le chemin complet du document (referenceValue).
-         */
-        $values = array_map(function ($id) use ($collectionId) {
-            return [
-                'referenceValue' => "{$this->basePath}/{$collectionId}/{$id}"
-            ];
-        }, $ids);
-
-        $body = [
+        $response = $this->post('', [
             'structuredQuery' => [
-                'from' => [['collectionId' => $collectionId]],
-                'where' => [
-                    'fieldFilter' => [
-                        'field' => ['fieldPath' => '__name__'],
-                        'op' => 'NOT_IN',
-                        'value' => ['arrayValue' => ['values' => $values]]
-                    ]
-                ]
+                'from' => [['collectionId' => $collectionId]]
             ]
-        ];
-
-        $response = $this->post('', $body);
+        ]);
         return $this->formatFirestoreResponse($response);
     }
 
-    // === Utilisateurs non dans liste d'UID ===
-    // On garde celle-ci telle quelle car 'uid' semble être un CHAMP interne dans vos docs users
     public function getUsersAndExcludeUIDS(array $uids): array
     {
-        if (empty($uids)) {
-            $response = $this->post('', [
-                'structuredQuery' => ['from' => [['collectionId' => 'users']]]
-            ]);
-            return $this->formatFirestoreResponse($response);
+        // On récupère simplement tous les users
+        $allUsers = $this->getAllDocuments('users');
+
+        // Filtrage côté PHP si nécessaire
+        if (!empty($uids)) {
+            $allUsers = array_filter($allUsers, fn($user) => !in_array($user['data']['uid'] ?? null, $uids));
         }
 
-        $values = array_map(fn($uid) => ['stringValue' => $uid], $uids);
-        $body = [
-            'structuredQuery' => [
-                'from' => [['collectionId' => 'users']],
-                'where' => [
-                    'fieldFilter' => [
-                        'field' => ['fieldPath' => 'uid'],
-                        'op' => 'NOT_IN',
-                        'value' => ['arrayValue' => ['values' => $values]]
-                    ]
-                ]
-            ]
-        ];
-
-        $response = $this->post('', $body);
-        return $this->formatFirestoreResponse($response);
+        return array_values($allUsers); // réindexer
     }
 
-    // === Voitures non dans liste d'ID (Clé du document) ===
     public function getVoituresAndExclude(array $ids): array
     {
-        return $this->getDocumentsAndExclude('voitures', $ids);
+        $all = $this->getAllDocuments('voitures');
+        if (!empty($ids)) {
+            $all = array_filter($all, fn($item) => !in_array($item['id'], $ids));
+        }
+        return array_values($all);
     }
 
-    // === Réparations non dans liste d'ID (Clé du document) ===
     public function getReparationsAndExclude(array $ids): array
     {
-        return $this->getDocumentsAndExclude('reparations', $ids);
+        $all = $this->getAllDocuments('reparations');
+        if (!empty($ids)) {
+            $all = array_filter($all, fn($item) => !in_array($item['id'], $ids));
+        }
+        return array_values($all);
     }
 
-    // === Formattage (Inchangé) ===
     public function formatFirestoreResponse($data)
     {
         if (isset($data['fields'])) {

@@ -4,11 +4,11 @@ namespace Database\Seeders;
 
 use Illuminate\Database\Seeder;
 use App\Models\Client;
-use App\Models\Voiture;
+use App\Models\Voitures;
 use App\Models\Reparation;
 use App\Models\Intervention;
 use App\Models\Paiement;
-use App\Models\Statut;
+use App\Models\Statuts_reparations;
 use Illuminate\Support\Str;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
@@ -27,10 +27,10 @@ class GarageSeeder extends Seeder
         // Nettoyer les tables dans le bon ordre (ou toutes si FK désactivées)
         DB::table('paiement')->truncate();
         DB::table('reparation_interventions')->truncate();
-        DB::table('reparations_statut')->truncate();
-        DB::table('statut')->truncate();
+        DB::table('reparations_statuts')->truncate();
+        DB::table('statuts_reparations')->truncate();
         DB::table('reparations')->truncate();
-        DB::table('voiture')->truncate();
+        DB::table('voitures')->truncate();
         DB::table('clients')->truncate();
 
         Schema::enableForeignKeyConstraints();
@@ -52,13 +52,13 @@ class GarageSeeder extends Seeder
         // 2. Créer des voitures pour ces clients
         $cars = [];
         foreach ($clients as $index => $client) {
-            $cars[] = Voiture::create([
+            $cars[] = Voitures::create([
                 'id' => "car_seed_" . ($index + 1),
                 'uid_client' => $client->uid,
                 'numero' => rand(1000, 9999) . " " . chr(rand(65, 90)) . chr(rand(65, 90)),
                 'nom' => "Voiture Modèle " . ($index + 1),
                 'marque' => "Marque " . ($index + 1),
-                'année' => Carbon::now()->subYears(rand(1, 15))
+                'annee' => Carbon::now()->subYears(rand(1, 15))
             ]);
         }
 
@@ -98,21 +98,17 @@ class GarageSeeder extends Seeder
 
                 // Créer un paiement correspondant
                 Paiement::create([
-                    'id' => "pay_" . Str::random(10),
                     'id_reparation' => $reparation->id,
                     'montant' => $unitPrice,
                     'date' => $reparation->date
                 ]);
 
-                // Optionnellement créer un statut
-                $statut = Statut::create([
-                    'id' => "statut_" . Str::random(10),
-                    'uid_client' => $randomCar->uid_client,
-                    'id_voiture' => $randomCar->id,
+                // Optionnellement créer un statuts
+                $statuts = Statuts_reparations::create([
                     'date' => $reparation->date
                 ]);
 
-                $reparation->statuts()->attach($statut->id, ['date' => $reparation->date]);
+                $reparation->statuts()->attach($statuts->id, ['date' => $reparation->date]);
             }
         }
     }

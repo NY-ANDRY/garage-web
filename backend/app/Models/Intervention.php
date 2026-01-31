@@ -10,6 +10,7 @@ class Intervention extends Model
     use HasFactory;
 
     protected $fillable = [
+        'id',
         'nom',
         'prix',
         'duree',

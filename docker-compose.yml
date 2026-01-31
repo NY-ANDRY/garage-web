@@ -49,8 +49,35 @@ services:
         composer install &&
         php artisan key:generate --force &&
         php artisan migrate:fresh --seed --force &&
+        php artisan queue:work --tries=3 --timeout=120 &
         php artisan serve --host=0.0.0.0 --port=8000
       "
+  # php artisan queue:work --tries=3 --timeout=120 & solona anio ambany io
+
+  # Laravel Queue Worker
+  # worker:
+  #   build:
+  #     context: ./backend
+  #     dockerfile: Dockerfile
+  #   container_name: garage_worker
+  #   depends_on:
+  #     postgres:
+  #       condition: service_healthy
+  #   environment:
+  #     APP_NAME: Garage
+  #     APP_ENV: ${APP_ENV:-development}
+  #     APP_URL: http://localhost:8001
+  #     DB_CONNECTION: pgsql
+  #     DB_HOST: postgres
+  #     DB_PORT: 5432
+  #     DB_DATABASE: ${DB_DATABASE:-garage}
+  #     DB_USERNAME: ${DB_USERNAME:-postgres}
+  #     DB_PASSWORD: ${DB_PASSWORD:-postgres}
+  #   volumes:
+  #     - ./backend:/app
+  #   networks:
+  #     - garage_network
+  #   command: php artisan queue:work --tries=3 --timeout=120
 
   # React Frontend
   frontend:

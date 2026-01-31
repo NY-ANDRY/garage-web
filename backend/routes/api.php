@@ -3,6 +3,7 @@
 use App\Http\Controllers\Api\AuthController;
 use App\Http\Controllers\Api\InterventionController;
 use App\Http\Controllers\Api\ClientController;
+use App\Http\Controllers\Api\SynchronisationController;
 use Illuminate\Support\Facades\Route;
 
 // Public routes
@@ -24,4 +25,12 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::apiResource('clients', ClientController::class);
     Route::get('/stats/interventions', [InterventionController::class, 'stats']);
     Route::get('/stats/clients', [ClientController::class, 'stats']);
+
+    Route::prefix('sync')->group(function () {
+        Route::get('/', [SynchronisationController::class, 'index']);
+        Route::get('/{id}', [SynchronisationController::class, 'show']);
+        Route::post('/clients', [SynchronisationController::class, 'syncClients']);
+        Route::post('/voitures', [SynchronisationController::class, 'syncVoitures']);
+        Route::post('/reparations', [SynchronisationController::class, 'syncReparations']);
+    });
 });

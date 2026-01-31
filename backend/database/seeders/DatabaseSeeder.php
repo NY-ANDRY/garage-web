@@ -26,6 +26,7 @@ class DatabaseSeeder extends Seeder
         $this->call([
             InterventionSeeder::class,
             GarageSeeder::class,
+            SourceSeeder::class,
         ]);
     }
 }
