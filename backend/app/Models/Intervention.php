@@ -40,6 +40,8 @@ class Intervention extends Model
             $query->where('reparations.uid_client', $idUser);
         }
 
+        // $query->whereHas('paiements');
+
         $totalNumber = $query->count();
         $totalCost = $query->sum('reparation_interventions.prix');
 
