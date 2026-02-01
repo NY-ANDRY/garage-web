@@ -35,7 +35,7 @@ class TestController extends Controller
         //
 
         $sync = Synchronisation::create(['id_source' => 1]); // Assuming source 1 is Firebase
-        return response()->json(Synchronisation::syncReparations($sync));
+        return response()->json(Synchronisation::syncAllReparations($sync));
     }
 
 }

@@ -12,6 +12,7 @@ import ProtectedRoute from "@/components/auth/ProtectedRoute";
 import AuthView from "@/pages/backoffice/auth/AuthView";
 import IndexClient from "@/pages/backoffice/client/Index";
 import IndexSync from "@/pages/backoffice/sync/Index";
+import SyncDetail from "@/pages/backoffice/sync/SyncDetail";
 import Settings from "@/pages/backoffice/settings/Index";
 import PageTransition from "@/components/transitions/PageTransition";
 
@@ -98,7 +99,16 @@ export const routes: RouteObject[] = [
           },
           {
             path: "sync",
-            element: <IndexSync />,
+            children: [
+              {
+                index: true,
+                element: <IndexSync />,
+              },
+              {
+                path: ":id",
+                element: <SyncDetail />,
+              },
+            ],
           },
           {
             path: "settings",

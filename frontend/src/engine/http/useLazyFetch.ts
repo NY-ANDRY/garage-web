@@ -10,7 +10,7 @@ export interface FetchParams {
   [key: string]: string | number | boolean | undefined;
 }
 
-export default function useLazyFetch<TResponse>(baseUrl: string) {
+export default function useLazyFetch<TResponse>(baseUrl: string | null) {
   const [state, setState] = useState<FetchState<TResponse, Error>>({
     data: null,
     isLoading: false,
@@ -19,6 +19,7 @@ export default function useLazyFetch<TResponse>(baseUrl: string) {
 
   const fetch = useCallback(
     async (params?: FetchParams) => {
+      if (!baseUrl) return null;
       setState({ data: null, isLoading: true, error: null });
 
       try {

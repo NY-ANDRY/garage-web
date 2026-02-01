@@ -99,8 +99,8 @@ class Client extends Model
         if (!$client) {
             $firebase = new Firebase();
             $data = $firebase->getDocument('users', $uid);
-            $client = self::saveFromFirebase($data);
+            return self::saveFromFirebase($data);
         }
-        return $client;
+        return null;
     }
 }

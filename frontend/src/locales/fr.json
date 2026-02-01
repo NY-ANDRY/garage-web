@@ -10,7 +10,45 @@
     "language": "Langue",
     "theme": "Thème",
     "light": "Clair",
-    "dark": "Sombre"
+    "dark": "Sombre",
+    "sync_history": "Historique des synchronisations",
+    "date_start": "Date de début",
+    "date_end": "Date de fin",
+    "status": "Statut",
+    "unknown": "Inconnu",
+    "started": "En cours",
+    "finished": "Terminé",
+    "failed": "Erreur",
+    "syncing": "Synchronisation...",
+    "no_sync_found": "Aucune synchronisation trouvée",
+    "sync_detail": "Détail de la synchronisation",
+    "new_items": "nouveaux éléments",
+    "timeline": "Chronologie",
+    "new_sync": "Nouvelle synchronisation",
+    "new_sync_title": "Lancer une synchronisation",
+    "new_sync_description": "Lance une synchronisation complète : Clients → Voitures → Réparations.",
+    "start_sync": "Démarrer",
+    "cancel": "Annuler",
+    "sync_started_success": "Synchronisation démarrée avec succès",
+    "sync_started_error": "Erreur lors du démarrage de la synchronisation",
+    "sync_started_error_catastrofic": "Une erreur critique est survenue",
+    "clients": "Clients",
+    "voitures": "Voitures",
+    "reparations": "Réparations",
+    "sync_items_list": "Liste des éléments synchronisés",
+    "no_items": "Aucun élément trouvé",
+    "client": "Client",
+    "voiture": "Voiture",
+    "license_plate": "Matricule",
+    "last_sync": "Dernière synchronisation",
+    "sync_date": "Date de synchronisation",
+    "use_last_sync": "Utiliser la date de la dernière synchronisation",
+    "fetch_every": "récupération toutes les",
+    "use_task": "Utiliser une tâche",
+    "use_task_hint": "Exécute la synchronisation dans le worker en arrière-plan",
+    "use_task_confirmation": "Voulez-vous continuer ? La synchronisation s'exécutera après la réponse, mais les données ne seront pas visibles immédiatement.",
+    "use_last_sync_hint": "Plus rapide mais ne synchronise pas les données non synchronisées avant la date.",
+    "use_task_hover_hint": "Utilise le worker en arrière-plan de Laravel (besoin d'activation si non lancé à partir du docker-compose)."
   },
   "sidebar": {
     "brand": "Garage",
@@ -115,14 +153,23 @@
     "select_reviewer": "Sélectionner un réviseur"
   },
   "clients": {
-    "total_clients": "Total des clients",
-    "cards_total_client": "Client Total"
+    "total_clients": "Nombre de nouveaux clients",
+    "cards_total_client": "Total des clients",
+    "cards_filtered_client": "Nouveaux clients"
   },
   "interventions": {
     "total_revenue": "Revenu Total",
     "total_number": "Nombre Total",
     "number": "Nombre",
     "cost": "Coût"
+  },
+  "frontoffice": {
+    "no_reparation": "Aucune réparation",
+    "select_another_user": "Veuillez sélectionner un autre utilisateur",
+    "home_title": "Clients",
+    "home_description": "Veuillez sélectionner un utilisateur dans la barre de navigation",
+    "learn_more": "En savoir plus",
+    "reparation_not_found": "Réparation introuvable."
   },
   "currency": "$"
 }

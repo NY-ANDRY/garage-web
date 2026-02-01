@@ -7,7 +7,6 @@ import ListIntervention from "@/components/interventions/ListIntervention";
 import ListInterventionSkeleton from "@/components/interventions/ListInterventionSkeleton";
 import EmptyIntervention from "@/components/interventions/EmptyIntervention";
 import { useParams } from "react-router-dom";
-import { useUrlSegment } from "@/hooks/useUrlSegment";
 import { useInterventions } from "@/domain";
 import AnimatedPlaceholder from "@/components/animations/AnimatedPlaceholder";
 
@@ -20,14 +19,13 @@ const Interventions = () => {
     useState<Intervention | null>(null);
   const [selectedId, setSelectedId] = useState<string>(id ?? "");
 
-  const { replaceSegment } = useUrlSegment();
   const { data, isLoading, refetch } = useInterventions();
 
   const interventions = data?.data ?? [];
 
   useEffect(() => {
     if (data && selectedId) {
-      const found = data.data.find((d) => d.id === selectedId);
+      const found = data.data.find((d) => d.id == selectedId);
       if (found) setSelectedIntervention(found);
     }
   }, [data, selectedId]);
@@ -48,7 +46,11 @@ const Interventions = () => {
       { label: intervention.id },
     ]);
 
-    replaceSegment(intervention.id, 2);
+    window.history.replaceState(
+      null,
+      "",
+      `/backoffice/interventions/${intervention.id}`,
+    );
   };
 
   const reload = async () => {

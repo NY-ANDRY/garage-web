@@ -10,7 +10,7 @@ import {
 } from "@/components/ui/popover";
 import { format } from "date-fns";
 import { ChevronDownIcon } from "lucide-react";
-import type { ApiResponse, StatsInterventions, User } from "@/types/Types";
+import type { StatsInterventions } from "@/types/Types";
 import { IconFilter } from "@tabler/icons-react";
 import {
   Select,
@@ -23,6 +23,7 @@ import {
 } from "@/components/ui/select";
 import { type DateRange } from "react-day-picker";
 import { useClients, useLazyInterventionsStats } from "@/domain";
+import { useIsMobile } from "@/hooks/use-mobile";
 
 type ChartFilterProps = {
   setChartData?: Dispatch<SetStateAction<StatsInterventions | undefined>>;
@@ -33,34 +34,36 @@ const ChartFilter = ({ setChartData }: ChartFilterProps) => {
     from: undefined,
     to: undefined,
   });
-  const [selectedUserId, setSelectedUserId] = useState<string | undefined>(undefined);
+  const [selectedUserId, setSelectedUserId] = useState<string | undefined>();
+
   const { data: clientsData } = useClients();
   const { fetchStats } = useLazyInterventionsStats();
+  const isMobile = useIsMobile();
 
   useEffect(() => {
     const loadFilteredStats = async () => {
       try {
         const params: Record<string, string> = {};
-        
+
         if (dateRange?.from) {
-          params.dateDebut = format(dateRange.from, 'yyyy-MM-dd');
+          params.dateDebut = format(dateRange.from, "yyyy-MM-dd");
         }
-        
+
         if (dateRange?.to) {
-          params.dateFin = format(dateRange.to, 'yyyy-MM-dd');
+          params.dateFin = format(dateRange.to, "yyyy-MM-dd");
         }
-        
+
         if (selectedUserId) {
           params.idUser = selectedUserId;
         }
 
         const result = await fetchStats(params);
-        
+
         if (result?.success && setChartData) {
           setChartData(result.data);
         }
       } catch (error) {
-        console.error('Error fetching filtered stats:', error);
+        console.error("Error fetching filtered stats:", error);
       }
     };
 
@@ -71,10 +74,9 @@ const ChartFilter = ({ setChartData }: ChartFilterProps) => {
     setSelectedUserId(value === "all" ? undefined : value);
   };
 
-  return (
-    <div className="flex items-center flex-row-reverse px-1 gap-4">
-      <IconFilter size={24} />
-      <div className="flex flex-col gap-0.5">
+  const Filters = () => (
+    <>
+      <div className="flex flex-col gap-0.5 w-full md:w-fit">
         <Popover>
           <PopoverTrigger asChild>
             <Button variant="outline" className="justify-between w-full">
@@ -105,24 +107,47 @@ const ChartFilter = ({ setChartData }: ChartFilterProps) => {
         </Popover>
       </div>
 
-      <div className="flex flex-col gap-0.5">
-        <Select onValueChange={handleSelectChange}>
-          <SelectTrigger className="w-full max-w-48">
-            <SelectValue placeholder="Select a client" />
-          </SelectTrigger>
-          <SelectContent>
-            <SelectGroup>
-              <SelectLabel>Clients</SelectLabel>
-              <SelectItem value="all">Tous les clients</SelectItem>
-              {clientsData?.data?.map((client) => (
-                <SelectItem key={client.uid} value={client.uid || ""}>
-                  {client.displayName || client.email}
-                </SelectItem>
-              ))}
-            </SelectGroup>
-          </SelectContent>
-        </Select>
-      </div>
+      <Select onValueChange={handleSelectChange}>
+        <SelectTrigger className="w-full max-w-48">
+          <SelectValue placeholder="Select a client" />
+        </SelectTrigger>
+        <SelectContent>
+          <SelectGroup>
+            <SelectLabel>Clients</SelectLabel>
+            <SelectItem value="all">Tous les clients</SelectItem>
+            {clientsData?.data?.map((client) => (
+              <SelectItem key={client.uid} value={client.uid || ""}>
+                {client.displayName || client.email}
+              </SelectItem>
+            ))}
+          </SelectGroup>
+        </SelectContent>
+      </Select>
+    </>
+  );
+
+  return (
+    <div className="flex items-center flex-row-reverse px-1 gap-4 w-full">
+      {isMobile ? (
+        <Popover>
+          <PopoverTrigger asChild>
+            <Button variant="ghost" size="icon">
+              <IconFilter size={24} />
+            </Button>
+          </PopoverTrigger>
+
+          <PopoverContent className="flex gap-4">
+            <div className="flex flex-col gap-2">
+              <Filters />
+            </div>
+          </PopoverContent>
+        </Popover>
+      ) : (
+        <>
+          <IconFilter size={24} />
+          <Filters />
+        </>
+      )}
     </div>
   );
 };

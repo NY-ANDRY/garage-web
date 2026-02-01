@@ -28,17 +28,21 @@ const Index = () => {
   }, [t, setBreadcrumbs]);
 
   return (
-    <div className="flex flex-col py-4 px-2 md:gap-6 md:py-6 md:px-4 max-w-full overflow-hidden">
-      <div className="flex items-center justify-between">
-        <h2 className="scroll-m-20 text-3xl font-semibold tracking-tight first:mt-0">
+    <div className="flex flex-col py-4 px-2 gap-4 md:gap-6 md:py-6 md:px-4 max-w-full overflow-hidden min-h-full">
+      <div className="flex items-center justify-between gap-2">
+        <h2 className="scroll-m-20 text-3xl font-semibold tracking-tight first:mt-0 flex w-full">
           Interventions
         </h2>
         <ChartFilter setChartData={setChartData} />
       </div>
 
-      <CardsInterventions total={chartData?.sum} />
-      <ChartBar items={chartData?.stats} />
+      <div className=" grid grid-cols-1 md:grid-cols-2 gap-4">
+        <div className="flex flex-col gap-8 justify-between">
+          <CardsInterventions total={chartData?.sum} />
+          <ChartBar items={chartData?.stats} />
+        </div>
       <TableIntervention items={chartData?.stats} />
+      </div>
     </div>
   );
 };

@@ -4,20 +4,17 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use App\Models\Synchronisation;
-use App\Jobs\SyncClient;
-use App\Jobs\SyncVoiture;
-use App\Jobs\SyncReparation;
+use App\Jobs\SyncAll;
 use Illuminate\Http\Request;
+use Carbon\Carbon;
 
 class SynchronisationController extends Controller
 {
     public function index()
     {
-        $syncs = Synchronisation::with([
-            'statuts' => function ($query) {
-                $query->latest()->limit(1);
-            }
-        ])->orderBy('created_at', 'desc')->get();
+        $syncs = Synchronisation::with(['statuts'])
+            ->orderBy('created_at', 'desc')
+            ->get();
 
         return response()->json([
             'success' => true,
@@ -35,39 +32,27 @@ class SynchronisationController extends Controller
         ]);
     }
 
-    public function syncClients()
-    {
-        $sync = Synchronisation::create(['id_source' => 1]);
-        $sync->setStatus(1);
-        SyncClient::dispatch($sync);
-        return response()->json([
-            'success' => true,
-            'message' => 'Client synchronization started',
-            'data' => $sync->load('statuts')
-        ]);
-    }
-
-    public function syncVoitures()
-    {
-        $sync = Synchronisation::create(['id_source' => 1]);
-        $sync->setStatus(1);
-        SyncVoiture::dispatch($sync);
-        return response()->json([
-            'success' => true,
-            'message' => 'Car synchronization started',
-            'data' => $sync->load('statuts')
-        ]);
-    }
-
-    public function syncReparations(Request $request)
+    public function sync(Request $request)
     {
         $date = $request->input('date');
+        $useTask = $request->input('use_task', true);
+
+        if ($date) {
+            $date = Carbon::parse($date)->startOfDay()->toRfc3339String();
+        }
+
         $sync = Synchronisation::create(['id_source' => 1]);
-        $sync->setStatus(1);
-        SyncReparation::dispatch($sync, $date);
+        $sync->setStatus(Synchronisation::STATUS_STARTED);
+
+        if ($useTask) {
+            SyncAll::dispatch($sync, $date);
+        } else {
+            SyncAll::dispatchAfterResponse($sync, $date);
+        }
+
         return response()->json([
             'success' => true,
-            'message' => 'Reparation synchronization started',
+            'message' => 'Synchronization started',
             'data' => $sync->load('statuts')
         ]);
     }

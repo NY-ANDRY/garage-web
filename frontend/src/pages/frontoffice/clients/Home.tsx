@@ -7,14 +7,17 @@ import { useEffect } from "react";
 import AnimatedPlaceholder from "@/components/animations/AnimatedPlaceholder";
 import EmptyReparation from "@/components/reparation/EmptyReparation";
 
+import { useTranslation } from "react-i18next";
+
 const Home = () => {
+  const { t } = useTranslation();
   const { uid } = useParams<{ uid: string }>();
   const { data: reparations, loading } = useReparationsClient(uid ?? "");
   const { setBreadcrumbs } = useHeader();
 
   useEffect(() => {
-    setBreadcrumbs([{ label: "clients", href: "/backoffice/dashboard" }]);
-  }, []);
+    setBreadcrumbs([{ label: t("sidebar.clients"), href: "/backoffice/dashboard" }]);
+  }, [t, setBreadcrumbs]);
 
   return (
     <div className="min-h-screen flex flex-col flex-1 pb-24">

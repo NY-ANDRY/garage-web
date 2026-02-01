@@ -10,7 +10,45 @@
     "language": "Fiteny",
     "theme": "Endrika",
     "light": "Mazava",
-    "dark": "Maizina"
+    "dark": "Maizina",
+    "sync_history": "Tantara fampifanarahana",
+    "date_start": "Daty nanombohana",
+    "date_end": "Daty nifaranana",
+    "status": "Sata",
+    "unknown": "Tsy fantatra",
+    "started": "Eo am-panaovana",
+    "finished": "Vita",
+    "failed": "Tsy tontosa",
+    "syncing": "Mampifanaraka...",
+    "no_sync_found": "Tsy nisy fampifanarahana hita",
+    "sync_detail": "Andininy momba ny fampifanarahana",
+    "new_items": "zavatra vaovao",
+    "timeline": "Tantara",
+    "new_sync": "Fampifanarahana vaovao",
+    "new_sync_title": "Hanolotra fampifanarahana",
+    "new_sync_description": "Hanomboka fampifanarahana feno: Mpanjifa → Fiara → Fanamboarana.",
+    "start_sync": "Atombohy",
+    "cancel": "Hofoanana",
+    "sync_started_success": "Vita soa aman-tsara ny fandefasana ny fampifanarahana",
+    "sync_started_error": "Misy hadisoana teo am-pandefasana ny fampifanarahana",
+    "sync_started_error_catastrofic": "Misy hadisoana lehibe niseho",
+    "clients": "Mpanjifa",
+    "voitures": "Fiara",
+    "reparations": "Fanamboarana",
+    "sync_items_list": "Lisitry ny zavatra nampifanarahana",
+    "no_items": "Tsy nisy zavatra hita",
+    "client": "Mpanjifa",
+    "voiture": "Fiara",
+    "license_plate": "Laharana",
+    "last_sync": "Fampifanarahana farany",
+    "sync_date": "Daty fampifanarahana",
+    "use_last_sync": "Hampiasa ny daty fampifanarahana farany",
+    "fetch_every": "maka isaky ny",
+    "use_task": "Hampiasa asa (task)",
+    "use_task_hint": "Mampandeha ny fampifanarahana ao amin’ny worker any aoriana (background).",
+    "use_task_confirmation": "Hohitohy ve ianao? Handeha aorian'ny famaliana ny fampifanarahana, nefa tsy hipoitra avy hatrany ny vaovao.",
+    "use_last_sync_hint": "Haingana kokoa nefa tsy mampifanaraka ireo angona tsy nampifanarahina talohan'ny daty.",
+    "use_task_hover_hint": "Mampiasa ny worker Laravel any aoriana (mila sokafana raha tsy avy amin'ny docker-compose)."
   },
   "sidebar": {
     "brand": "Garage",
@@ -60,7 +98,7 @@
     "target": "Tanjona",
     "limit": "Fetra",
     "reviewer": "Mpandinika",
-    "saving": "Mitahiry...",
+    "saving": "Mitahiry ny {{name}}...",
     "assign_reviewer": "Atokana mpandinika",
     "open_menu": "Sokafy ny menio",
     "edit": "Ovay",
@@ -115,14 +153,23 @@
     "select_reviewer": "Fidio ny mpandinika"
   },
   "clients": {
-    "total_clients": "Isan'ny mpanjifa rehetra",
-    "cards_total_client": "Mpanjifa rehetra"
+    "total_clients": "Isan'ny mpanjifa vaovao",
+    "cards_total_client": "Fitambaran'ny mpanjifa",
+    "cards_filtered_client": "Mpanjifa vaovao"
   },
   "interventions": {
     "total_revenue": "Vola miditra manontolo",
     "total_number": "Isan'ny rehetra",
     "number": "Isa",
     "cost": "Vidiny"
+  },
+  "frontoffice": {
+    "no_reparation": "Tsy misy fanamboarana",
+    "select_another_user": "Safidio ny mpanjifa hafa kely azafady",
+    "home_title": "Mpanjifa",
+    "home_description": "Safidio ny mpanjifa iray ao amin'ny baran'ny fitetezana",
+    "learn_more": "Hamantatra bebe kokoa",
+    "reparation_not_found": "Tsy hita ny fanamboarana."
   },
   "currency": "Ar"
 }

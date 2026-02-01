@@ -38,7 +38,7 @@ const ChartInterventions = ({ items }: ChartInterventionsProps) => {
 
   return (
     <div className="w-full flex flex-col lg:flex-row gap-8 items-center justify-between">
-      <ChartContainer config={chartConfig2} className="w-full min-w-80 h-96 pr-4">
+      <ChartContainer config={chartConfig2} className="w-full min-w-28 h-72 pr-4">
         <BarChart
           accessibilityLayer
           data={chartData}
@@ -48,10 +48,11 @@ const ChartInterventions = ({ items }: ChartInterventionsProps) => {
           <CartesianGrid vertical={false} />
           <XAxis
             dataKey="nom"
+            tick={{ fontSize: 9, letterSpacing: 0.2 }}
             tickLine={false}
             tickMargin={10}
             axisLine={false}
-            tickFormatter={(value) => value.slice(0, 8)}
+            tickFormatter={(value) => value.slice(0, 2)}
           />
           <YAxis tickLine={false} axisLine={false} tickMargin={10} />
           <ChartTooltip content={<ChartTooltipContent />} />
@@ -59,7 +60,7 @@ const ChartInterventions = ({ items }: ChartInterventionsProps) => {
           <Bar dataKey="montant_total" fill="#999" radius={4} />
         </BarChart>
       </ChartContainer>
-      <ChartContainer config={chartConfig1} className="w-full min-w-80 h-96 pr-4">
+      <ChartContainer config={chartConfig1} className="w-full min-w-28 h-72 pr-4">
         <BarChart
           accessibilityLayer
           data={chartData}
@@ -69,10 +70,11 @@ const ChartInterventions = ({ items }: ChartInterventionsProps) => {
           <CartesianGrid vertical={false} />
           <XAxis
             dataKey="nom"
+            tick={{ fontSize: 9, letterSpacing: 0.2 }}
             tickLine={false}
             tickMargin={10}
             axisLine={false}
-            tickFormatter={(value) => value.slice(0, 8)}
+            tickFormatter={(value) => value.slice(0, 2)}
           />
           <YAxis tickLine={false} axisLine={false} tickMargin={10} />
           <ChartTooltip content={<ChartTooltipContent />} />

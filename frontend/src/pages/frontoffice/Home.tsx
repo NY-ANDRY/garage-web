@@ -1,24 +1,24 @@
 import { useHeader } from "@/context/HeaderContext";
 import { useEffect } from "react";
-import EmptyReparation from "@/components/reparation/EmptyReparation";
 import { Button } from "@/components/ui/button";
 import {
   Empty,
-  EmptyContent,
-  EmptyDescription,
   EmptyHeader,
   EmptyMedia,
   EmptyTitle,
+  EmptyDescription,
 } from "@/components/ui/empty";
-import { IconMoodHappy, IconCarCrash } from "@tabler/icons-react";
+import { IconMoodHappy } from "@tabler/icons-react";
 import { ArrowUpRightIcon } from "lucide-react";
+import { useTranslation } from "react-i18next";
 
 const Home = () => {
+  const { t } = useTranslation();
   const { setBreadcrumbs } = useHeader();
 
   useEffect(() => {
-    setBreadcrumbs([{ label: "clients", href: "/backoffice/dashboard" }]);
-  }, []);
+    setBreadcrumbs([{ label: t("sidebar.clients"), href: "/backoffice/dashboard" }]);
+  }, [t, setBreadcrumbs]);
 
   return (
     <Empty>
@@ -26,8 +26,8 @@ const Home = () => {
         <EmptyMedia variant="icon">
           <IconMoodHappy />
         </EmptyMedia>
-        <EmptyTitle>Clients</EmptyTitle>
-        <EmptyDescription>Selectioner un utilisateur dans le navbar</EmptyDescription>
+        <EmptyTitle>{t("frontoffice.home_title")}</EmptyTitle>
+        <EmptyDescription>{t("frontoffice.home_description")}</EmptyDescription>
       </EmptyHeader>
       <Button
         variant="link"
@@ -36,7 +36,7 @@ const Home = () => {
         size="sm"
       >
         <a href="#">
-          Learn More <ArrowUpRightIcon />
+          {t("frontoffice.learn_more")} <ArrowUpRightIcon />
         </a>
       </Button>
     </Empty>

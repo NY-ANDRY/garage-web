@@ -10,7 +10,45 @@
     "language": "Language",
     "theme": "Theme",
     "light": "Light",
-    "dark": "Dark"
+    "dark": "Dark",
+    "sync_history": "Sync History",
+    "date_start": "Start Date",
+    "date_end": "End Date",
+    "status": "Status",
+    "unknown": "Unknown",
+    "started": "In Progress",
+    "finished": "Finished",
+    "failed": "Failed",
+    "syncing": "Syncing...",
+    "no_sync_found": "No synchronization found",
+    "sync_detail": "Synchronization Detail",
+    "new_items": "new items",
+    "timeline": "Timeline",
+    "new_sync": "New Synchronization",
+    "new_sync_title": "Start a Synchronization",
+    "new_sync_description": "Start a full synchronization: Clients → Cars → Repairs.",
+    "start_sync": "Start",
+    "cancel": "Cancel",
+    "sync_started_success": "Synchronization started successfully",
+    "sync_started_error": "Error starting synchronization",
+    "sync_started_error_catastrofic": "A critical error occurred",
+    "clients": "Clients",
+    "voitures": "Cars",
+    "reparations": "Repairs",
+    "sync_items_list": "List of synchronized items",
+    "no_items": "No items found",
+    "client": "Client",
+    "voiture": "Car",
+    "license_plate": "License Plate",
+    "last_sync": "Last synchronization",
+    "sync_date": "Synchronization date",
+    "use_last_sync": "Use last synchronization date",
+    "fetch_every": "fetch every",
+    "use_task": "Use Task",
+    "use_task_hint": "Runs the synchronization in the background worker",
+    "use_task_confirmation": "Do you want to continue? The synchronization will run after the response, but data won't be visible immediately.",
+    "use_last_sync_hint": "Faster but does not synchronize data unsynchronized before the date.",
+    "use_task_hover_hint": "Uses the Laravel background worker (requires activation if not started from docker-compose)."
   },
   "sidebar": {
     "brand": "Garage",
@@ -60,7 +98,7 @@
     "target": "Target",
     "limit": "Limit",
     "reviewer": "Reviewer",
-    "saving": "Saving...",
+    "saving": "Saving {{name}}...",
     "assign_reviewer": "Assign reviewer",
     "open_menu": "Open menu",
     "edit": "Edit",
@@ -115,14 +153,23 @@
     "select_reviewer": "Select a reviewer"
   },
   "clients": {
-    "total_clients": "Total Clients",
-    "cards_total_client": "Total Client"
+    "total_clients": "Number of new clients",
+    "cards_total_client": "Total clients",
+    "cards_filtered_client": "New clients"
   },
   "interventions": {
     "total_revenue": "Total Revenue",
     "total_number": "Total Number",
     "number": "Number",
     "cost": "Cost"
+  },
+  "frontoffice": {
+    "no_reparation": "No repairs",
+    "select_another_user": "Please select another user",
+    "home_title": "Clients",
+    "home_description": "Please select a user from the navbar",
+    "learn_more": "Learn More",
+    "reparation_not_found": "Reparation not found."
   },
   "currency": "$"
 }

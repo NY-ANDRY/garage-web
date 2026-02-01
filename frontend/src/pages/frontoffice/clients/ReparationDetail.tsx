@@ -11,19 +11,21 @@ import {
   ReparationDetailStatutHisto,
 } from "@/components/reparation-detail";
 import { ArrowLeft } from "lucide-react";
+import { useTranslation } from "react-i18next";
 
 const ReparationDetail = () => {
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
   const { data: reparation, loading } = useReparationById(id);
+  const { t } = useTranslation();
 
   if (!loading && !reparation) {
     return (
       <div className="min-h-screen flex flex-1 flex-col gap-4 p-4">
-        <p className="text-muted-foreground">Réparation introuvable.</p>
+        <p className="text-muted-foreground">{t("frontoffice.reparation_not_found")}</p>
         <Button variant="outline" onClick={() => navigate(-1)}>
           <ArrowLeft className="h-4 w-4 mr-2" />
-          Retour
+          {t("common.back")}
         </Button>
       </div>
     );
@@ -39,7 +41,7 @@ const ReparationDetail = () => {
           onClick={() => navigate(-1)}
         >
           <ArrowLeft className="h-4 w-4 mr-2" />
-          Retour
+          {t("common.back")}
         </Button>
 
         <ReparationDetailHeader

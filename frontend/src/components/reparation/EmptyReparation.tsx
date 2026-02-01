@@ -1,31 +1,28 @@
 import { Button } from "@/components/ui/button";
 import {
   Empty,
-  EmptyContent,
   EmptyDescription,
   EmptyHeader,
   EmptyMedia,
   EmptyTitle,
 } from "@/components/ui/empty";
-import { IconFolderCode, IconCarCrash } from "@tabler/icons-react";
+import { IconCarCrash } from "@tabler/icons-react";
 import { ArrowUpRightIcon } from "lucide-react";
+import { useTranslation } from "react-i18next";
 
 const EmptyReparation = () => {
+  const { t } = useTranslation();
   return (
     <Empty>
       <EmptyHeader>
         <EmptyMedia variant="icon">
           <IconCarCrash />
         </EmptyMedia>
-        <EmptyTitle>Aucun reparation</EmptyTitle>
+        <EmptyTitle>{t("frontoffice.no_reparation")}</EmptyTitle>
         <EmptyDescription>
-          Selectioner un autre utilisateur
+          {t("frontoffice.select_another_user")}
         </EmptyDescription>
       </EmptyHeader>
-      {/* <EmptyContent className="flex-row justify-center gap-2"> */}
-        {/* <Button>Create Project</Button> */}
-        {/* <Button variant="outline">Import Project</Button> */}
-      {/* </EmptyContent> */}
       <Button
         variant="link"
         asChild
@@ -33,7 +30,7 @@ const EmptyReparation = () => {
         size="sm"
       >
         <a href="#">
-          Learn More <ArrowUpRightIcon />
+          {t("frontoffice.learn_more")} <ArrowUpRightIcon />
         </a>
       </Button>
     </Empty>

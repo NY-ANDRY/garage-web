@@ -29,3 +29,11 @@ export {
   type AuthResponse,
 } from "./auth/useAuthApi";
 
+// Sync
+export {
+  useSyncHistory,
+  useSyncDetail,
+  useLazySyncDetail,
+  useStartSync,
+} from "./sync/useSyncApi";
+

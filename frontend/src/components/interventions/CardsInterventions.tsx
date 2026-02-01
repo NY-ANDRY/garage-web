@@ -17,7 +17,7 @@ export function CardsInterventions({ total }: CardsInterventionsProps) {
   const { t } = useTranslation();
 
   return (
-    <div className="*:data-[slot=card]:from-primary/5 *:data-[slot=card]:to-card dark:*:data-[slot=card]:bg-card grid grid-cols-1 gap-4 *:data-[slot=card]:bg-linear-to-t *:data-[slot=card]:shadow-xs @xl/main:grid-cols-2 @5xl/main:grid-cols-2">
+    <div className="w-full max-w-full! *:data-[slot=card]:from-primary/5 *:data-[slot=card]:to-card dark:*:data-[slot=card]:bg-card grid grid-cols-1 gap-4 *:data-[slot=card]:bg-linear-to-t *:data-[slot=card]:shadow-xs @xl/main:grid-cols-2 @5xl/main:grid-cols-2">
       <Card className="@container/card">
         <CardHeader>
           <CardDescription>{t("interventions.total_revenue")}</CardDescription>

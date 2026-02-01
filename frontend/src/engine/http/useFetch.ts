@@ -8,7 +8,7 @@ export interface FetchState<T> {
   refetch: () => void;
 }
 
-export default function useFetch<T>(url: string): FetchState<T> {
+export default function useFetch<T>(url: string | null): FetchState<T> {
   const [data, setData] = useState<T | null>(null);
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const [error, setError] = useState<Error | null>(null);
@@ -24,6 +24,7 @@ export default function useFetch<T>(url: string): FetchState<T> {
     const abortController = new AbortController();
 
     const fetchData = async () => {
+      if (!url) return;
       setIsLoading(true);
       try {
         const token = localStorage.getItem("auth_token");

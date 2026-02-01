@@ -6,11 +6,9 @@ use App\Http\Controllers\Api\ClientController;
 use App\Http\Controllers\Api\SynchronisationController;
 use Illuminate\Support\Facades\Route;
 
-// Public routes
 Route::post('/register', [AuthController::class, 'register']);
 Route::post('/login', [AuthController::class, 'login']);
 
-// Protected routes
 Route::middleware('auth:sanctum')->group(function () {
     Route::get('/me', [AuthController::class, 'me']);
     Route::post('/logout', [AuthController::class, 'logout']);
@@ -29,8 +27,6 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::prefix('sync')->group(function () {
         Route::get('/', [SynchronisationController::class, 'index']);
         Route::get('/{id}', [SynchronisationController::class, 'show']);
-        Route::post('/clients', [SynchronisationController::class, 'syncClients']);
-        Route::post('/voitures', [SynchronisationController::class, 'syncVoitures']);
-        Route::post('/reparations', [SynchronisationController::class, 'syncReparations']);
+        Route::post('/', [SynchronisationController::class, 'sync']);
     });
 });

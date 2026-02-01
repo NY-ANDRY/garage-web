@@ -15,20 +15,33 @@ class Synchronisation extends Model
         'id_source',
     ];
 
+    public const STATUS_STARTED = 1;
+    public const STATUS_FINISHED = 2;
+    public const STATUS_FAILED = 3;
+
+    public static array $STATUS_NAMES = [
+        self::STATUS_STARTED => 'Started',
+        self::STATUS_FINISHED => 'Finished',
+        self::STATUS_FAILED => 'Failed',
+    ];
+
     public function source()
     {
         return $this->belongsTo(Source::class, 'id_source');
     }
+
     public function statuts()
     {
         return $this->belongsToMany(StatutSync::class, 'sync_statuts', 'id_sync', 'id_statut')
-            ->withTimestamps();
+            ->withTimestamps()
+            ->orderByPivot('created_at', 'desc');
     }
 
     public function setStatus($id)
     {
+        $statusName = self::$STATUS_NAMES[$id] ?? 'Unknown';
         // Ensure the status record exists in statut_sync table
-        StatutSync::firstOrCreate(['id' => $id], ['statut' => $id == 1 ? 'Démarré' : 'Terminé']);
+        StatutSync::firstOrCreate(['id' => $id], ['statut' => $statusName]);
         $this->statuts()->attach($id);
     }
     public function clients()
@@ -61,10 +74,6 @@ class Synchronisation extends Model
             $client = Client::saveFromFirebase($user);
             $sync->clients()->attach($client->uid);
         }
-
-        $sync->setStatus(2);
-
-        return $users;
     }
 
     public static function syncVoitures(Synchronisation $sync)
@@ -79,10 +88,6 @@ class Synchronisation extends Model
             $v = Voitures::saveFromFirebase($voiture);
             $sync->voitures()->attach($v->id);
         }
-
-        $sync->setStatus(2);
-
-        return $voitures;
     }
 
     public static function syncAllReparations(Synchronisation $sync)
@@ -105,7 +110,13 @@ class Synchronisation extends Model
 
     private static function processReparations(Synchronisation $sync, array $reparations)
     {
+        if (empty($reparations)) {
+            return;
+        }
+
         foreach ($reparations as $rep) {
+            if (!$rep)
+                continue;
             $uid_client = $rep['data']['user']['uid'] ?? null;
             $id_voiture = $rep['data']['voiture']['id'] ?? null;
 
@@ -128,16 +139,9 @@ class Synchronisation extends Model
                 $reparation = Reparation::updateStatutAndPaiementFromFirebase($rep);
             } else {
                 $reparation = Reparation::saveFromFirebase($rep);
-            }
-
-            if ($reparation) {
                 $sync->reparations()->syncWithoutDetaching([$reparation->id]);
             }
         }
-
-        $sync->setStatus(2);
-
-        return $reparations;
     }
 
 }

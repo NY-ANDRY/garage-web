@@ -109,7 +109,7 @@ class Firebase
                 ];
             }, $data['documents']);
         }
-        return array_map(function ($item) {
+        return array_filter(array_map(function ($item) {
             if (!isset($item['document']))
                 return null;
             $doc = $item['document'];
@@ -117,7 +117,7 @@ class Firebase
                 'id' => basename($doc['name']),
                 'data' => $this->parseFields($doc['fields'] ?? [])
             ];
-        }, is_array($data) ? $data : []);
+        }, is_array($data) ? $data : []));
     }
 
     private function parseFields($fields)

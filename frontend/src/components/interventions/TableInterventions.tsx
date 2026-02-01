@@ -44,12 +44,15 @@ const TableIntervention = ({ items }: TableInterventionProps) => {
             <TableHead>Nom</TableHead>
             <TableHead>Nombre</TableHead>
             <TableHead>Montant total</TableHead>
-            <TableHead className="text-right"></TableHead>
           </TableRow>
         </TableHeader>
         <TableBody>
           {items?.map((val, index) => (
-            <TableRow key={index} className="font-medium h-12">
+            <TableRow key={index} className="font-medium h-12 cursor-pointer"
+            
+                  onClick={() => {
+                    handleNavigate(val.id.toString());
+                  }}>
               <TableCell className="font-medium">{val.nom}</TableCell>
               <TableCell>{val.nombre_total}</TableCell>
               <TableCell>
@@ -57,17 +60,6 @@ const TableIntervention = ({ items }: TableInterventionProps) => {
                   <span>{t("currency")}</span>
                   <span>{val.montant_total}</span>
                 </div>
-              </TableCell>
-              <TableCell className="text-right">
-                <Button
-                  onClick={() => {
-                    handleNavigate(val.id.toString());
-                  }}
-                  variant="outline"
-                  size="icon"
-                >
-                  <Eye />
-                </Button>
               </TableCell>
             </TableRow>
           ))}
@@ -82,7 +74,6 @@ const TableIntervention = ({ items }: TableInterventionProps) => {
                 <span>{writeNumber(totalPrix)}</span>
               </div>
             </TableCell>
-            <TableCell className="text-right"></TableCell>
           </TableRow>
         </TableFooter>
       </Table>

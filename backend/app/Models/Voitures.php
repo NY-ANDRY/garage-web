@@ -67,8 +67,8 @@ class Voitures extends Model
         if (!$voiture) {
             $firebase = new Firebase();
             $data = $firebase->getDocument('voitures', $id);
-            $voiture = self::saveFromFirebase($data);
+            return self::saveFromFirebase($data);
         }
-        return $voiture;
+        return null;
     }
 }

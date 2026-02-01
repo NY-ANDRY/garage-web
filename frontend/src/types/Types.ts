@@ -128,3 +128,25 @@ export type Reparation = {
     total_a_payer: number;
     date: Timestamp;
 }
+
+export type StatutSync = {
+  id: number;
+  statut: string;
+  pivot?: {
+    id_sync: number;
+    id_statut: number;
+    created_at: string;
+    updated_at: string;
+  };
+};
+
+export type Synchronisation = {
+  id: number;
+  id_source: number;
+  created_at: string;
+  updated_at: string;
+  statuts?: StatutSync[];
+  clients?: User[];
+  voitures?: Voiture[];
+  reparations?: Reparation[];
+};
