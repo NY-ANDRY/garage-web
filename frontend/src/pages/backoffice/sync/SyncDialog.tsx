@@ -70,7 +70,7 @@ const SyncDialog: React.FC<SyncDialogProps> = ({ onSyncStarted, lastSyncDate }) 
           {t("common.new_sync")}
         </Button>
       </DialogTrigger>
-      <DialogContent className="sm:max-w-[425px]">
+      <DialogContent className="sm:max-w-106.25">
         <DialogHeader>
           <DialogTitle>{t("common.new_sync_title")}</DialogTitle>
           <DialogDescription>
