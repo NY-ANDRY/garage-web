@@ -81,7 +81,7 @@ const SyncDetail: React.FC<SyncDetailProps> = ({
   const currentStatut = sync?.statuts?.[0];
 
   return (
-    <div className="flex flex-col gap-4 py-4 md:py-6 md:px-4 px-2">
+    <section className="flex flex-col gap-4 py-4 md:py-6 md:px-4 px-2">
       <div className="flex items-center gap-4">
         <Button variant="outline" size="icon" onClick={handleBack}>
           <ChevronLeft className="h-4 w-4" />
@@ -108,7 +108,7 @@ const SyncDetail: React.FC<SyncDetailProps> = ({
         openDetail={openDetail}
         onOpenChange={(open) => !open && setOpenDetail(null)}
       />
-    </div>
+    </section>
   );
 };
 

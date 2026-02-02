@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
@@ -70,7 +71,7 @@ class Reparation extends Model
             [
                 'uid_client' => $repData['user']['uid'] ?? null,
                 'id_voiture' => $repData['voiture']['id'] ?? null,
-                'date' => isset($repData['date']) ? \Carbon\Carbon::parse($repData['date']) : null,
+                'date' => isset($repData['date']) ? Carbon::parse($repData['date']) : null,
             ]
         );
 
@@ -138,7 +139,7 @@ class Reparation extends Model
         foreach ($paiements as $pay) {
             $this->paiements()->create([
                 'montant' => $pay['montant'] ?? 0,
-                'date' => isset($pay['date']) ? \Carbon\Carbon::parse($pay['date']) : null,
+                'date' => isset($pay['date']) ? Carbon::parse($pay['date']) : null,
             ]);
         }
     }
@@ -149,7 +150,7 @@ class Reparation extends Model
             $statutId = $histo['statut'];
             Statuts_reparations::firstOrCreate(['id' => $statutId]);
             $this->statuts()->syncWithoutDetaching([
-                $statutId => ['date' => isset($histo['date']) ? \Carbon\Carbon::parse($histo['date']) : null]
+                $statutId => ['date' => isset($histo['date']) ? Carbon::parse($histo['date']) : null]
             ]);
         }
     }

@@ -18,7 +18,7 @@ const Landing = () => {
   };
 
   return (
-    <div className="flex w-screen h-screen items-center justify-center pb-24">
+    <section className="flex w-screen h-screen items-center justify-center pb-24">
       <div className="flex items-center justify-center flex-col md:flex-row gap-2 text-2xl md:gap-4 h-32">
         <div className="flex flex-col md:flex-row items-center">
           <div className="flex flex-col gap-4 ml-4">
@@ -60,7 +60,7 @@ const Landing = () => {
           </Button>
         </div>
       </div>
-    </div>
+    </section>
   );
 };
 

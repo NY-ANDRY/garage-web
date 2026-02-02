@@ -20,7 +20,7 @@ const Home = () => {
   }, [t, setBreadcrumbs]);
 
   return (
-    <div className="min-h-screen flex flex-col flex-1 pb-24">
+    <section className="min-h-screen flex flex-col flex-1 pb-24">
       <AnimatedPlaceholder
         loading={loading}
         skeletonCount={5}
@@ -39,7 +39,7 @@ const Home = () => {
           )}
         </div>
       </AnimatedPlaceholder>
-    </div>
+    </section>
   );
 };
 

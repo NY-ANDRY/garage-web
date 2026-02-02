@@ -32,7 +32,7 @@ const ReparationDetail = () => {
   }
 
   return (
-    <div className="min-h-screen flex flex-1 flex-col w-full pb-24">
+    <section className="min-h-screen flex flex-1 flex-col w-full pb-24">
       <div className="flex flex-col w-full p-4 gap-0">
         <Button
           variant="ghost"
@@ -83,7 +83,7 @@ const ReparationDetail = () => {
           />
         </div>
       </div>
-    </div>
+    </section>
   );
 };
 

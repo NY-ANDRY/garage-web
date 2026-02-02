@@ -28,7 +28,7 @@ const AuthForm = () => {
   };
 
   return (
-    <div className="max-w-sm h-full w-full flex items-center">
+    <section className="max-w-sm h-full w-full flex items-center">
       <motion.div {...containerMotion} className="flex flex-col w-full">
         <AnimatePresence mode="wait">
           {mode === "login" ? (
@@ -64,7 +64,7 @@ const AuthForm = () => {
           )}
         </AnimatePresence>
       </motion.div>
-    </div>
+    </section>
   );
 };
 

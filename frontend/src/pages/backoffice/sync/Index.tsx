@@ -28,7 +28,7 @@ const Index = () => {
   };
 
   return (
-    <div className="py-4 px-2 md:gap-6 md:py-6 md:px-4 max-w-full overflow-hidden space-y-6">
+    <section className="py-4 px-2 md:gap-6 md:py-6 md:px-4 max-w-full overflow-hidden space-y-6">
       <div className="flex flex-col md:flex-row md:justify-between md:items-center gap-4">
         <div>
           <h1 className="text-3xl font-bold tracking-tight">{t("common.sync")}</h1>
@@ -50,7 +50,7 @@ const Index = () => {
         <SyncList 
           syncs={syncData?.data || []} 
         />
-    </div>
+    </section>
   );
 };
 

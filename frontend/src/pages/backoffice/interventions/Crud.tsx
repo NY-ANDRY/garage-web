@@ -58,7 +58,7 @@ const Interventions = () => {
   };
 
   return (
-    <div className="min-h-full flex flex-col md:flex-row py-4 px-2 gap-6 md:py-6 md:px-4 max-w-full overflow-hidden">
+    <section className="min-h-full flex flex-col md:flex-row py-4 px-2 gap-6 md:py-6 md:px-4 max-w-full overflow-hidden">
       <div className="flex flex-col gap-2 w-full md:w-1/3">
         <AnimatedPlaceholder
           loading={isLoading}
@@ -90,7 +90,7 @@ const Interventions = () => {
           )}
         </AnimatedPlaceholder>
       </div>
-    </div>
+    </section>
   );
 };
 

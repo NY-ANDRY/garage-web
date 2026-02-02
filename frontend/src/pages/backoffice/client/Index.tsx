@@ -29,7 +29,7 @@ const Index = () => {
     ]);
   }, [t, setBreadcrumbs]);
   return (
-    <div className="flex flex-col py-4 px-2 md:gap-6 md:py-6 md:px-4 max-w-full overflow-hidden min-h-full">
+    <section className="flex flex-col py-4 px-2 md:gap-6 md:py-6 md:px-4 max-w-full overflow-hidden min-h-full">
       <div className="flex items-center justify-between pb-4 md:pb-0">
          <h2 className="scroll-m-20 text-3xl font-semibold tracking-tight first:mt-0">
            {t("sidebar.clients")}
@@ -38,7 +38,7 @@ const Index = () => {
       </div>
       <Cards totalClients={chartData?.sum} />
       <ChartBar chartData={chartData?.stats} />
-    </div>
+    </section>
   );
 };
 

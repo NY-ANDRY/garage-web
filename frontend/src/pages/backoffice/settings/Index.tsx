@@ -17,7 +17,7 @@ const Settings = () => {
   }, [t, setBreadcrumbs]);
 
   return (
-    <div className="p-6 flex flex-col gap-8 max-w-md">
+    <section className="p-6 flex flex-col gap-8 max-w-md">
       <h3 className="scroll-m-20 text-2xl font-semibold tracking-tight">
         {t("sidebar.settings")}
       </h3>
@@ -26,7 +26,7 @@ const Settings = () => {
         <LanguageSettings />
         <ThemeSettings />
       </div>
-    </div>
+    </section>
   );
 };
 

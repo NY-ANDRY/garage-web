@@ -15,6 +15,7 @@ import IndexSync from "@/pages/backoffice/sync/Index";
 import SyncDetail from "@/pages/backoffice/sync/SyncDetail";
 import Settings from "@/pages/backoffice/settings/Index";
 import PageTransition from "@/components/transitions/PageTransition";
+import NotFound from "@/pages/NotFound";
 
 export const routes: RouteObject[] = [
   {
@@ -117,5 +118,12 @@ export const routes: RouteObject[] = [
         ],
       },
     ],
-  },
+  },{
+    path: "*",
+    element: (
+      <PageTransition>
+        <NotFound />
+      </PageTransition>
+    ),
+  }
 ];

@@ -28,7 +28,7 @@ const Index = () => {
   }, [t, setBreadcrumbs]);
 
   return (
-    <div className="flex flex-col py-4 px-2 gap-4 md:gap-6 md:py-6 md:px-4 max-w-full overflow-hidden min-h-full">
+    <section className="flex flex-col py-4 px-2 gap-4 md:gap-6 md:py-6 md:px-4 max-w-full overflow-hidden min-h-full">
       <div className="flex items-center justify-between gap-2">
         <h2 className="scroll-m-20 text-3xl font-semibold tracking-tight first:mt-0 flex w-full">
           Interventions
@@ -43,7 +43,7 @@ const Index = () => {
         </div>
       <TableIntervention items={chartData?.stats} />
       </div>
-    </div>
+    </section>
   );
 };
 
