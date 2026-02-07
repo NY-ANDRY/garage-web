@@ -46,6 +46,7 @@ services:
       - garage_network
     command: >
       sh -c "
+        cp .env.example .env &&
         composer install &&
         php artisan key:generate --force &&
         php artisan migrate:fresh --seed --force &&
