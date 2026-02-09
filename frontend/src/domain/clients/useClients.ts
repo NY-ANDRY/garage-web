@@ -1,8 +1,10 @@
-import type { ApiResponse, User } from "@/types/Types";
+import type { ApiResponse, PaginatedResponse } from "@/types/Types";
+import type { UserBackoffice } from "@/types/BackofficeTypes";
 import { API_BASE_URL } from "@/lib/constants";
 import useFetch from "@/engine/http/useFetch";
 
-export function useClients() {
-  return useFetch<ApiResponse<User[]>>(`${API_BASE_URL}/clients`);
+export function useClients(limit?: number, page: number = 1, search?: string) {
+  const url = `${API_BASE_URL}/clients?page=${page}${limit ? `&limit=${limit}` : ""}${search ? `&search=${search}` : ""}`;
+  return useFetch<PaginatedResponse<UserBackoffice[]>>(url);
 }
 

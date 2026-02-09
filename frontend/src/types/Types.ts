@@ -65,6 +65,29 @@ export type ApiResponse<T> = {
     data: T;
 };
 
+export type PaginatedResponse<T> = {
+    success: boolean;
+    data: {
+        current_page: number;
+        data: T;
+        first_page_url: string;
+        from: number;
+        last_page: number;
+        last_page_url: string;
+        links: {
+            url: string | null;
+            label: string;
+            active: boolean;
+        }[];
+        next_page_url: string | null;
+        path: string;
+        per_page: number;
+        prev_page_url: string | null;
+        to: number;
+        total: number;
+    };
+};
+
 // firestore types
 
 export type User = {
@@ -124,8 +147,8 @@ export type Reparation = {
     statut_histo: Statut_histo[];
     paiements: Paiement[];
     paiement_statut: number;
-    paiement_total: number;
-    total_a_payer: number;
+    // paiement_total: number;
+    // total_a_payer: number;
     date: Timestamp;
 }
 

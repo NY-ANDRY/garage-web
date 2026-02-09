@@ -8,7 +8,6 @@ use App\Models\Voitures;
 use App\Models\Reparation;
 use App\Models\Intervention;
 use App\Models\Paiement;
-use App\Models\Statuts_reparations;
 use Illuminate\Support\Str;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
@@ -104,11 +103,11 @@ class GarageSeeder extends Seeder
                 ]);
 
                 // Optionnellement créer un statuts
-                $statuts = Statuts_reparations::create([
-                    'date' => $reparation->date
-                ]);
+                // $statuts = Statuts_reparations::create([
+                //     'date' => $reparation->date
+                // ]);
 
-                $reparation->statuts()->attach($statuts->id, ['date' => $reparation->date]);
+                // $reparation->statuts()->attach($statuts->id, ['date' => $reparation->date]);
             }
         }
     }

@@ -37,3 +37,9 @@ export {
   useStartSync,
 } from "./sync/useSyncApi";
 
+// Cars
+export { useCars } from "./cars/useCars";
+
+// Reparations Backoffice
+export { useReparationsBackoffice } from "./reparations/useReparationsBackoffice";
+

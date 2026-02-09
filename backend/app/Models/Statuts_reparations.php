@@ -14,12 +14,8 @@ class Statuts_reparations extends Model
     public $incrementing = true;
 
     protected $fillable = [
-        'id',
-        'date',
-    ];
-
-    protected $casts = [
-        'date' => 'datetime',
+        'code',
+        'nom',
     ];
 
     public function reparations()

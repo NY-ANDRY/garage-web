@@ -37,7 +37,7 @@ const ChartInterventions = ({ items }: ChartInterventionsProps) => {
   }));
 
   return (
-    <div className="w-full flex flex-col lg:flex-row gap-8 items-center justify-between">
+    <div className="w-full flex flex-col lg:flex-row gap-8 justify-between h-full items-end">
       <ChartContainer config={chartConfig2} className="w-full min-w-28 h-72 pr-4">
         <BarChart
           accessibilityLayer

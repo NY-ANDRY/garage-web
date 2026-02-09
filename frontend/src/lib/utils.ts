@@ -27,25 +27,29 @@ export const formatFirestoreTimestamp = (date: Timestamp) =>
 export const getStatutLabel = (statut: number) => {
   switch (statut) {
     case 0:
-      return { label: "En attente", variant: "secondary" as const };
+      return { label: "En attente", variant: "warning" as const };
     case 1:
       return { label: "En cours", variant: "default" as const };
     case 2:
       return { label: "Terminé", variant: "outline" as const };
+    case 3:
+      return { label: "Payer", variant: "secondary" as const };
+    case 4:
+      return { label: "Recuperer", variant: "success" as const };
     default:
       return { label: "Inconnu", variant: "destructive" as const };
   }
 };
 
-export const getPaiementLabel = (statut: number) => {
-  switch (statut) {
-    case 0:
-      return { label: "Non payé", variant: "destructive" as const };
-    case 1:
-      return { label: "Partiel", variant: "secondary" as const };
-    case 2:
-      return { label: "Payé", variant: "default" as const };
-    default:
-      return { label: "—", variant: "outline" as const };
-  }
-};
+// export const getPaiementLabel = (statut: number) => {
+//   switch (statut) {
+//     case 0:
+//       return { label: "Non payé", variant: "destructive" as const };
+//     case 1:
+//       return { label: "Partiel", variant: "secondary" as const };
+//     case 2:
+//       return { label: "Payé", variant: "default" as const };
+//     default:
+//       return { label: "—", variant: "outline" as const };
+//   }
+// };

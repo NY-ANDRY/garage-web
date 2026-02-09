@@ -8,13 +8,9 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import type {
-  ApiResponse,
   StatsInterventionItem,
-  TableStatItem,
 } from "@/types/Types";
 import { useNavigate } from "react-router-dom";
-import { Button } from "@/components/ui/button";
-import { Eye } from "lucide-react";
 import { useTranslation } from "react-i18next";
 import { writeNumber } from "@/lib/utils";
 
@@ -37,13 +33,13 @@ const TableIntervention = ({ items }: TableInterventionProps) => {
   };
 
   return (
-    <div className="flex flex-col border rounded-lg">
+    <div className="flex flex-col border rounded-lg w-full">
       <Table>
         <TableHeader className="bg-muted/50">
           <TableRow>
-            <TableHead>Nom</TableHead>
-            <TableHead>Nombre</TableHead>
-            <TableHead>Montant total</TableHead>
+            <TableHead>{t("backoffice.table.name")}</TableHead>
+            <TableHead>{t("interventions.number")}</TableHead>
+            <TableHead>{t("backoffice.table.total_amount")}</TableHead>
           </TableRow>
         </TableHeader>
         <TableBody>
@@ -66,7 +62,7 @@ const TableIntervention = ({ items }: TableInterventionProps) => {
         </TableBody>
         <TableFooter>
           <TableRow>
-            <TableCell>Total</TableCell>
+            <TableCell>{t("backoffice.table.total")}</TableCell>
             <TableCell>{writeNumber(totalNombre)}</TableCell>
             <TableCell>
               <div className="flex items-center gap-0.5">

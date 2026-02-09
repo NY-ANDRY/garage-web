@@ -19,10 +19,18 @@ const ReparationDetail = () => {
   const { data: reparation, loading } = useReparationById(id);
   const { t } = useTranslation();
 
+  const totalPay =
+    reparation?.interventions.reduce(
+      (acc, interv) => acc + Number(interv.prix),
+      0,
+    ) ?? 0;
+
   if (!loading && !reparation) {
     return (
       <div className="min-h-screen flex flex-1 flex-col gap-4 p-4">
-        <p className="text-muted-foreground">{t("frontoffice.reparation_not_found")}</p>
+        <p className="text-muted-foreground">
+          {t("frontoffice.reparation_not_found")}
+        </p>
         <Button variant="outline" onClick={() => navigate(-1)}>
           <ArrowLeft className="h-4 w-4 mr-2" />
           {t("common.back")}
@@ -74,7 +82,7 @@ const ReparationDetail = () => {
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           <ReparationDetailPaiements
             paiements={reparation?.paiements ?? []}
-            paiementTotal={reparation?.paiement_total ?? 0}
+            paiementTotal={totalPay}
             loading={loading}
           />
           <ReparationDetailStatutHisto

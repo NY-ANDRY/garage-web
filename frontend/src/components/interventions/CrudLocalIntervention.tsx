@@ -23,6 +23,7 @@ import {
 } from "@/components/ui/dialog";
 import { toast } from "sonner";
 import { useInterventionsFirestoreMutation, useUpdateInterventionLocal } from "@/domain";
+import { useTranslation } from "react-i18next";
 
 type CrudLocalInterventionProps = {
   intervention: Intervention;
@@ -33,6 +34,7 @@ const CrudLocalIntervention = ({
   intervention,
   reload,
 }: CrudLocalInterventionProps) => {
+  const { t } = useTranslation();
   const { mutate: mutateFirebase } = useInterventionsFirestoreMutation();
   const [interventionForm, setInterventionForm] = useState<Intervention | null>(
     null,
@@ -74,9 +76,9 @@ const CrudLocalIntervention = ({
         return interventionForm;
       },
       {
-        loading: "Mise à jour en cours...",
-        success: (data) => `${data.nom} a été mise à jour avec succès !`,
-        error: "Erreur lors de la mise à jour",
+        loading: t("interventions_crud.updating"),
+        success: (data) => t("interventions_crud.update_success", { name: data.nom }),
+        error: t("interventions_crud.update_error"),
       },
     );
   };
@@ -96,9 +98,9 @@ const CrudLocalIntervention = ({
         return interventionForm;
       },
       {
-        loading: "Mise à jour en cours...",
-        success: (data) => `${data.nom} a été mise à jour avec succès !`,
-        error: "Erreur lors de la mise à jour",
+        loading: t("interventions_crud.updating"),
+        success: (data) => t("interventions_crud.update_success", { name: data.nom }),
+        error: t("interventions_crud.update_error"),
       },
     );
   };
@@ -107,8 +109,8 @@ const CrudLocalIntervention = ({
     <FieldSet className="w-full max-w-sm">
       <div className="flex justify-between items-start">
         <div className="flex flex-col">
-          <FieldLegend>Local</FieldLegend>
-          <FieldDescription>Intervention dans la base locale</FieldDescription>
+          <FieldLegend>{t("interventions_crud.local_title")}</FieldLegend>
+          <FieldDescription>{t("interventions_crud.local_desc")}</FieldDescription>
         </div>
 
         <div className="flex flex-col">
@@ -126,19 +128,19 @@ const CrudLocalIntervention = ({
 
             <DialogContent className="sm:max-w-106.25">
               <DialogHeader>
-                <DialogTitle>Upload Firestore</DialogTitle>
+                <DialogTitle>{t("interventions_crud.upload_firestore_title")}</DialogTitle>
                 <DialogDescription>
-                  Cette action écrasera les données existantes dans Firestore.
+                  {t("interventions_crud.upload_firestore_desc")}
                 </DialogDescription>
               </DialogHeader>
 
               <DialogFooter>
                 <DialogClose asChild>
-                  <Button variant="outline">Cancel</Button>
+                  <Button variant="outline">{t("interventions_crud.cancel")}</Button>
                 </DialogClose>
                 <DialogClose asChild>
                   <Button type="button" onClick={handleUpload}>
-                    Upload
+                    {t("interventions_crud.upload")}
                   </Button>
                 </DialogClose>
               </DialogFooter>
@@ -150,11 +152,11 @@ const CrudLocalIntervention = ({
       <form onSubmit={handleSubmit} className="flex flex-col gap-6">
         <FieldGroup className="gap-4">
           <Field className="gap-1">
-            <FieldLabel htmlFor="nom">Nom</FieldLabel>
+            <FieldLabel htmlFor="nom">{t("interventions_crud.nom_label")}</FieldLabel>
             <Input
               id="nom"
               type="text"
-              placeholder="Nom de l'intervention"
+              placeholder={t("interventions_crud.nom_placeholder")}
               value={interventionForm?.nom ?? ""}
               onChange={(e) => handleChange("nom", e.target.value)}
             />
@@ -162,22 +164,22 @@ const CrudLocalIntervention = ({
 
           <div className="grid grid-cols-2 gap-4">
             <Field className="gap-1">
-              <FieldLabel htmlFor="prix">Prix</FieldLabel>
+              <FieldLabel htmlFor="prix">{t("interventions_crud.prix_label")}</FieldLabel>
               <Input
                 id="prix"
                 type="number"
-                placeholder="Prix"
+                placeholder={t("interventions_crud.prix_placeholder")}
                 value={interventionForm?.prix ?? ""}
                 onChange={(e) => handleChange("prix", e.target.value)}
               />
             </Field>
 
             <Field className="gap-1">
-              <FieldLabel htmlFor="duree">Durée</FieldLabel>
+              <FieldLabel htmlFor="duree">{t("interventions_crud.duree_label")}</FieldLabel>
               <Input
                 id="duree"
                 type="number"
-                placeholder="Durée en minutes"
+                placeholder={t("interventions_crud.duree_placeholder")}
                 value={interventionForm?.duree ?? ""}
                 onChange={(e) => handleChange("duree", e.target.value)}
               />
@@ -187,7 +189,7 @@ const CrudLocalIntervention = ({
 
         <Field orientation="horizontal" className="flex justify-end">
           <Button type="submit" size="sm" onClick={handleSubmit}>
-            Sauvegarder
+            {t("interventions_crud.save")}
           </Button>
         </Field>
       </form>

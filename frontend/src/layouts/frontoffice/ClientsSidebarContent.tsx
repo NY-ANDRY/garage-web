@@ -15,10 +15,12 @@ import { useIsMobile } from "@/hooks/use-mobile";
 import AnimatedPlaceholder from "@/components/animations/AnimatedPlaceholder";
 import { AnimatePresence, motion } from "motion/react";
 import { RefreshCcw } from "lucide-react";
+import { useTranslation } from "react-i18next";
 
 const ClientsSidebarContent = ({
   ...props
 }: ComponentProps<typeof Sidebar>) => {
+  const { t } = useTranslation();
   const navigate = useNavigate();
   const [activeClient, setActiveClient] = useState<User | undefined>(undefined);
 
@@ -46,7 +48,7 @@ const ClientsSidebarContent = ({
     <SidebarContent className="gap-px">
       <div className="flex gap-0.5 pb-0 pt-2 pr-2 items-center">
         <SidebarInput
-          placeholder="Rechercher un client..."
+          placeholder={t("frontoffice.search_client")}
           className="ml-3 mr-2"
           value={searchTerm}
           onChange={(e) => setSearchTerm(e.target.value)}
@@ -77,7 +79,7 @@ const ClientsSidebarContent = ({
               ))}
               {!loadingClients && clients.length === 0 && searchTerm && (
                 <div className="p-4 text-center text-sm text-muted-foreground">
-                  Aucun client trouvé pour "{searchTerm}"
+                  {t("frontoffice.no_client_found", { searchTerm })}
                 </div>
               )}
             </AnimatePresence>

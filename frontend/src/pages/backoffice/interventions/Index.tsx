@@ -11,39 +11,38 @@ import { useInterventionsStats } from "@/domain";
 const Index = () => {
   const { t } = useTranslation();
   const { setBreadcrumbs } = useHeader();
+  const [stats, setStats] = useState<StatsInterventions | undefined>();
 
-  const [chartData, setChartData] = useState<StatsInterventions | undefined>(
-    undefined,
-  );
+  useEffect(() => {
+    setBreadcrumbs([{ label: t("sidebar.dashboard"), href: "/backoffice" }]);
+  }, [setBreadcrumbs, t]);
+
   const { data } = useInterventionsStats();
 
   useEffect(() => {
-    if (data?.data) {
-      setChartData(data?.data);
+    if (data?.success) {
+      setStats(data.data);
     }
   }, [data]);
 
-  useEffect(() => {
-    setBreadcrumbs([{ label: t("sidebar.dashboard") }]);
-  }, [t, setBreadcrumbs]);
-
   return (
-    <section className="flex flex-col py-4 px-2 gap-4 md:gap-6 md:py-6 md:px-4 max-w-full overflow-hidden min-h-full">
-      <div className="flex items-center justify-between gap-2">
-        <h2 className="scroll-m-20 text-3xl font-semibold tracking-tight first:mt-0 flex w-full">
-          Interventions
-        </h2>
-        <ChartFilter setChartData={setChartData} />
+    <div className="flex flex-1 flex-col gap-4 p-4 pt-0">
+      <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 py-2 mt-4">
+        <h1 className="text-3xl font-bold tracking-tight capitalize">
+          {t("backoffice.interventions_title")}
+        </h1>
+        <ChartFilter setChartData={setStats} />
       </div>
-
-      <div className=" grid grid-cols-1 md:grid-cols-2 gap-4">
-        <div className="flex flex-col gap-8 justify-between">
-          <CardsInterventions total={chartData?.sum} />
-          <ChartBar items={chartData?.stats} />
+      <div className="grid grid-cols-1 lg:grid-cols-12 gap-5">
+        <div className="flex flex-col col-span-1 lg:col-span-5 gap-8">
+          <CardsInterventions total={stats?.sum} />
+          <ChartBar items={stats?.stats} />
         </div>
-      <TableIntervention items={chartData?.stats} />
+        <div className="flex w-full col-span-1 lg:col-span-7">
+          <TableIntervention items={stats?.stats} />
+        </div>
       </div>
-    </section>
+    </div>
   );
 };
 

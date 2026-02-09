@@ -16,6 +16,9 @@ import SyncDetail from "@/pages/backoffice/sync/SyncDetail";
 import Settings from "@/pages/backoffice/settings/Index";
 import PageTransition from "@/components/transitions/PageTransition";
 import NotFound from "@/pages/NotFound";
+import Cars from "@/pages/backoffice/cars/Index";
+import Users from "@/pages/backoffice/users/Index";
+import Repairs from "@/pages/backoffice/repairs/Index";
 
 export const routes: RouteObject[] = [
   {
@@ -110,6 +113,18 @@ export const routes: RouteObject[] = [
                 element: <SyncDetail />,
               },
             ],
+          },
+          {
+            path: "cars",
+            element: <Cars />,
+          },
+          {
+            path: "users",
+            element: <Users />,
+          },
+          {
+            path: "repairs",
+            element: <Repairs />,
           },
           {
             path: "settings",

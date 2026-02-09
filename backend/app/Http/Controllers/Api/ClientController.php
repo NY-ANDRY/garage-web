@@ -22,7 +22,34 @@ class ClientController extends Controller
 
     public function index()
     {
-        $clients = \App\Models\Client::orderBy('displayName', 'asc')->get();
+        $limit = request()->query('limit', 10);
+        $search = request()->query('search');
+
+        $query = Client::with([
+            'synchronisations' => function ($query) {
+                $query->latest('sync_clients.created_at')->limit(1);
+            }
+        ]);
+
+        if ($search) {
+            $query->where(function ($q) use ($search) {
+                $q->where('displayName', 'ILIKE', "%{$search}%")
+                    ->orWhere('email', 'ILIKE', "%{$search}%");
+            });
+        }
+
+        $clients = $query->latest()->paginate($limit);
+
+        $clients->getCollection()->transform(function ($client) {
+            $lastSync = $client->synchronisations->first();
+            return [
+                'uid' => $client->uid,
+                'email' => $client->email,
+                'displayName' => $client->displayName,
+                'photoURL' => $client->photoURL,
+                'last_sync_at' => $lastSync ? $lastSync->pivot->created_at : null,
+            ];
+        });
 
         return response()->json([
             'success' => true,

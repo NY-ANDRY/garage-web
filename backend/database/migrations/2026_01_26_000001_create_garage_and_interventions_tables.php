@@ -64,7 +64,8 @@ return new class extends Migration {
         // 5. Table Statut
         Schema::create('statuts_reparations', function (Blueprint $table) {
             $table->id('id')->primary();
-            $table->timestamp('date')->useCurrent();
+            $table->unsignedTinyInteger('code')->unique();
+            $table->string(column: 'nom');
             $table->timestamps();
             $table->softDeletes();
         });

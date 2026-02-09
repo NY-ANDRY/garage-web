@@ -9,11 +9,7 @@ import {
   Wrench,
   ArrowRight,
 } from "lucide-react";
-import {
-  getStatutLabel,
-  getPaiementLabel,
-  formatFirestoreTimestamp,
-} from "@/lib/utils";
+import { getStatutLabel, formatFirestoreTimestamp } from "@/lib/utils";
 import { useNavigate } from "react-router-dom";
 
 type ReparationClientCardProps = {
@@ -27,7 +23,12 @@ const ReparationClientCard = ({
 }: ReparationClientCardProps) => {
   const navigate = useNavigate();
   const statut = getStatutLabel(reparation.statut);
-  const paiement = getPaiementLabel(reparation.paiement_statut);
+
+  const totalPay =
+    reparation?.interventions.reduce(
+      (acc, interv) => acc + Number(interv.prix),
+      0,
+    ) ?? 0;
 
   const handleClick = () => {
     onClick?.(reparation);
@@ -75,10 +76,7 @@ const ReparationClientCard = ({
             <span>{formatFirestoreTimestamp(reparation.date)}</span>
           </div>
 
-          <div className="flex items-center gap-2 justify-end">
-            <CreditCard className="h-4 w-4 text-muted-foreground" />
-            <Badge variant={paiement.variant}>{paiement.label}</Badge>
-          </div>
+          <div className="flex items-center gap-2 justify-end"></div>
         </div>
 
         {/* Interventions */}
@@ -92,9 +90,11 @@ const ReparationClientCard = ({
 
         {/* Montant */}
         <div className="flex justify-between items-center">
-          <span className="text-xs text-muted-foreground">Total à payer</span>
+          <div className="text-xs text-muted-foreground flex">
+            Total à payer
+          </div>
           <span className="font-bold text-lg">
-            {reparation.total_a_payer.toFixed(2)} €
+            {totalPay.toFixed(2)} €
           </span>
         </div>
       </CardContent>

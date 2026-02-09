@@ -24,6 +24,7 @@ class DatabaseSeeder extends Seeder
 
         $this->call(DefaultUserSeeder::class);
         $this->call([
+            StatutSeeder::class,
             InterventionSeeder::class,
             GarageSeeder::class,
             SourceSeeder::class,

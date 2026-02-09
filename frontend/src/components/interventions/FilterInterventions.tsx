@@ -9,6 +9,7 @@ import {
   PopoverTrigger,
 } from "@/components/ui/popover";
 import { format } from "date-fns";
+import { fr, enUS } from "date-fns/locale";
 import { ChevronDownIcon } from "lucide-react";
 import type { StatsInterventions } from "@/types/Types";
 import { IconFilter } from "@tabler/icons-react";
@@ -24,21 +25,26 @@ import {
 import { type DateRange } from "react-day-picker";
 import { useClients, useLazyInterventionsStats } from "@/domain";
 import { useIsMobile } from "@/hooks/use-mobile";
+import { useTranslation } from "react-i18next";
 
 type ChartFilterProps = {
   setChartData?: Dispatch<SetStateAction<StatsInterventions | undefined>>;
 };
 
 const ChartFilter = ({ setChartData }: ChartFilterProps) => {
+  const { t, i18n } = useTranslation();
   const [dateRange, setDateRange] = useState<DateRange | undefined>({
     from: undefined,
     to: undefined,
   });
   const [selectedUserId, setSelectedUserId] = useState<string | undefined>();
 
-  const { data: clientsData } = useClients();
+  const { data: clientsData } = useClients(100);
   const { fetchStats } = useLazyInterventionsStats();
   const isMobile = useIsMobile();
+
+  // Date-fns locale based on i18n
+  const dateLocale = i18n.language === 'en' ? enUS : fr;
 
   useEffect(() => {
     const loadFilteredStats = async () => {
@@ -83,14 +89,14 @@ const ChartFilter = ({ setChartData }: ChartFilterProps) => {
               {dateRange?.from ? (
                 dateRange.to ? (
                   <>
-                    {format(dateRange.from, "PPP")} –{" "}
-                    {format(dateRange.to, "PPP")}
+                    {format(dateRange.from, "PPP", { locale: dateLocale })} –{" "}
+                    {format(dateRange.to, "PPP", { locale: dateLocale })}
                   </>
                 ) : (
-                  format(dateRange.from, "PPP")
+                  format(dateRange.from, "PPP", { locale: dateLocale })
                 )
               ) : (
-                "Pick a date range"
+                t("common.date_start")
               )}
               <ChevronDownIcon />
             </Button>
@@ -102,6 +108,7 @@ const ChartFilter = ({ setChartData }: ChartFilterProps) => {
               selected={dateRange}
               onSelect={setDateRange}
               numberOfMonths={2}
+              locale={dateLocale}
             />
           </PopoverContent>
         </Popover>
@@ -109,13 +116,13 @@ const ChartFilter = ({ setChartData }: ChartFilterProps) => {
 
       <Select onValueChange={handleSelectChange}>
         <SelectTrigger className="w-full max-w-48">
-          <SelectValue placeholder="Select a client" />
+          <SelectValue placeholder={t("common.client")} />
         </SelectTrigger>
         <SelectContent>
           <SelectGroup>
-            <SelectLabel>Clients</SelectLabel>
-            <SelectItem value="all">Tous les clients</SelectItem>
-            {clientsData?.data?.map((client) => (
+            <SelectLabel>{t("common.clients")}</SelectLabel>
+            <SelectItem value="all">{t("table.select_all")}</SelectItem>
+            {clientsData?.data?.data?.map((client) => (
               <SelectItem key={client.uid} value={client.uid || ""}>
                 {client.displayName || client.email}
               </SelectItem>

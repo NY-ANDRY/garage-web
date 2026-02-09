@@ -60,6 +60,9 @@ const Interventions = () => {
   return (
     <section className="min-h-full flex flex-col md:flex-row py-4 px-2 gap-6 md:py-6 md:px-4 max-w-full overflow-hidden">
       <div className="flex flex-col gap-2 w-full md:w-1/3">
+        <h2 className="scroll-m-20 text-3xl font-semibold tracking-tight first:mt-0 flex w-full mb-2  ">
+          {t("sidebar.interventions")}
+        </h2>
         <AnimatedPlaceholder
           loading={isLoading}
           skeletonCount={1}

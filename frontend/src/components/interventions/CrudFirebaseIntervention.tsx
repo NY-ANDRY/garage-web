@@ -26,16 +26,18 @@ import {
   useUpdateInterventionLocal,
 } from "@/domain";
 import { toast } from "sonner";
+import { useTranslation } from "react-i18next";
 
-type CrudLocalInterventionProps = {
+type CrudFirebaseInterventionProps = {
   intervention: Intervention;
   reload?: () => void;
 };
 
-const CrudLocalIntervention = ({
+const CrudFirebaseIntervention = ({
   intervention,
   reload,
-}: CrudLocalInterventionProps) => {
+}: CrudFirebaseInterventionProps) => {
+  const { t } = useTranslation();
   const { mutate: mutateFirebase } = useInterventionsFirestoreMutation();
   const { data: dataFirebase } = useInterventionFirestoreDoc(intervention.id);
   const { mutate: mutateLocal } = useUpdateInterventionLocal(intervention.id);
@@ -55,9 +57,9 @@ const CrudLocalIntervention = ({
         return intervention;
       },
       {
-        loading: "Delete en cours...",
-        success: (data) => `${data.nom} a été effacer avec succès !`,
-        error: "Erreur lors du delete",
+        loading: t("interventions_crud.deleting"),
+        success: (data) => t("interventions_crud.delete_success", { name: data.nom }),
+        error: t("interventions_crud.delete_error"),
       },
     );
   };
@@ -81,9 +83,9 @@ const CrudLocalIntervention = ({
         return dataFirebase;
       },
       {
-        loading: "Mise à jour en cours...",
-        success: (data) => `${data.nom} a été mise à jour avec succès !`,
-        error: "Erreur lors de la mise à jour",
+        loading: t("interventions_crud.updating"),
+        success: (data) => t("interventions_crud.update_success", { name: data.nom }),
+        error: t("interventions_crud.update_error"),
       },
     );
   };
@@ -92,9 +94,9 @@ const CrudLocalIntervention = ({
     <FieldSet className="w-full max-w-sm">
       <div className="flex justify-between">
         <div className="flex flex-col">
-          <FieldLegend>Firebase</FieldLegend>
+          <FieldLegend>{t("interventions_crud.firebase_title")}</FieldLegend>
           <FieldDescription>
-            Interventions qui sera afficher au clients
+            {t("interventions_crud.firebase_desc")}
           </FieldDescription>
         </div>
         <div className="flex-col">
@@ -112,18 +114,17 @@ const CrudLocalIntervention = ({
               </DialogTrigger>
               <DialogContent className="sm:max-w-106.25">
                 <DialogHeader>
-                  <DialogTitle>Download Firestore</DialogTitle>
+                  <DialogTitle>{t("interventions_crud.download_firestore_title")}</DialogTitle>
                   <DialogDescription>
-                    cette action va reecrire les valeur des intervention courant
-                    avec les valeur des intervention de firestore
+                    {t("interventions_crud.download_firestore_desc")}
                   </DialogDescription>
                 </DialogHeader>
                 <DialogFooter>
                   <DialogClose asChild>
-                    <Button variant="outline">Cancel</Button>
+                    <Button variant="outline">{t("interventions_crud.cancel")}</Button>
                   </DialogClose>
                   <Button onClick={handleSubmit} type="submit">
-                    Download
+                    {t("interventions_crud.download")}
                   </Button>
                 </DialogFooter>
               </DialogContent>
@@ -133,7 +134,7 @@ const CrudLocalIntervention = ({
       </div>
       <FieldGroup className="gap-4">
         <Field className="gap-1">
-          <FieldLabel htmlFor="street">Nom</FieldLabel>
+          <FieldLabel htmlFor="street">{t("interventions_crud.nom_label")}</FieldLabel>
           <Input
             readOnly
             value={dataFirebase?.nom ?? ""}
@@ -144,7 +145,7 @@ const CrudLocalIntervention = ({
         </Field>
         <div className="grid grid-cols-2 gap-4">
           <Field className="gap-1">
-            <FieldLabel htmlFor="city">Prix</FieldLabel>
+            <FieldLabel htmlFor="city">{t("interventions_crud.prix_label")}</FieldLabel>
             <Input
               readOnly
               value={dataFirebase?.prix ?? ""}
@@ -154,7 +155,7 @@ const CrudLocalIntervention = ({
             />
           </Field>
           <Field className="gap-1">
-            <FieldLabel htmlFor="zip">Duree</FieldLabel>
+            <FieldLabel htmlFor="zip">{t("interventions_crud.duree_label")}</FieldLabel>
             <Input
               readOnly
               value={dataFirebase?.duree ?? ""}
@@ -170,19 +171,19 @@ const CrudLocalIntervention = ({
           <form>
             <DialogTrigger asChild>
               <Button variant="destructive" type="button" size={"sm"}>
-                Effacer
+                {t("interventions_crud.delete_button")}
               </Button>
             </DialogTrigger>
             <DialogContent className="sm:max-w-106.25">
               <DialogHeader>
-                <DialogTitle>Delete Firestore</DialogTitle>
+                <DialogTitle>{t("interventions_crud.delete_firestore_title")}</DialogTitle>
                 <DialogDescription>
-                  cette action va effacer ce type d'intervention dans firestore
+                  {t("interventions_crud.delete_firestore_desc")}
                 </DialogDescription>
               </DialogHeader>
               <DialogFooter>
                 <DialogClose asChild>
-                  <Button variant="outline">Cancel</Button>
+                  <Button variant="outline">{t("interventions_crud.cancel")}</Button>
                 </DialogClose>
                 <DialogClose asChild>
                   <Button
@@ -191,7 +192,7 @@ const CrudLocalIntervention = ({
                     type="button"
                     size={"sm"}
                   >
-                    Effacer
+                    {t("interventions_crud.delete_button")}
                   </Button>
                 </DialogClose>
               </DialogFooter>
@@ -203,4 +204,4 @@ const CrudLocalIntervention = ({
   );
 };
 
-export default CrudLocalIntervention;
+export default CrudFirebaseIntervention;

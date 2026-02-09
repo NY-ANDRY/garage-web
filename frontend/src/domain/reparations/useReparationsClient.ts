@@ -7,6 +7,7 @@ export function useReparationsClient(uid: string) {
   const q = query(
     collection(firestore, "reparations"),
     where("user.uid", "==", uid),
+    orderBy("statut", "asc"),
     orderBy("date", "desc")
   );
 

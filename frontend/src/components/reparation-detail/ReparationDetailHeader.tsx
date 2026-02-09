@@ -8,7 +8,7 @@ import {
 } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Skeleton } from "@/components/ui/skeleton";
-import { getStatutLabel, getPaiementLabel, formatFirestoreTimestamp } from "@/lib/utils";
+import { getStatutLabel, formatFirestoreTimestamp } from "@/lib/utils";
 import { FileText } from "lucide-react";
 
 type ReparationDetailHeaderProps = {
@@ -20,6 +20,12 @@ const ReparationDetailHeader = ({
   reparation,
   loading = false,
 }: ReparationDetailHeaderProps) => {
+  const totalPay =
+    reparation?.interventions.reduce(
+      (acc, interv) => acc + Number(interv.prix),
+      0,
+    ) ?? 0;
+
   if (loading || !reparation) {
     return (
       <Card className="border-0 rounded-xl shadow-none bg-transparent">
@@ -43,7 +49,6 @@ const ReparationDetailHeader = ({
   }
 
   const statut = getStatutLabel(reparation.statut);
-  const paiement = getPaiementLabel(reparation.paiement_statut);
 
   return (
     <Card className="border-0 rounded-xl shadow-none bg-transparent">
@@ -59,13 +64,12 @@ const ReparationDetailHeader = ({
         </div>
         <div className="flex gap-2 shrink-0">
           <Badge variant={statut.variant}>{statut.label}</Badge>
-          <Badge variant={paiement.variant}>{paiement.label}</Badge>
         </div>
       </CardHeader>
       <CardContent className="px-0">
         <div className="flex items-center gap-4 text-lg font-semibold">
           <span className="text-muted-foreground">Total à payer</span>
-          <span>{reparation.total_a_payer.toFixed(2)} €</span>
+          <span>{totalPay.toFixed(2)} €</span>
         </div>
       </CardContent>
     </Card>

@@ -6,6 +6,9 @@ import {
   IconSettings,
   IconUsers,
   IconCloudNetwork,
+  IconCar,
+  IconUser,
+  IconCarCrash,
 } from "@tabler/icons-react";
 
 import NavMain from "@/components/shadcn/nav-main";
@@ -15,6 +18,7 @@ import {
   Sidebar,
   SidebarContent,
   SidebarFooter,
+  SidebarGroupLabel,
   SidebarHeader,
   SidebarMenu,
   SidebarMenuButton,
@@ -59,6 +63,23 @@ const AppSidebar = ({ ...props }: React.ComponentProps<typeof Sidebar>) => {
         icon: IconSettings,
       },
     ],
+    projects: [
+      {
+        title: t("sidebar.car"),
+        url: "/backoffice/cars",
+        icon: IconCar,
+      },
+      {
+        title: t("sidebar.client"),
+        url: "/backoffice/users",
+        icon: IconUser,
+      },
+      {
+        title: t("sidebar.repair"),
+        url: "/backoffice/repairs",
+        icon: IconCarCrash,
+      },
+    ],
   };
 
   return (
@@ -82,8 +103,8 @@ const AppSidebar = ({ ...props }: React.ComponentProps<typeof Sidebar>) => {
       </SidebarHeader>
 
       <SidebarContent>
-        <NavMain items={data.navMain} />
-        {/* <NavDocuments items={data.documents} /> */}
+        <NavMain items={data.navMain} title={t("sidebar.dashboards")} />
+        <NavMain items={data.projects} title={t("sidebar.others")} />
         <NavSecondary items={data.navSecondary} className="mt-auto" />
       </SidebarContent>
 

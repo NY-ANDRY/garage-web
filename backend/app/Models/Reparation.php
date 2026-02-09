@@ -144,13 +144,33 @@ class Reparation extends Model
         }
     }
 
+    // public function syncStatuts(array $statutHisto)
+    // {
+    //     foreach ($statutHisto as $histo) {
+    //         $statutId = intval($histo['statut']) + 1;
+    //         Statuts_reparations::firstOrCreate(['id' => $statutId]);
+    //         $this->statuts()->syncWithoutDetaching([
+    //             $statutId => ['date' => isset($histo['date']) ? Carbon::parse($histo['date']) : null]
+    //         ]);
+    //     }
+    // }
+
     public function syncStatuts(array $statutHisto)
     {
         foreach ($statutHisto as $histo) {
-            $statutId = $histo['statut'];
-            Statuts_reparations::firstOrCreate(['id' => $statutId]);
+            $statutCode = intval($histo['statut']); // 0,1,2,3,4
+
+            // On récupère ou crée le statut selon le code
+            $statut = Statuts_reparations::firstOrCreate(
+                ['code' => $statutCode],
+                ['nom' => 'Statut #' . $statutCode] // optionnel, juste un fallback
+            );
+
+            // On sync avec la table pivot
             $this->statuts()->syncWithoutDetaching([
-                $statutId => ['date' => isset($histo['date']) ? Carbon::parse($histo['date']) : null]
+                $statut->id => [
+                    'date' => isset($histo['date']) ? Carbon::parse($histo['date']) : null
+                ]
             ]);
         }
     }

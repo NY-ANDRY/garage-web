@@ -21,6 +21,8 @@ Route::middleware('auth:sanctum')->group(function () {
     // Routes API pour les interventions
     Route::apiResource('interventions', InterventionController::class);
     Route::apiResource('clients', ClientController::class);
+    Route::apiResource('voitures', \App\Http\Controllers\Api\VoitureController::class);
+    Route::apiResource('reparations', \App\Http\Controllers\Api\ReparationController::class);
     Route::get('/stats/interventions', [InterventionController::class, 'stats']);
     Route::get('/stats/clients', [ClientController::class, 'stats']);
 
