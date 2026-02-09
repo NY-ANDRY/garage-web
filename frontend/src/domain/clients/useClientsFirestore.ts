@@ -6,11 +6,8 @@ import { useFirestoreDoc } from "@/engine/firestore/useFirestoreDoc";
 import { useFirestoreMutation } from "@/engine/firestore/useFirestoreMutation";
 
 export function useClientsFirestore(searchTerm: string = "") {
-  // On définit la base de la collection
   const usersRef = collection(firestore, 'users');
 
-  // Si on a un mot-clé, on crée une requête filtrée (préfixe)
-  // Sinon, on passe simplement la référence de la collection
   const q = searchTerm 
     ? query(
         usersRef, 

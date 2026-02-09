@@ -110,7 +110,7 @@ const Repairs: React.FC = () => {
               <TableRow>
                 <TableHead>{t("backoffice.table.id")}</TableHead>
                 <TableHead>{t("backoffice.table.date")}</TableHead>
-                <TableHead>{t("backoffice.table.client")}</TableHead>
+                <TableHead>{t("common.client")}</TableHead>
                 <TableHead>{t("backoffice.table.car")}</TableHead>
                 <TableHead>{t("backoffice.table.status")}</TableHead>
                 <TableHead>{t("backoffice.table.sync")}</TableHead>

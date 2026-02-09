@@ -1,3 +1,5 @@
+import type { RouteObject } from "react-router-dom";
+import { Navigate } from "react-router-dom";
 import DashboardLayout from "@/layouts/backoffice/DashboardLayout";
 import ClientsLayout from "@/layouts/frontoffice/ClientsLayout";
 import IndexIntervention from "@/pages/backoffice/interventions/Index";
@@ -6,8 +8,6 @@ import HomeFrontoffice from "@/pages/frontoffice/Home";
 import ClientsFrontoffice from "@/pages/frontoffice/clients/Home";
 import ReparationDetail from "@/pages/frontoffice/clients/ReparationDetail";
 import Landing from "@/pages/Landing";
-import type { RouteObject } from "react-router-dom";
-import { Navigate } from "react-router-dom";
 import ProtectedRoute from "@/components/auth/ProtectedRoute";
 import AuthView from "@/pages/backoffice/auth/AuthView";
 import IndexClient from "@/pages/backoffice/client/Index";
@@ -91,11 +91,16 @@ export const routes: RouteObject[] = [
           },
           {
             path: "interventions",
-            element: <Interventions />,
-          },
-          {
-            path: "interventions/:id",
-            element: <Interventions />,
+            children: [
+              {
+                index: true,
+                element: <Interventions />,
+              },
+              {
+                path: ":id",
+                element: <Interventions />,
+              },
+            ],
           },
           {
             path: "clients",
@@ -133,12 +138,13 @@ export const routes: RouteObject[] = [
         ],
       },
     ],
-  },{
+  },
+  {
     path: "*",
     element: (
       <PageTransition>
         <NotFound />
       </PageTransition>
     ),
-  }
+  },
 ];
