@@ -25,6 +25,7 @@ import { ChevronDown, Search } from "lucide-react";
 import type { CarBackoffice } from "@/types/BackofficeTypes";
 import { Input } from "@/components/ui/input";
 import { useTranslation } from "react-i18next";
+import { useHeader } from "@/context/HeaderContext";
 
 const Cars: React.FC = () => {
   const { t, i18n } = useTranslation();
@@ -33,7 +34,13 @@ const Cars: React.FC = () => {
   const [allCars, setAllCars] = useState<CarBackoffice[]>([]);
   const [search, setSearch] = useState("");
   const [debouncedSearch, setDebouncedSearch] = useState("");
-  
+    const { setBreadcrumbs } = useHeader();
+
+  useEffect(() => {
+    setBreadcrumbs([
+      { label: t("sidebar.car") }
+    ]);
+  }, [setBreadcrumbs, t]);
   // Date-fns locale based on i18n
   const dateLocale = i18n.language === 'en' ? enUS : fr;
 

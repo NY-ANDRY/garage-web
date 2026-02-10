@@ -20,6 +20,7 @@ class Reparation extends Model
         'uid_client',
         'id_voiture',
         'date',
+        'static_statut'
     ];
 
     protected $casts = [
@@ -72,6 +73,7 @@ class Reparation extends Model
                 'uid_client' => $repData['user']['uid'] ?? null,
                 'id_voiture' => $repData['voiture']['id'] ?? null,
                 'date' => isset($repData['date']) ? Carbon::parse($repData['date']) : null,
+                'static_statut' => isset($repData['statut']) ? $repData['statut'] : null,
             ]
         );
 
@@ -98,6 +100,13 @@ class Reparation extends Model
         $reparation = self::find($id);
         if (!$reparation) {
             return null;
+        }
+
+        // ✅ Update via l'instance
+        if (array_key_exists('statut', $repData)) {
+            $reparation->update([
+                'static_statut' => $repData['statut'],
+            ]);
         }
 
         if (isset($repData['paiements']) && is_array($repData['paiements'])) {

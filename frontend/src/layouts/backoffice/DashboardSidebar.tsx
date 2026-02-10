@@ -9,6 +9,7 @@ import {
   IconCar,
   IconUser,
   IconCarCrash,
+  IconHourglass,
 } from "@tabler/icons-react";
 
 import NavMain from "@/components/shadcn/nav-main";
@@ -80,6 +81,13 @@ const AppSidebar = ({ ...props }: React.ComponentProps<typeof Sidebar>) => {
         icon: IconCarCrash,
       },
     ],
+    navInProgress: [
+      {
+        title: t("sidebar.repairs_in_progress"),
+        url: "/backoffice/repairs/in-progress",
+        icon: IconHourglass,
+      },
+    ],
   };
 
   return (
@@ -105,6 +113,7 @@ const AppSidebar = ({ ...props }: React.ComponentProps<typeof Sidebar>) => {
       <SidebarContent>
         <NavMain items={data.navMain} title={t("sidebar.dashboards")} />
         <NavMain items={data.projects} title={t("sidebar.others")} />
+        <NavMain items={data.navInProgress} title={t("common.reparations")} />
         <NavSecondary items={data.navSecondary} className="mt-auto" />
       </SidebarContent>
 

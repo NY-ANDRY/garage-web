@@ -45,6 +45,7 @@ class ReparationController extends Controller
                 'date' => $reparation->date,
                 'client' => $reparation->client,
                 'voiture' => $reparation->voiture,
+                'static_statut' => $reparation->static_statut,
                 'status' => $latestStatus ? [
                     'id' => $latestStatus->id,
                     'code' => $latestStatus->code,

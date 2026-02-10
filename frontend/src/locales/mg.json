@@ -61,7 +61,8 @@
     "others": "Hafa",
     "car": "Fiara",
     "client": "Mpanjifa",
-    "repair": "Fanamboarana"
+    "repair": "Fanamboarana",
+    "repairs_in_progress": "Fanamboarana mandeha"
   },
   "header": {
     "documents": "Antontan-taratasy",
@@ -183,6 +184,7 @@
     "cars_title": "Fitantanana ny Fiara",
     "repairs_title": "Fitantanana ny Fanamboarana",
     "interventions_title": "Fanamboarana",
+    "repairs_in_progress_title": "Fanamboarana mandeha tany amin'ny Firebase",
     "search_placeholder": "Hikaroka...",
     "show": "Asehoy :",
     "results": "vokatra",

@@ -95,6 +95,7 @@ class Synchronisation extends Model
         $firebase = new Firebase();
         $reparations = Reparation::all(['id']);
         $ids = array_column($reparations->toArray(), 'id');
+        $ids = [];
         $newReparations = $firebase->getReparationsAndExclude($ids);
 
         return self::processReparations($sync, $newReparations);

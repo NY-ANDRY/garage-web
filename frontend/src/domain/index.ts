@@ -42,4 +42,5 @@ export { useCars } from "./cars/useCars";
 
 // Reparations Backoffice
 export { useReparationsBackoffice } from "./reparations/useReparationsBackoffice";
+export { useReparationsInProgress } from "./reparations/useReparationsInProgress";
 

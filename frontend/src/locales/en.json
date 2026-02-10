@@ -61,7 +61,8 @@
     "others": "Others",
     "car": "Car",
     "client": "Client",
-    "repair": "Repair"
+    "repair": "Repair",
+    "repairs_in_progress": "Repairs in Progress"
   },
   "header": {
     "documents": "Documents",
@@ -183,6 +184,7 @@
     "cars_title": "Cars Management",
     "repairs_title": "Repairs Management",
     "interventions_title": "Interventions",
+    "repairs_in_progress_title": "Repairs in Progress",
     "search_placeholder": "Search...",
     "show": "Show:",
     "results": "results",

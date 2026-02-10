@@ -61,7 +61,8 @@
     "others": "Autres",
     "car": "Voiture",
     "client": "Client",
-    "repair": "Réparation"
+    "repair": "Réparation",
+    "repairs_in_progress": "Réparations en cours"
   },
   "header": {
     "documents": "Documents",
@@ -183,6 +184,7 @@
     "cars_title": "Gestion des Voitures",
     "repairs_title": "Gestion des Réparations",
     "interventions_title": "Interventions",
+    "repairs_in_progress_title": "Réparations en cours",
     "search_placeholder": "Rechercher...",
     "show": "Afficher :",
     "results": "résultats",

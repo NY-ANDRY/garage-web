@@ -26,6 +26,7 @@ export type RepairBackoffice = {
     date: string;
     client: User | null;
     voiture: Voiture | null;
+    static_statut: string;
     status: {
         id: number;
         code: number;

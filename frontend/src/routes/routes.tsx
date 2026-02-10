@@ -19,6 +19,8 @@ import NotFound from "@/pages/NotFound";
 import Cars from "@/pages/backoffice/cars/Index";
 import Users from "@/pages/backoffice/users/Index";
 import Repairs from "@/pages/backoffice/repairs/Index";
+import InProgress from "@/pages/backoffice/repairs/InProgress";
+
 
 export const routes: RouteObject[] = [
   {
@@ -129,7 +131,16 @@ export const routes: RouteObject[] = [
           },
           {
             path: "repairs",
-            element: <Repairs />,
+            children: [
+              {
+                index: true,
+                element: <Repairs />,
+              },
+              {
+                path: "in-progress",
+                element: <InProgress />,
+              },
+            ],
           },
           {
             path: "settings",

@@ -55,6 +55,7 @@ return new class extends Migration {
             $table->string('uid_client');
             $table->string('id_voiture');
             $table->timestamp('date')->useCurrent();
+            $table->string('static_statut')->nullable(true);
             $table->timestamps();
             $table->softDeletes();
             $table->foreign('uid_client')->references('uid')->on('clients')->nullOnDelete();
