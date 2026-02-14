@@ -56,7 +56,7 @@ const ChartInterventions = ({ items }: ChartInterventionsProps) => {
           <YAxis tickLine={false} axisLine={false} tickMargin={10} />
           <ChartTooltip content={<ChartTooltipContent />} />
           <ChartLegend content={<ChartLegendContent />} />
-          <Bar dataKey="montant_total" fill="#aaa" radius={4} />
+          <Bar dataKey="montant_total" fill="#999" radius={4} />
         </BarChart>
       </ChartContainer>
       <ChartContainer config={chartConfig1} className="w-full min-w-80 h-96 pr-4">
@@ -77,7 +77,7 @@ const ChartInterventions = ({ items }: ChartInterventionsProps) => {
           <YAxis tickLine={false} axisLine={false} tickMargin={10} />
           <ChartTooltip content={<ChartTooltipContent />} />
           <ChartLegend content={<ChartLegendContent />} />
-          <Bar dataKey="nombre_total" fill="#aaa" radius={4} />
+          <Bar dataKey="nombre_total" fill="#999" radius={4} />
         </BarChart>
       </ChartContainer>
     </div>
